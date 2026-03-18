@@ -1,0 +1,28 @@
+﻿# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Binaries
+bin/
+
+# Coverage
+coverage.out
+*.coverprofile
+
+# Env files
+.env
+.env.*
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local diagnostic artifacts
+.gcm-diagnose/
