@@ -5,11 +5,22 @@ import (
 	"net/http"
 
 	"go-server/internal/config"
+	"go-server/internal/db"
 	"go-server/internal/router"
+
+	"github.com/joho/godotenv"
 )
 
 func Run() error {
+	godotenv.Load()
 	cfg := config.Load()
+
+	if cfg.DB.Enabled {
+		_, err := db.Init(cfg.DB)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 	engine := router.New(cfg)
 
 	srv := &http.Server{

@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -9,6 +10,7 @@ type Config struct {
 	AppName string
 	Env     string
 	HTTP    HTTPConfig
+	DB      DBConfig
 }
 
 type HTTPConfig struct {
@@ -16,6 +18,16 @@ type HTTPConfig struct {
 	Port         string
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
+}
+
+type DBConfig struct {
+	Enabled         bool
+	DSN             string
+	AutoMigrate     bool
+	MaxIdleConns    int
+	ConnMaxLifetime time.Duration
+	ConnMaxIdleTime time.Duration
+	MaxOpenConns    int
 }
 
 func (c HTTPConfig) Addr() string {
@@ -32,6 +44,15 @@ func Load() Config {
 			ReadTimeout:  mustDuration(getEnv("HTTP_READ_TIMEOUT", "5s"), 5*time.Second),
 			WriteTimeout: mustDuration(getEnv("HTTP_WRITE_TIMEOUT", "10s"), 10*time.Second),
 		},
+		DB: DBConfig{
+			Enabled:         mustBool(getEnv("DB_ENABLED", "false"), false),
+			DSN:             getEnv("MYSQL_DSN", "root:root@tcp(127.0.0.1:3306)/go_server?charset=utf8mb4&parseTime=True&loc=Local"),
+			AutoMigrate:     mustBool(getEnv("DB_AUTO_MIGRATE", "true"), true),
+			MaxIdleConns:    mustInt(getEnv("DB_MAX_IDLE_CONNS", "10"), 10),
+			MaxOpenConns:    mustInt(getEnv("DB_MAX_OPEN_CONNS", "100"), 100),
+			ConnMaxLifetime: mustDuration(getEnv("DB_CONN_MAX_LIFETIME", "1h"), time.Hour),
+			ConnMaxIdleTime: mustDuration(getEnv("DB_CONN_MAX_IDLE_TIME", "30m"), 30*time.Minute),
+		},
 	}
 }
 
@@ -44,6 +65,22 @@ func getEnv(key, fallback string) string {
 
 func mustDuration(raw string, fallback time.Duration) time.Duration {
 	d, err := time.ParseDuration(raw)
+	if err != nil {
+		return fallback
+	}
+	return d
+}
+
+func mustBool(raw string, fallback bool) bool {
+	d, err := strconv.ParseBool(raw)
+	if err != nil {
+		return fallback
+	}
+	return d
+}
+
+func mustInt(raw string, fallback int) int {
+	d, err := strconv.Atoi(raw)
 	if err != nil {
 		return fallback
 	}

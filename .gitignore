@@ -15,8 +15,8 @@ coverage.out
 *.coverprofile
 
 # Env files
-.env
-.env.*
+# .env
+# .env.*
 
 # IDE / OS
 .vscode/
