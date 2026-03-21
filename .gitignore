@@ -1,14 +1,15 @@
 ﻿# Go build artifacts
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.out
+# *.exe
+# *.exe~
+# *.dll
+# *.so
+# *.dylib
+# *.test
+# *.out
 
 # Binaries
-bin/
+# bin/
+
 
 # Coverage
 coverage.out
@@ -19,10 +20,10 @@ coverage.out
 # .env.*
 
 # IDE / OS
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
+# .vscode/
+# .idea/
+# .DS_Store
+# Thumbs.db
 
 # Local diagnostic artifacts
-.gcm-diagnose/
+# .gcm-diagnose/

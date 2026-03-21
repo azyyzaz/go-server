@@ -1,0 +1,210 @@
+﻿Diagnose log at 2026-03-18T15:16:11Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.6.1+786ab03440ddc82e807a97c0e540f5247e44cec6
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+HOMEPATH=\Users\azyyz
+DriverData=C:\Windows\System32\Drivers\DriverData
+COMPUTERNAME=DESKTOP-C1OENUQ
+GIT_TRACE2_PARENT_SID=a4c054c2-2941-495a-bf25-897b6f2d56d7
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+OneDrive=C:\Users\azyyz\OneDrive
+CODEX_THREAD_ID=019d016a-d7a8-7141-9a0c-70f57d67d612
+PyCharm=C:\Program Files\JetBrains\PyCharm 2025.3.2.1\bin
+USERNAME=azyyz
+GIT_CONFIG_KEY_0=safe.directory
+WebStorm=C:\Program Files\JetBrains\WebStorm 2025.3.1\bin
+TMP=C:\Users\azyyz\AppData\Local\Temp
+LC_CTYPE=C.UTF-8
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 151 Stepping 2, GenuineIntel
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+VSCODE_IPC_HOOK=\\.\pipe\a37246bc-1.111.0-main-sock
+SystemDrive=C:
+HTTPS_PROXY=http://127.0.0.1:7897
+TEMP=C:\Users\azyyz\AppData\Local\Temp
+LOCALAPPDATA=C:\Users\azyyz\AppData\Local
+MSYSTEM=MINGW64
+TERM=xterm-256color
+GCM_GUI_PROMPT=False
+GOPATH=C:\Users\azyyz\go
+ProgramData=C:\ProgramData
+VSCODE_ESM_ENTRYPOINT=vs/workbench/api/node/extensionHostProcess
+LESS=
+PROCESSOR_REVISION=9702
+windir=C:\Windows
+GIT_CONFIG_VALUE_0=D:\code\golangFullStack\go-server
+PROCESSOR_LEVEL=6
+NUMBER_OF_PROCESSORS=20
+PATH=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\azyyz\bin;C:\Users\azyyz\.codex\tmp\arg0\codex-arg0sqJHIO;C:\Users\azyyz\AppData\Local\Programs\Microsoft VS Code;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\azyyz\AppData\Local\nvm;C:\nvm4w\nodejs;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\pcsuite\;C:\Program Files\Git\cmd;C:\composer;C:\Users\azyyz\AppData\Local\Python\pythoncore-3.14-64;C:\Program Files\Go\bin;C:\Program Files\Docker\Docker\resources\bin;C:\Users\azyyz\AppData\Local\Microsoft\WindowsApps;C:\php-8.2.30-nts-Win32-vs16-x64;C:\Users\azyyz\AppData\Roaming\Composer\vendor\bin;C:\Users\azyyz\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\WebStorm 2025.3.1\bin;C:\Users\azyyz\AppData\Local\Python\bin;C:\Users\azyyz\AppData\Local\Python\pythoncore-3.14-64\Scripts;C:\Program Files\JetBrains\PyCharm 2025.3.2.1\bin;C:\Users\azyyz\go\bin;C:\Users\azyyz\AppData\Local\Programs\Ollama;C:\Program Files\JetBrains\GoLand 2025.3.3\bin;c:\Users\azyyz\.vscode\extensions\openai.chatgpt-26.313.41514-win32-x64\bin\windows-x86_64
+GIT_CONFIG_COUNT=1
+NODE_TLS_REJECT_UNAUTHORIZED=0
+ProgramFiles(x86)=C:\Program Files (x86)
+PUBLIC=C:\Users\Public
+HTTP_PROXY=http://127.0.0.1:7897
+GOOGLE_GEMINI_BASE_URL=https://www.codebyai.net/api/agent
+CommonProgramFiles=C:\Program Files (x86)\Common Files
+USERDOMAIN_ROAMINGPROFILE=DESKTOP-C1OENUQ
+VSCODE_CRASH_REPORTER_PROCESS_TYPE=extensionHost
+GoLand=C:\Program Files\JetBrains\GoLand 2025.3.3\bin
+CODEX_SANDBOX_NETWORK_DISABLED=1
+PLINK_PROTOCOL=ssh
+COLORTERM=truecolor
+ProgramW6432=C:\Program Files
+GIT_PAGER=more.com
+ProgramFiles=C:\Program Files (x86)
+DEBUG=release
+VSCODE_NLS_CONFIG={"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"C:\\Users\\azyyz\\AppData\\Local\\Programs\\Microsoft VS Code\\ce099c1ed2\\resources\\app\\out\\nls.messages.json","languagePack":{"translationsConfigFile":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\tcf.json","messagesFile":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb\\nls.messages.json","corruptMarkerFile":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"260f1e75be0cfbabbd36f02f327e4f1d.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\tcf.json","_cacheRoot":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn","_resolvedLanguagePackCoreLocation":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb","_corruptedFile":"C:\\Users\\azyyz\\AppData\\Roaming\\Code\\clp\\260f1e75be0cfbabbd36f02f327e4f1d.zh-cn\\corrupted.info"}
+VSCODE_CODE_CACHE_PATH=C:\Users\azyyz\AppData\Roaming\Code\CachedData\ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb
+TMPDIR=C:\Users\azyyz\AppData\Local\Temp
+SystemRoot=C:\Windows
+NVM_SYMLINK=C:\nvm4w\nodejs
+NVM_HOME=C:\Users\azyyz\AppData\Local\nvm
+HOME=C:\Users\azyyz
+VSCODE_HANDLES_UNCAUGHT_ERRORS=true
+CODEX_INTERNAL_ORIGINATOR_OVERRIDE=codex_vscode
+CommonProgramW6432=C:\Program Files\Common Files
+LOGONSERVER=\\DESKTOP-C1OENUQ
+VSCODE_CWD=C:\Windows\system32
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+USERDOMAIN=DESKTOP-C1OENUQ
+APPDATA=C:\Users\azyyz\AppData\Roaming
+HOMEDRIVE=C:
+RUST_LOG=warn
+VSCODE_PID=7880
+PSModulePath=C:\Users\azyyz\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\Windows\system32\WindowsPowerShell\v1.0\Modules
+ELECTRON_RUN_AS_NODE=1
+CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_7880_PEZCBQZXCUFAHUJH
+PROCESSOR_ARCHITEW6432=AMD64
+PROCESSOR_ARCHITECTURE=x86
+USERPROFILE=C:\Users\azyyz
+OS=Windows_NT
+ComSpec=C:\Windows\system32\cmd.exe
+PAGER=more.com
+GEMINI_API_KEY=sk-proj-wrK5MMjIyN5HQK3Do6AUb+NC1InUp4jc
+OneDriveConsumer=C:\Users\azyyz\OneDrive
+ALLUSERSPROFILE=C:\ProgramData
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\azyyz\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\azyyz\AppData\Local\Temp\0f12488fbaadf9c0a8ae9081'... OK
+Reading from temporary file 'C:\Users\azyyz\AppData\Local\Temp\0f12488fbaadf9c0a8ae9081'... OK
+Deleting temporary file 'C:\Users\azyyz\AppData\Local\Temp\0f12488fbaadf9c0a8ae9081'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\CodexSandboxOffline
+UserDataDirectoryPath: C:\Users\CodexSandboxOffline\.gcm
+GetCurrentDirectory(): D:\code\golangFullStack\go-server
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: False
+Exception:
+System.Net.Http.HttpRequestException: 发送请求时出错。 ---> System.Net.WebException: 基础连接已经关闭: 接收时发生错误。 ---> System.ComponentModel.Win32Exception: 安全包中没有可用的凭证
+   在 System.Net.SSPIWrapper.AcquireCredentialsHandle(SSPIInterface SecModule, String package, CredentialUse intent, SecureCredential2 scc)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, SecureCredential2& secureCredential)
+   在 System.Net.Security.SecureChannel.AcquireCredentialsHandle(CredentialUse credUsage, X509Certificate2 selectedCert, Flags flags)
+   在 System.Net.Security.SecureChannel.AcquireClientCredentials(Byte[]& thumbPrint)
+   在 System.Net.Security.SecureChannel.GenerateToken(Byte[] input, Int32 offset, Int32 count, Byte[]& output)
+   在 System.Net.Security.SecureChannel.NextMessage(Byte[] incoming, Int32 offset, Int32 count)
+   在 System.Net.Security.SslState.StartSendBlob(Byte[] incoming, Int32 count, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ForceAuthentication(Boolean receiveFirst, Byte[] buffer, AsyncProtocolRequest asyncRequest, Boolean renegotiation)
+   在 System.Net.Security.SslState.ProcessAuthentication(LazyAsyncResult lazyResult)
+   在 System.Net.TlsStream.CallProcessAuthentication(Object state)
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Net.TlsStream.ProcessAuthentication(LazyAsyncResult result)
+   在 System.Net.TlsStream.BeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.TlsStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback asyncCallback, Object asyncState)
+   在 System.Net.PooledStream.UnsafeBeginWrite(Byte[] buffer, Int32 offset, Int32 size, AsyncCallback callback, Object state)
+   在 System.Net.ConnectStream.WriteHeaders(Boolean async)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Net.HttpWebRequest.EndGetResponse(IAsyncResult asyncResult)
+   在 System.Net.Http.HttpClientHandler.GetResponseCallback(IAsyncResult ar)
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.NetworkingDiagnostic.<RunInternalAsync>d__4.MoveNext()
+--- 引发异常的上一位置中堆栈跟踪的末尾 ---
+   在 System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   在 System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+   在 GitCredentialManager.Diagnostics.Diagnostic.<RunAsync>d__6.MoveNext()
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com...
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.52.0.windows.1'
+Locating current repository...Git repository at 'D:/code/golangFullStack/go-server/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=schannel
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	credential.helper=manager
+file:C:/Program Files/Git/etc/gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/azyyz/.gitconfig	user.email=coderazyyz@gmail.com
+file:C:/Users/azyyz/.gitconfig	user.name=manman-az
+file:C:/Users/azyyz/.gitconfig	credential.https://gitee.com.provider=generic
+file:C:/Users/azyyz/.gitconfig	http.proxy=http://127.0.0.1:7897
+file:C:/Users/azyyz/.gitconfig	https.proxy=http://127.0.0.1:7897
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.origin.url=https://github.com/azyyzaz/go-server.git
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config	branch.main.remote=origin
+file:.git/config	branch.main.merge=refs/heads/main
+command line:	safe.directory=D:\code\golangFullStack\go-server
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
