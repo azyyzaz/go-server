@@ -11,6 +11,7 @@ type Config struct {
 	Env     string
 	HTTP    HTTPConfig
 	DB      DBConfig
+	Redis   RedisConfig
 }
 
 type HTTPConfig struct {
@@ -28,6 +29,13 @@ type DBConfig struct {
 	ConnMaxLifetime time.Duration
 	ConnMaxIdleTime time.Duration
 	MaxOpenConns    int
+}
+
+type RedisConfig struct {
+	Enabled  bool
+	Addr     string
+	Password string
+	DB       int
 }
 
 func (c HTTPConfig) Addr() string {
@@ -52,6 +60,12 @@ func Load() Config {
 			MaxOpenConns:    mustInt(getEnv("DB_MAX_OPEN_CONNS", "100"), 100),
 			ConnMaxLifetime: mustDuration(getEnv("DB_CONN_MAX_LIFETIME", "1h"), time.Hour),
 			ConnMaxIdleTime: mustDuration(getEnv("DB_CONN_MAX_IDLE_TIME", "30m"), 30*time.Minute),
+		},
+		Redis: RedisConfig{
+			Enabled:  mustBool(getEnv("REDIS_ENABLED", "false"), false),
+			Addr:     getEnv("REDIS_ADDR", "127.0.0.1:6379"),
+			Password: getEnv("REDIS_PASSWORD", ""),
+			DB:       mustInt(getEnv("REDIS_DB", "0"), 0),
 		},
 	}
 }
