@@ -6,6 +6,7 @@ import (
 
 	"go-server/internal/config"
 	"go-server/internal/db"
+	"go-server/internal/redis"
 	"go-server/internal/router"
 
 	"github.com/joho/godotenv"
@@ -21,6 +22,14 @@ func Run() error {
 			log.Fatal(err)
 		}
 	}
+
+	if cfg.Redis.Enabled {
+		_, err := redis.Init(cfg.Redis)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	engine := router.New(cfg)
 
 	srv := &http.Server{
