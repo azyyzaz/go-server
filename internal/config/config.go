@@ -12,6 +12,7 @@ type Config struct {
 	HTTP    HTTPConfig
 	DB      DBConfig
 	Redis   RedisConfig
+	Log     LogConfig
 }
 
 type HTTPConfig struct {
@@ -36,6 +37,15 @@ type RedisConfig struct {
 	Addr     string
 	Password string
 	DB       int
+}
+
+type LogConfig struct {
+	Level      string
+	Filename   string
+	MaxSizeMB  int
+	MaxBackups int
+	MaxAgeDays int
+	Compress   bool
 }
 
 func (c HTTPConfig) Addr() string {
@@ -66,6 +76,14 @@ func Load() Config {
 			Addr:     getEnv("REDIS_ADDR", "127.0.0.1:6379"),
 			Password: getEnv("REDIS_PASSWORD", ""),
 			DB:       mustInt(getEnv("REDIS_DB", "0"), 0),
+		},
+		Log: LogConfig{
+			Level:      getEnv("LOG_LEVEL", "info"),
+			Filename:   getEnv("LOG_FILENAME", "logs/app.log"),
+			MaxSizeMB:  mustInt(getEnv("LOG_MAX_SIZE_MB", "20"), 20),
+			MaxBackups: mustInt(getEnv("LOG_MAX_BACKUPS", "10"), 10),
+			MaxAgeDays: mustInt(getEnv("LOG_MAX_AGE_DAYS", "30"), 30),
+			Compress:   mustBool(getEnv("LOG_COMPRESS", "false"), false),
 		},
 	}
 }

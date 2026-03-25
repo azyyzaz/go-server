@@ -1,0 +1,5 @@
+{"level":"info","ts":"2026-03-25T23:48:42.709+0800","caller":"api/main.go:13","msg":"[%s] HTTP server running on %s (%s)","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-03-25T23:50:03.826+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260325155003-12aa833f458a","status":200,"method":"GET","path":"/api/v1/health","query":"","ip":"127.0.0.1","error":"","latency":0}
+{"level":"info","ts":"2026-03-25T23:50:14.613+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260325155014-ccde29cb69a6","status":200,"method":"GET","path":"/api/v1/health","query":"","ip":"127.0.0.1","error":"","latency":0}
+{"level":"info","ts":"2026-03-25T23:51:57.536+0800","caller":"api/main.go:13","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-03-25T23:52:06.686+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260325155206-26c584817f47","status":200,"method":"GET","path":"/api/v1/health","query":"","ip":"127.0.0.1","error":"","latency":0.0007672}
