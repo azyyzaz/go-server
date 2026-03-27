@@ -13,7 +13,7 @@
 | 1.1 | 数据库接入 — MySQL + GORM | ✅ | GORM v2，连接池配置 |
 | 1.2 | Redis 接入 | ✅ | go-redis，连接管理，缓存工具封装 |
 | 1.3 | 结构化日志 — Zap | ✅ | 替换 fmt/log，分级日志，文件轮转(lumberjack) |
-| 1.4 | 配置中心升级 — Viper | ⬜ | 支持 `.env` / `yaml` / 环境变量，热重载 |
+| 1.4 | 配置中心升级 — Viper | ✅ | 支持 `.env` / `yaml` / 环境变量，热重载 |
 | 1.5 | 数据库迁移 — golang-migrate | ⬜ | SQL 版本化迁移，up/down 脚本管理 |
 | 1.6 | 统一错误码体系 | ⬜ | 业务错误码枚举，中英文 message 映射 |
 

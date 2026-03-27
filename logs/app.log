@@ -3,3 +3,6 @@
 {"level":"info","ts":"2026-03-25T23:50:14.613+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260325155014-ccde29cb69a6","status":200,"method":"GET","path":"/api/v1/health","query":"","ip":"127.0.0.1","error":"","latency":0}
 {"level":"info","ts":"2026-03-25T23:51:57.536+0800","caller":"api/main.go:13","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-03-25T23:52:06.686+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260325155206-26c584817f47","status":200,"method":"GET","path":"/api/v1/health","query":"","ip":"127.0.0.1","error":"","latency":0.0007672}
+{"level":"info","ts":"2026-03-27T21:32:37.960+0800","caller":"api/main.go:13","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-03-27T21:33:49.535+0800","caller":"viper@v1.21.0/viper.go:363","msg":"config reloaded","file":"D:\\code\\golangFullStack\\go-server\\config.yaml"}
+{"level":"info","ts":"2026-03-27T21:33:49.535+0800","caller":"viper@v1.21.0/viper.go:363","msg":"config reloaded","file":"D:\\code\\golangFullStack\\go-server\\config.yaml"}

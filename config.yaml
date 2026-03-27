@@ -1,0 +1,32 @@
+app:
+  name: "go-server"
+  env: "local"
+
+http:
+  host: "0.0.0.0"
+  port: "8080"
+  readTimeout: "5s"
+  writeTimeout: "10s"
+
+db:
+  enabled: false
+  dsn: "root:root@tcp(127.0.0.1:3306)/go_server?charset=utf8mb4&parseTime=True&loc=Local"
+  autoMigrate: true
+  maxIdleConns: 10
+  maxOpenConns: 100
+  connMaxLifetime: "1h"
+  connMaxIdleTime: "30m"
+
+redis:
+  enabled: false
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
+
+log:
+  level: "info"
+  filename: "logs/app.log"
+  maxSizeMB: 20
+  maxBackups: 10
+  maxAgeDays: 30
+  compress: false

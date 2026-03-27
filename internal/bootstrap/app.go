@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"net/http"
+	"strings"
 
 	"go-server/internal/config"
 	"go-server/internal/db"
@@ -9,12 +10,31 @@ import (
 	"go-server/internal/redis"
 	"go-server/internal/router"
 
-	"github.com/joho/godotenv"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 func Run() error {
-	godotenv.Load()
+
+	// 初始化 Viper
+	viper.SetConfigName("config") // 文件名（不含扩展名）
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".") // 在项目根目录查找
+
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_")) // app.env → APP_ENV
+	viper.AutomaticEnv()                                   // 环境变量自动覆盖 yaml 配置
+
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+
+	viper.WatchConfig()
+
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		logger.L().Info("config reloaded", zap.String("file", e.Name))
+	})
+
 	cfg := config.Load()
 
 	if err := logger.Init(cfg.Log, cfg.Env); err != nil {

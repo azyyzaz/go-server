@@ -4,6 +4,8 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/spf13/viper"
 )
 
 type Config struct {
@@ -54,36 +56,36 @@ func (c HTTPConfig) Addr() string {
 
 func Load() Config {
 	return Config{
-		AppName: getEnv("APP_NAME", "go-server"),
-		Env:     getEnv("APP_ENV", "local"),
+		AppName: viper.GetString("app.name"),
+		Env:     viper.GetString("app.env"),
 		HTTP: HTTPConfig{
-			Host:         getEnv("HTTP_HOST", "0.0.0.0"),
-			Port:         getEnv("HTTP_PORT", "8080"),
-			ReadTimeout:  mustDuration(getEnv("HTTP_READ_TIMEOUT", "5s"), 5*time.Second),
-			WriteTimeout: mustDuration(getEnv("HTTP_WRITE_TIMEOUT", "10s"), 10*time.Second),
+			Host:         viper.GetString("http.host"),
+			Port:         viper.GetString("http.port"),
+			ReadTimeout:  viper.GetDuration("http.readTimeout"),
+			WriteTimeout: viper.GetDuration("http.writeTimeout"),
 		},
 		DB: DBConfig{
-			Enabled:         mustBool(getEnv("DB_ENABLED", "false"), false),
-			DSN:             getEnv("MYSQL_DSN", "root:root@tcp(127.0.0.1:3306)/go_server?charset=utf8mb4&parseTime=True&loc=Local"),
-			AutoMigrate:     mustBool(getEnv("DB_AUTO_MIGRATE", "true"), true),
-			MaxIdleConns:    mustInt(getEnv("DB_MAX_IDLE_CONNS", "10"), 10),
-			MaxOpenConns:    mustInt(getEnv("DB_MAX_OPEN_CONNS", "100"), 100),
-			ConnMaxLifetime: mustDuration(getEnv("DB_CONN_MAX_LIFETIME", "1h"), time.Hour),
-			ConnMaxIdleTime: mustDuration(getEnv("DB_CONN_MAX_IDLE_TIME", "30m"), 30*time.Minute),
+			Enabled:         viper.GetBool("db.enabled"),
+			DSN:             viper.GetString("db.dsn"),
+			AutoMigrate:     viper.GetBool("db.autoMigrate"),
+			MaxIdleConns:    viper.GetInt("db.maxIdleConns"),
+			MaxOpenConns:    viper.GetInt("db.maxOpenConns"),
+			ConnMaxLifetime: viper.GetDuration("db.connMaxLifetime"),
+			ConnMaxIdleTime: viper.GetDuration("db.connMaxIdleTime"),
 		},
 		Redis: RedisConfig{
-			Enabled:  mustBool(getEnv("REDIS_ENABLED", "false"), false),
-			Addr:     getEnv("REDIS_ADDR", "127.0.0.1:6379"),
-			Password: getEnv("REDIS_PASSWORD", ""),
-			DB:       mustInt(getEnv("REDIS_DB", "0"), 0),
+			Enabled:  viper.GetBool("redis.enabled"),
+			Addr:     viper.GetString("redis.addr"),
+			Password: viper.GetString("redis.password"),
+			DB:       viper.GetInt("redis.db"),
 		},
 		Log: LogConfig{
-			Level:      getEnv("LOG_LEVEL", "info"),
-			Filename:   getEnv("LOG_FILENAME", "logs/app.log"),
-			MaxSizeMB:  mustInt(getEnv("LOG_MAX_SIZE_MB", "20"), 20),
-			MaxBackups: mustInt(getEnv("LOG_MAX_BACKUPS", "10"), 10),
-			MaxAgeDays: mustInt(getEnv("LOG_MAX_AGE_DAYS", "30"), 30),
-			Compress:   mustBool(getEnv("LOG_COMPRESS", "false"), false),
+			Level:      viper.GetString("log.level"),
+			Filename:   viper.GetString("log.filename"),
+			MaxSizeMB:  viper.GetInt("log.maxSizeMB"),
+			MaxBackups: viper.GetInt("log.maxBackups"),
+			MaxAgeDays: viper.GetInt("log.maxAgeDays"),
+			Compress:   viper.GetBool("log.compress"),
 		},
 	}
 }
