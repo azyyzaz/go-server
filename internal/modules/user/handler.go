@@ -1,8 +1,7 @@
 package user
 
 import (
-	"net/http"
-
+	"go-server/internal/errcode"
 	"go-server/internal/response"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +25,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) CreateUser(c *gin.Context) {
 	var req CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		response.Fail(c, http.StatusBadRequest, response.CodeInvalidArgument, "invalid request body")
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
 		return
 	}
 

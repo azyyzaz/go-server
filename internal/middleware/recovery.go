@@ -1,8 +1,7 @@
 package middleware
 
 import (
-	"net/http"
-
+	"go-server/internal/errcode"
 	"go-server/internal/logger"
 	"go-server/internal/response"
 
@@ -19,6 +18,7 @@ func Recovery() gin.HandlerFunc {
 			zap.String("path", c.Request.URL.Path),
 			zap.String("ip", c.ClientIP()),
 		)
-		response.Fail(c, http.StatusInternalServerError, response.CodeInternalError, "internal server error")
+		e := errcode.ErrInternalError.AsError()
+		response.Fail(c, e.Status, e.Code, e.Message)
 	})
 }

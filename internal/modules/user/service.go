@@ -4,12 +4,11 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/hex"
-	"net/http"
 	"sort"
 	"strings"
 	"time"
 
-	"go-server/internal/response"
+	"go-server/internal/errcode"
 )
 
 type Service interface {
@@ -41,7 +40,7 @@ func (s *service) CreateUser(ctx context.Context, req CreateUserRequest) (UserRe
 	created, err := s.repo.Create(ctx, user)
 	if err != nil {
 		if err == ErrUserDuplicated {
-			return UserResponse{}, response.NewAppError(http.StatusConflict, response.CodeConflict, "email already exists")
+			return UserResponse{}, errcode.ErrUserEmailExists.AsError()
 		}
 		return UserResponse{}, err
 	}
@@ -52,7 +51,7 @@ func (s *service) GetUser(ctx context.Context, id string) (UserResponse, error) 
 	user, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		if err == ErrUserNotFound {
-			return UserResponse{}, response.NewAppError(http.StatusNotFound, response.CodeNotFound, "user not found")
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
 		}
 		return UserResponse{}, err
 	}
@@ -80,7 +79,7 @@ func (s *service) DeleteUser(ctx context.Context, id string) error {
 	err := s.repo.Delete(ctx, id)
 	if err != nil {
 		if err == ErrUserNotFound {
-			return response.NewAppError(http.StatusNotFound, response.CodeNotFound, "user not found")
+			return errcode.ErrUserNotFound.AsError()
 		}
 		return err
 	}

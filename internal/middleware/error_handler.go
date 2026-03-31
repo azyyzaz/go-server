@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"errors"
-	"net/http"
 
+	"go-server/internal/errcode"
 	"go-server/internal/response"
 
 	"github.com/gin-gonic/gin"
@@ -27,6 +27,7 @@ func ErrorHandler() gin.HandlerFunc {
 			return
 		}
 
-		response.Fail(c, http.StatusInternalServerError, response.CodeInternalError, "internal server error")
+		fallback := errcode.ErrInternalError.AsError()
+		response.Fail(c, fallback.Status, fallback.Code, fallback.Message)
 	}
 }

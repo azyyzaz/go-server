@@ -3,11 +3,7 @@ package response
 import "github.com/gin-gonic/gin"
 
 const (
-	CodeOK              = "OK"
-	CodeInvalidArgument = "INVALID_ARGUMENT"
-	CodeNotFound        = "NOT_FOUND"
-	CodeConflict        = "CONFLICT"
-	CodeInternalError   = "INTERNAL_ERROR"
+	CodeOK = "OK"
 )
 
 type Body struct {
