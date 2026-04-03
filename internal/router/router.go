@@ -2,6 +2,7 @@ package router
 
 import (
 	"go-server/internal/config"
+	appjwt "go-server/internal/jwt"
 	"go-server/internal/middleware"
 	"go-server/internal/modules/health"
 	"go-server/internal/modules/user"
@@ -9,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func New(cfg config.Config) *gin.Engine {
+func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist) *gin.Engine {
 	if cfg.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}

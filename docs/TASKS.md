@@ -23,7 +23,7 @@
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| 2.1 | JWT 认证 | ⬜ | 双 Token（access 15min + refresh 7d），Redis 黑名单 |
+| 2.1 | JWT 认证 | ✅ | 双 Token（access 15min + refresh 7d），Redis 黑名单 |
 | 2.2 | 登录接口 | ⬜ | 账号密码登录，bcrypt 验证，返回 token |
 | 2.3 | 登出接口 | ⬜ | access_token 加入 Redis 黑名单 |
 | 2.4 | 刷新 Token 接口 | ⬜ | refresh_token 换新 access_token |

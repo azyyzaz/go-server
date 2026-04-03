@@ -30,3 +30,8 @@ log:
   maxBackups: 10
   maxAgeDays: 30
   compress: false
+
+jwt:
+  secret: "change-me-in-production"
+  accessTokenTTL: "15m"
+  refreshTokenTTL: "168h"

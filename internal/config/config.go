@@ -15,6 +15,13 @@ type Config struct {
 	DB      DBConfig
 	Redis   RedisConfig
 	Log     LogConfig
+	JWT     JWTConfig
+}
+
+type JWTConfig struct {
+	Secret          string
+	AccessTokenTTL  time.Duration
+	RefreshTokenTTL time.Duration
 }
 
 type HTTPConfig struct {
@@ -86,6 +93,11 @@ func Load() Config {
 			MaxBackups: viper.GetInt("log.maxBackups"),
 			MaxAgeDays: viper.GetInt("log.maxAgeDays"),
 			Compress:   viper.GetBool("log.compress"),
+		},
+		JWT: JWTConfig{
+			Secret:          viper.GetString("jwt.secret"),
+			AccessTokenTTL:  viper.GetDuration("jwt.accessTokenTTL"),
+			RefreshTokenTTL: viper.GetDuration("jwt.refreshTokenTTL"),
 		},
 	}
 }

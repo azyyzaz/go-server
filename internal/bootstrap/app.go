@@ -6,11 +6,13 @@ import (
 
 	"go-server/internal/config"
 	"go-server/internal/db"
+	appjwt "go-server/internal/jwt"
 	"go-server/internal/logger"
-	"go-server/internal/redis"
+	appredis "go-server/internal/redis"
 	"go-server/internal/router"
 
 	"github.com/fsnotify/fsnotify"
+	rdb "github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
@@ -51,15 +53,22 @@ func Run() error {
 		}
 	}
 
+	var redisClient *rdb.Client
 	if cfg.Redis.Enabled {
-		_, err := redis.Init(cfg.Redis)
+		var err error
+		redisClient, err = appredis.Init(cfg.Redis)
 		if err != nil {
-			// log.Fatal(err)
 			logger.L().Fatal("Redis init failed", zap.Error(err))
 		}
 	}
 
-	engine := router.New(cfg)
+	jwtManager := appjwt.NewManager(cfg.JWT.Secret, cfg.JWT.AccessTokenTTL, cfg.JWT.RefreshTokenTTL)
+	var jwtBlacklist *appjwt.Blacklist
+	if redisClient != nil {
+		jwtBlacklist = appjwt.NewBlacklist(redisClient)
+	}
+
+	engine := router.New(cfg, jwtManager, jwtBlacklist)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),
