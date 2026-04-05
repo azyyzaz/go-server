@@ -98,3 +98,4 @@
 {"level":"info","ts":"2026-04-05T21:56:11.448+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-05T21:56:23.393+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260405135623-edc4a9847ae6","status":200,"method":"GET","path":"/api/v1/system/users","query":"","ip":"::1","error":"","latency":0.0158138}
 {"level":"info","ts":"2026-04-05T21:57:59.814+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-05T21:58:14.921+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
