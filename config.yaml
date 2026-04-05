@@ -18,7 +18,7 @@ db:
   connMaxIdleTime: "30m"
 
 redis:
-  enabled: false
+  enabled: true
   addr: "127.0.0.1:6379"
   password: ""
   db: 0

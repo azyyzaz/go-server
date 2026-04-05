@@ -1,0 +1,316 @@
+basePath: /api/v1
+definitions:
+  go-server_internal_response.Body:
+    properties:
+      code:
+        type: string
+      data: {}
+      message:
+        type: string
+      request_id:
+        type: string
+    type: object
+  internal_modules_auth.LoginRequest:
+    properties:
+      captcha_code:
+        type: string
+      captcha_id:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - captcha_code
+    - captcha_id
+    - password
+    - username
+    type: object
+  internal_modules_auth.LogoutRequest:
+    properties:
+      access_token:
+        type: string
+    required:
+    - access_token
+    type: object
+  internal_modules_auth.RefreshRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  internal_modules_auth.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  internal_modules_captcha.GenerateResponse:
+    properties:
+      captcha_id:
+        type: string
+      image_base64:
+        type: string
+    type: object
+  internal_modules_user.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        maxLength: 50
+        minLength: 2
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        maxLength: 50
+        minLength: 3
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - username
+    type: object
+  internal_modules_user.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 企业级后台管理系统 API
+  title: Go Server API
+  version: "1.0"
+paths:
+  /auth/captcha:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_captcha.GenerateResponse'
+              type: object
+      summary: 获取图形验证码
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.TokenResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      summary: 用户登录
+      tags:
+      - Auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: access_token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 用户登出
+      tags:
+      - Auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: refresh_token
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_auth.RefreshRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_auth.TokenResponse'
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      summary: 刷新 Token
+      tags:
+      - Auth
+  /users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_user.UserResponse'
+                  type: array
+              type: object
+      security:
+      - BearerAuth: []
+      summary: 用户列表
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户信息
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_user.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建用户
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除用户
+      tags:
+      - Users
+    get:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_user.UserResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取用户详情
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: '格式: Bearer <token>'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

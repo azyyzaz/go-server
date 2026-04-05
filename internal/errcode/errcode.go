@@ -37,8 +37,10 @@ const (
 	ErrInternalError ErrCode = 10005
 
 	// 用户模块  2xxxx
-	ErrUserNotFound    ErrCode = 20001
-	ErrUserEmailExists ErrCode = 20002
+	ErrUserNotFound       ErrCode = 20001
+	ErrUserEmailExists    ErrCode = 20002
+	ErrInvalidCredentials ErrCode = 20003
+	ErrCaptchaInvalid     ErrCode = 20004
 )
 
 // ── 元数据映射表 ─────────────────────────────────────────
@@ -50,6 +52,8 @@ var table = map[ErrCode]meta{
 	ErrNotFound:      {http.StatusNotFound, "NOT_FOUND", "not found", "资源不存在"},
 	ErrInternalError: {http.StatusInternalServerError, "INTERNAL_ERROR", "internal error", "服务器内部错误"},
 
-	ErrUserNotFound:    {http.StatusNotFound, "USER_NOT_FOUND", "user not found", "用户不存在"},
-	ErrUserEmailExists: {http.StatusConflict, "USER_EMAIL_EXISTS", "email already exists", "邮箱已被注册"},
+	ErrUserNotFound:       {http.StatusNotFound, "USER_NOT_FOUND", "user not found", "用户不存在"},
+	ErrUserEmailExists:    {http.StatusConflict, "USER_EMAIL_EXISTS", "email already exists", "邮箱已被注册"},
+	ErrInvalidCredentials: {http.StatusUnauthorized, "INVALID_CREDENTIALS", "invalid username or password", "用户名或密码错误"},
+	ErrCaptchaInvalid:     {http.StatusBadRequest, "CAPTCHA_INVALID", "captcha invalid or expired", "验证码错误或已过期"},
 }

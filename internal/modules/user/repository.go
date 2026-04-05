@@ -4,27 +4,34 @@ import (
 	"context"
 	"errors"
 	"sync"
+	"sync/atomic"
 )
 
 var (
 	ErrUserNotFound   = errors.New("user not found")
-	ErrUserDuplicated = errors.New("user email duplicated")
+	ErrUserDuplicated = errors.New("user duplicated")
 )
 
 type Repository interface {
 	Create(ctx context.Context, user User) (User, error)
-	GetByID(ctx context.Context, id string) (User, error)
+	GetByID(ctx context.Context, id uint) (User, error)
+	GetByUsername(ctx context.Context, username string) (User, error)
 	List(ctx context.Context) ([]User, error)
-	Delete(ctx context.Context, id string) error
+	Delete(ctx context.Context, id uint) error
 }
 
 type inMemoryRepository struct {
-	mu   sync.RWMutex
-	data map[string]User
+	mu      sync.RWMutex
+	data    map[uint]User
+	counter uint64
 }
 
 func NewInMemoryRepository() Repository {
-	return &inMemoryRepository{data: make(map[string]User)}
+	return &inMemoryRepository{data: make(map[uint]User)}
+}
+
+func (r *inMemoryRepository) nextID() uint {
+	return uint(atomic.AddUint64(&r.counter, 1))
 }
 
 func (r *inMemoryRepository) Create(_ context.Context, user User) (User, error) {
@@ -32,15 +39,16 @@ func (r *inMemoryRepository) Create(_ context.Context, user User) (User, error) 
 	defer r.mu.Unlock()
 
 	for _, existing := range r.data {
-		if existing.Email == user.Email {
+		if existing.Username == user.Username || existing.Email == user.Email {
 			return User{}, ErrUserDuplicated
 		}
 	}
+	user.ID = r.nextID()
 	r.data[user.ID] = user
 	return user, nil
 }
 
-func (r *inMemoryRepository) GetByID(_ context.Context, id string) (User, error) {
+func (r *inMemoryRepository) GetByID(_ context.Context, id uint) (User, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -49,6 +57,18 @@ func (r *inMemoryRepository) GetByID(_ context.Context, id string) (User, error)
 		return User{}, ErrUserNotFound
 	}
 	return user, nil
+}
+
+func (r *inMemoryRepository) GetByUsername(_ context.Context, username string) (User, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	for _, u := range r.data {
+		if u.Username == username {
+			return u, nil
+		}
+	}
+	return User{}, ErrUserNotFound
 }
 
 func (r *inMemoryRepository) List(_ context.Context) ([]User, error) {
@@ -62,7 +82,7 @@ func (r *inMemoryRepository) List(_ context.Context) ([]User, error) {
 	return users, nil
 }
 
-func (r *inMemoryRepository) Delete(_ context.Context, id string) error {
+func (r *inMemoryRepository) Delete(_ context.Context, id uint) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 

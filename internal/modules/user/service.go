@@ -2,20 +2,21 @@ package user
 
 import (
 	"context"
-	"crypto/rand"
-	"encoding/hex"
 	"sort"
 	"strings"
 	"time"
 
 	"go-server/internal/errcode"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Service interface {
 	CreateUser(ctx context.Context, req CreateUserRequest) (UserResponse, error)
-	GetUser(ctx context.Context, id string) (UserResponse, error)
+	GetUser(ctx context.Context, id uint) (UserResponse, error)
+	GetByUsername(ctx context.Context, username string) (User, error)
 	ListUsers(ctx context.Context) ([]UserResponse, error)
-	DeleteUser(ctx context.Context, id string) error
+	DeleteUser(ctx context.Context, id uint) error
 }
 
 type service struct {
@@ -27,13 +28,16 @@ func NewService(repo Repository) Service {
 }
 
 func (s *service) CreateUser(ctx context.Context, req CreateUserRequest) (UserResponse, error) {
-	name := strings.TrimSpace(req.Name)
-	email := strings.ToLower(strings.TrimSpace(req.Email))
+	hashed, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return UserResponse{}, errcode.ErrInternalError.AsError()
+	}
 
 	user := User{
-		ID:        newID(),
-		Name:      name,
-		Email:     email,
+		Username:  strings.TrimSpace(req.Username),
+		Password:  string(hashed),
+		Name:      strings.TrimSpace(req.Name),
+		Email:     strings.ToLower(strings.TrimSpace(req.Email)),
 		CreatedAt: time.Now().UTC(),
 	}
 
@@ -47,7 +51,7 @@ func (s *service) CreateUser(ctx context.Context, req CreateUserRequest) (UserRe
 	return toResponse(created), nil
 }
 
-func (s *service) GetUser(ctx context.Context, id string) (UserResponse, error) {
+func (s *service) GetUser(ctx context.Context, id uint) (UserResponse, error) {
 	user, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		if err == ErrUserNotFound {
@@ -56,6 +60,10 @@ func (s *service) GetUser(ctx context.Context, id string) (UserResponse, error) 
 		return UserResponse{}, err
 	}
 	return toResponse(user), nil
+}
+
+func (s *service) GetByUsername(ctx context.Context, username string) (User, error) {
+	return s.repo.GetByUsername(ctx, username)
 }
 
 func (s *service) ListUsers(ctx context.Context) ([]UserResponse, error) {
@@ -75,7 +83,7 @@ func (s *service) ListUsers(ctx context.Context) ([]UserResponse, error) {
 	return resp, nil
 }
 
-func (s *service) DeleteUser(ctx context.Context, id string) error {
+func (s *service) DeleteUser(ctx context.Context, id uint) error {
 	err := s.repo.Delete(ctx, id)
 	if err != nil {
 		if err == ErrUserNotFound {
@@ -84,12 +92,4 @@ func (s *service) DeleteUser(ctx context.Context, id string) error {
 		return err
 	}
 	return nil
-}
-
-func newID() string {
-	buf := make([]byte, 8)
-	if _, err := rand.Read(buf); err != nil {
-		return time.Now().UTC().Format("20060102150405.000000")
-	}
-	return hex.EncodeToString(buf)
 }

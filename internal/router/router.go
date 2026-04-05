@@ -1,16 +1,23 @@
 package router
 
 import (
+	"context"
+
 	"go-server/internal/config"
 	appjwt "go-server/internal/jwt"
 	"go-server/internal/middleware"
+	"go-server/internal/modules/auth"
+	"go-server/internal/modules/captcha"
 	"go-server/internal/modules/health"
 	"go-server/internal/modules/user"
 
+	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist) *gin.Engine {
+func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
 	if cfg.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -21,15 +28,41 @@ func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Bla
 	r.Use(middleware.Recovery())
 	r.Use(middleware.ErrorHandler())
 
+	// Swagger UI（不走鉴权）
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	api := r.Group("/api/v1")
+	api.Use(middleware.JWTAuth(jwtManager, jwtBlacklist,
+		"/api/v1/auth",
+		"/api/v1/health",
+	))
+	api.Use(middleware.CasbinAuth(casbinEnforcer,
+		"/api/v1/auth",
+		"/api/v1/health",
+	))
 
 	healthHandler := health.NewHandler()
 	healthHandler.Register(api.Group("/health"))
 
 	userRepo := user.NewInMemoryRepository()
 	userService := user.NewService(userRepo)
+	// 预置默认 admin 用户，避免内存存储启动时无用户可登录
+	_, _ = userService.CreateUser(context.Background(), user.CreateUserRequest{
+		Username: "admin",
+		Password: "admin123",
+		Name:     "Admin",
+		Email:    "admin@example.com",
+	})
 	userHandler := user.NewHandler(userService)
 	userHandler.Register(api.Group("/users"))
+
+	captchaSvc := captcha.NewService()
+	captchaHandler := captcha.NewHandler(captchaSvc)
+	captchaHandler.Register(api.Group("/auth"))
+
+	authService := auth.NewService(userService, jwtManager, jwtBlacklist, captchaSvc)
+	authHandler := auth.NewHandler(authService)
+	authHandler.Register(api.Group("/auth"))
 
 	return r
 }

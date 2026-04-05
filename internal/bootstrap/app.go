@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	appcasbin "go-server/internal/casbin"
 	"go-server/internal/config"
 	"go-server/internal/db"
 	appjwt "go-server/internal/jwt"
@@ -68,7 +69,12 @@ func Run() error {
 		jwtBlacklist = appjwt.NewBlacklist(redisClient)
 	}
 
-	engine := router.New(cfg, jwtManager, jwtBlacklist)
+	casbinEnforcer, err := appcasbin.Init("configs/rbac_model.conf", "configs/rbac_policy.csv")
+	if err != nil {
+		logger.L().Fatal("casbin init failed", zap.Error(err))
+	}
+
+	engine := router.New(cfg, jwtManager, jwtBlacklist, casbinEnforcer)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),

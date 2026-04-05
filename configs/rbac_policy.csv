@@ -1,0 +1,8 @@
+# p = role, path, method
+p, admin, /api/v1/users, GET
+p, admin, /api/v1/users, POST
+p, admin, /api/v1/users/*, GET
+p, admin, /api/v1/users/*, DELETE
+
+# g = user, role
+g, admin, admin
