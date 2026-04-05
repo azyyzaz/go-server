@@ -3,6 +3,7 @@ package user
 import (
 	"context"
 	"errors"
+	"strings"
 	"sync"
 	"sync/atomic"
 )
@@ -17,6 +18,9 @@ type Repository interface {
 	GetByID(ctx context.Context, id uint) (User, error)
 	GetByUsername(ctx context.Context, username string) (User, error)
 	List(ctx context.Context) ([]User, error)
+	ListPage(ctx context.Context, q ListUsersQuery) ([]User, int64, error)
+	SetUserRoles(ctx context.Context, userID uint, roleIDs []uint) error
+	Update(ctx context.Context, user User) (User, error)
 	Delete(ctx context.Context, id uint) error
 }
 
@@ -80,6 +84,50 @@ func (r *inMemoryRepository) List(_ context.Context) ([]User, error) {
 		users = append(users, u)
 	}
 	return users, nil
+}
+
+func (r *inMemoryRepository) ListPage(_ context.Context, q ListUsersQuery) ([]User, int64, error) {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	var filtered []User
+	for _, u := range r.data {
+		if q.Username != "" && !strings.Contains(u.Username, q.Username) {
+			continue
+		}
+		if q.Name != "" && !strings.Contains(u.Name, q.Name) {
+			continue
+		}
+		if q.Status != nil && u.Status != *q.Status {
+			continue
+		}
+		filtered = append(filtered, u)
+	}
+	total := int64(len(filtered))
+	start := (q.Page - 1) * q.PageSize
+	if start >= len(filtered) {
+		return []User{}, total, nil
+	}
+	end := start + q.PageSize
+	if end > len(filtered) {
+		end = len(filtered)
+	}
+	return filtered[start:end], total, nil
+}
+
+func (r *inMemoryRepository) SetUserRoles(_ context.Context, _ uint, _ []uint) error {
+	return nil // 内存实现不支持角色持久化
+}
+
+func (r *inMemoryRepository) Update(_ context.Context, u User) (User, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if _, ok := r.data[u.ID]; !ok {
+		return User{}, ErrUserNotFound
+	}
+	r.data[u.ID] = u
+	return u, nil
 }
 
 func (r *inMemoryRepository) Delete(_ context.Context, id uint) error {

@@ -18,30 +18,56 @@ func NewHandler(svc Service) *Handler {
 }
 
 func (h *Handler) Register(rg *gin.RouterGroup) {
-	rg.POST("", h.CreateUser)
 	rg.GET("", h.ListUsers)
+	rg.POST("", h.CreateUser)
 	rg.GET("/:id", h.GetUser)
 	rg.DELETE("/:id", h.DeleteUser)
 }
 
+// ListUsers godoc
+//
+//	@Summary		用户列表（分页+搜索+筛选）
+//	@Tags			Users
+//	@Produce		json
+//	@Param			page		query		int		false	"页码（默认1）"
+//	@Param			page_size	query		int		false	"每页条数（默认10，最大100）"
+//	@Param			username	query		string	false	"用户名（模糊）"
+//	@Param			name		query		string	false	"姓名（模糊）"
+//	@Param			status		query		int		false	"状态 1=启用 0=禁用"
+//	@Success		200			{object}	response.Body{data=UserPageResult}
+//	@Security		BearerAuth
+//	@Router			/system/users [get]
+func (h *Handler) ListUsers(c *gin.Context) {
+	var q ListUsersQuery
+	if err := c.ShouldBindQuery(&q); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	result, err := h.svc.ListUsersPage(c.Request.Context(), q)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	response.Success(c, result)
+}
+
 // CreateUser godoc
 //
-//	@Summary		创建用户
+//	@Summary		新增用户（含角色分配）
 //	@Tags			Users
 //	@Accept			json
 //	@Produce		json
-//	@Param			body	body		CreateUserRequest	true	"用户信息"
+//	@Param			body	body		CreateUserRequest	true	"用户信息，role_ids 为角色ID列表（可选）"
 //	@Success		201		{object}	response.Body{data=UserResponse}
 //	@Failure		400		{object}	response.Body
 //	@Security		BearerAuth
-//	@Router			/users [post]
+//	@Router			/system/users [post]
 func (h *Handler) CreateUser(c *gin.Context) {
 	var req CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		_ = c.Error(errcode.ErrInvalidParam.AsError())
 		return
 	}
-
 	created, err := h.svc.CreateUser(c.Request.Context(), req)
 	if err != nil {
 		_ = c.Error(err)
@@ -59,36 +85,19 @@ func (h *Handler) CreateUser(c *gin.Context) {
 //	@Success		200	{object}	response.Body{data=UserResponse}
 //	@Failure		404	{object}	response.Body
 //	@Security		BearerAuth
-//	@Router			/users/{id} [get]
+//	@Router			/system/users/{id} [get]
 func (h *Handler) GetUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
 		_ = c.Error(errcode.ErrInvalidParam.AsError())
 		return
 	}
-	user, err := h.svc.GetUser(c.Request.Context(), uint(id))
+	u, err := h.svc.GetUser(c.Request.Context(), uint(id))
 	if err != nil {
 		_ = c.Error(err)
 		return
 	}
-	response.Success(c, user)
-}
-
-// ListUsers godoc
-//
-//	@Summary		用户列表
-//	@Tags			Users
-//	@Produce		json
-//	@Success		200	{object}	response.Body{data=[]UserResponse}
-//	@Security		BearerAuth
-//	@Router			/users [get]
-func (h *Handler) ListUsers(c *gin.Context) {
-	users, err := h.svc.ListUsers(c.Request.Context())
-	if err != nil {
-		_ = c.Error(err)
-		return
-	}
-	response.Success(c, gin.H{"items": users, "total": len(users)})
+	response.Success(c, u)
 }
 
 // DeleteUser godoc
@@ -100,7 +109,7 @@ func (h *Handler) ListUsers(c *gin.Context) {
 //	@Success		200	{object}	response.Body
 //	@Failure		404	{object}	response.Body
 //	@Security		BearerAuth
-//	@Router			/users/{id} [delete]
+//	@Router			/system/users/{id} [delete]
 func (h *Handler) DeleteUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {

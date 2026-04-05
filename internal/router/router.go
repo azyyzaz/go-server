@@ -15,9 +15,10 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"gorm.io/gorm"
 )
 
-func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
+func New(cfg config.Config, db *gorm.DB, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
 	if cfg.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -44,17 +45,27 @@ func New(cfg config.Config, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Bla
 	healthHandler := health.NewHandler()
 	healthHandler.Register(api.Group("/health"))
 
-	userRepo := user.NewInMemoryRepository()
+	// 选择 repository：有 DB 用 GORM，否则降级内存
+	var userRepo user.Repository
+	if db != nil {
+		userRepo = user.NewGORMRepository(db)
+	} else {
+		userRepo = user.NewInMemoryRepository()
+	}
 	userService := user.NewService(userRepo)
-	// 预置默认 admin 用户，避免内存存储启动时无用户可登录
-	_, _ = userService.CreateUser(context.Background(), user.CreateUserRequest{
-		Username: "admin",
-		Password: "admin123",
-		Name:     "Admin",
-		Email:    "admin@example.com",
-	})
+
+	// 无 DB 时预置 admin，方便本地调试
+	if db == nil {
+		_, _ = userService.CreateUser(context.Background(), user.CreateUserRequest{
+			Username: "admin",
+			Password: "admin123",
+			Name:     "Admin",
+			Email:    "admin@example.com",
+		})
+	}
+
 	userHandler := user.NewHandler(userService)
-	userHandler.Register(api.Group("/users"))
+	userHandler.Register(api.Group("/system/users"))
 
 	captchaSvc := captcha.NewService()
 	captchaHandler := captcha.NewHandler(captchaSvc)

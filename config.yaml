@@ -9,7 +9,7 @@ http:
   writeTimeout: "10s"
 
 db:
-  enabled: false
+  enabled: true
   dsn: "root:root@tcp(127.0.0.1:3306)/go_server?charset=utf8mb4&parseTime=True&loc=Local"
   autoMigrate: true
   maxIdleConns: 10
@@ -33,5 +33,5 @@ log:
 
 jwt:
   secret: "change-me-in-production"
-  accessTokenTTL: "15m"
+  accessTokenTTL: "24h"
   refreshTokenTTL: "168h"

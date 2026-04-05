@@ -1,8 +1,8 @@
 # p = role, path, method
-p, admin, /api/v1/users, GET
-p, admin, /api/v1/users, POST
-p, admin, /api/v1/users/*, GET
-p, admin, /api/v1/users/*, DELETE
+p, admin, /api/v1/system/users, GET
+p, admin, /api/v1/system/users, POST
+p, admin, /api/v1/system/users/*, GET
+p, admin, /api/v1/system/users/*, DELETE
 
 # g = user, role
 g, admin, admin

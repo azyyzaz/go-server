@@ -65,6 +65,12 @@ definitions:
       password:
         minLength: 6
         type: string
+      phone:
+        type: string
+      role_ids:
+        items:
+          type: integer
+        type: array
       username:
         maxLength: 50
         minLength: 3
@@ -74,6 +80,28 @@ definitions:
     - name
     - password
     - username
+    type: object
+  internal_modules_user.RoleInfo:
+    properties:
+      code:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  internal_modules_user.UserPageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_user.UserResponse'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
     type: object
   internal_modules_user.UserResponse:
     properties:
@@ -85,6 +113,14 @@ definitions:
         type: integer
       name:
         type: string
+      phone:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/internal_modules_user.RoleInfo'
+        type: array
+      status:
+        type: integer
       username:
         type: string
     type: object
@@ -203,8 +239,29 @@ paths:
       summary: 刷新 Token
       tags:
       - Auth
-  /users:
+  /system/users:
     get:
+      parameters:
+      - description: 页码（默认1）
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数（默认10，最大100）
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户名（模糊）
+        in: query
+        name: username
+        type: string
+      - description: 姓名（模糊）
+        in: query
+        name: name
+        type: string
+      - description: 状态 1=启用 0=禁用
+        in: query
+        name: status
+        type: integer
       produces:
       - application/json
       responses:
@@ -215,20 +272,18 @@ paths:
             - $ref: '#/definitions/go-server_internal_response.Body'
             - properties:
                 data:
-                  items:
-                    $ref: '#/definitions/internal_modules_user.UserResponse'
-                  type: array
+                  $ref: '#/definitions/internal_modules_user.UserPageResult'
               type: object
       security:
       - BearerAuth: []
-      summary: 用户列表
+      summary: 用户列表（分页+搜索+筛选）
       tags:
       - Users
     post:
       consumes:
       - application/json
       parameters:
-      - description: 用户信息
+      - description: 用户信息，role_ids 为角色ID列表（可选）
         in: body
         name: body
         required: true
@@ -252,10 +307,10 @@ paths:
             $ref: '#/definitions/go-server_internal_response.Body'
       security:
       - BearerAuth: []
-      summary: 创建用户
+      summary: 新增用户（含角色分配）
       tags:
       - Users
-  /users/{id}:
+  /system/users/{id}:
     delete:
       parameters:
       - description: 用户ID

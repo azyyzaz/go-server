@@ -198,7 +198,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users": {
+        "/system/users": {
             "get": {
                 "security": [
                     {
@@ -211,7 +211,39 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "用户列表",
+                "summary": "用户列表（分页+搜索+筛选）",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码（默认1）",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数（默认10，最大100）",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名（模糊）",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "姓名（模糊）",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态 1=启用 0=禁用",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -224,10 +256,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/definitions/internal_modules_user.UserResponse"
-                                            }
+                                            "$ref": "#/definitions/internal_modules_user.UserPageResult"
                                         }
                                     }
                                 }
@@ -251,10 +280,10 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "创建用户",
+                "summary": "新增用户（含角色分配）",
                 "parameters": [
                     {
-                        "description": "用户信息",
+                        "description": "用户信息，role_ids 为角色ID列表（可选）",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -291,7 +320,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/{id}": {
+        "/system/users/{id}": {
             "get": {
                 "security": [
                     {
@@ -484,10 +513,53 @@ const docTemplate = `{
                     "type": "string",
                     "minLength": 6
                 },
+                "phone": {
+                    "type": "string"
+                },
+                "role_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
                 "username": {
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 3
+                }
+            }
+        },
+        "internal_modules_user.RoleInfo": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "internal_modules_user.UserPageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_user.UserResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
                 }
             }
         },
@@ -505,6 +577,18 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_user.RoleInfo"
+                    }
+                },
+                "status": {
+                    "type": "integer"
                 },
                 "username": {
                     "type": "string"

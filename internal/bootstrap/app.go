@@ -16,6 +16,7 @@ import (
 	rdb "github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 func Run() error {
@@ -46,10 +47,11 @@ func Run() error {
 
 	defer logger.Sync()
 
+	var gormDB *gorm.DB
 	if cfg.DB.Enabled {
-		_, err := db.Init(cfg.DB)
+		var err error
+		gormDB, err = db.Init(cfg.DB)
 		if err != nil {
-			// log.Fatal(err)
 			logger.L().Fatal("database init failed", zap.Error(err))
 		}
 	}
@@ -74,7 +76,7 @@ func Run() error {
 		logger.L().Fatal("casbin init failed", zap.Error(err))
 	}
 
-	engine := router.New(cfg, jwtManager, jwtBlacklist, casbinEnforcer)
+	engine := router.New(cfg, gormDB, jwtManager, jwtBlacklist, casbinEnforcer)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),
@@ -83,7 +85,6 @@ func Run() error {
 		WriteTimeout: cfg.HTTP.WriteTimeout,
 	}
 
-	// log.Printf("[%s] HTTP server running on %s (%s)", cfg.AppName, cfg.HTTP.Addr(), cfg.Env)
 	logger.L().Info("http server running",
 		zap.String("app", cfg.AppName),
 		zap.String("Addr", cfg.HTTP.Addr()),
