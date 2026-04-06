@@ -11,6 +11,13 @@ type CreateUserRequest struct {
 	RoleIDs  []uint `json:"role_ids"`
 }
 
+type UpdateUserRequest struct {
+	Name    string `json:"name"  binding:"required,min=2,max=50"`
+	Email   string `json:"email" binding:"required,email"`
+	Phone   string `json:"phone"`
+	RoleIDs []uint `json:"role_ids"`
+}
+
 type ListUsersQuery struct {
 	Page     int    `form:"page"      binding:"omitempty,min=1"`
 	PageSize int    `form:"page_size" binding:"omitempty,min=1,max=100"`

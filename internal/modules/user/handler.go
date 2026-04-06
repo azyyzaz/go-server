@@ -21,6 +21,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 	rg.GET("", h.ListUsers)
 	rg.POST("", h.CreateUser)
 	rg.GET("/:id", h.GetUser)
+	rg.PUT("/:id", h.UpdateUser)
 	rg.DELETE("/:id", h.DeleteUser)
 }
 
@@ -98,6 +99,38 @@ func (h *Handler) GetUser(c *gin.Context) {
 		return
 	}
 	response.Success(c, u)
+}
+
+// UpdateUser godoc
+//
+//	@Summary		编辑用户（含角色更新）
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"用户ID"
+//	@Param			body	body		UpdateUserRequest	true	"用户信息"
+//	@Success		200		{object}	response.Body{data=UserResponse}
+//	@Failure		400		{object}	response.Body
+//	@Failure		404		{object}	response.Body
+//	@Security		BearerAuth
+//	@Router			/system/users/{id} [put]
+func (h *Handler) UpdateUser(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	var req UpdateUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	updated, err := h.svc.UpdateUser(c.Request.Context(), uint(id), req)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	response.Success(c, updated)
 }
 
 // DeleteUser godoc

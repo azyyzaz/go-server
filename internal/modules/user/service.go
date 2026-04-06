@@ -17,6 +17,7 @@ type Service interface {
 	GetByUsername(ctx context.Context, username string) (User, error)
 	ListUsers(ctx context.Context) ([]UserResponse, error)
 	ListUsersPage(ctx context.Context, q ListUsersQuery) (UserPageResult, error)
+	UpdateUser(ctx context.Context, id uint, req UpdateUserRequest) (UserResponse, error)
 	DeleteUser(ctx context.Context, id uint) error
 }
 
@@ -125,6 +126,43 @@ func (s *service) ListUsersPage(ctx context.Context, q ListUsersQuery) (UserPage
 		Page:     q.Page,
 		PageSize: q.PageSize,
 	}, nil
+}
+
+func (s *service) UpdateUser(ctx context.Context, id uint, req UpdateUserRequest) (UserResponse, error) {
+	u, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		if err == ErrUserNotFound {
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
+		}
+		return UserResponse{}, err
+	}
+
+	u.Name = strings.TrimSpace(req.Name)
+	u.Email = strings.ToLower(strings.TrimSpace(req.Email))
+	u.Phone = strings.TrimSpace(req.Phone)
+
+	if _, err := s.repo.Update(ctx, u); err != nil {
+		return UserResponse{}, err
+	}
+
+	if err := s.repo.SetUserRoles(ctx, id, req.RoleIDs); err != nil {
+		return UserResponse{}, err
+	}
+
+	resp, err := s.GetUser(ctx, id)
+	if err != nil {
+		return UserResponse{}, err
+	}
+
+	// 同步 Casbin：先删旧绑定，再写新角色
+	if enforcer := appcasbin.Get(); enforcer != nil {
+		_, _ = enforcer.DeleteRolesForUser(resp.Username)
+		for _, r := range resp.Roles {
+			_, _ = enforcer.AddRoleForUser(resp.Username, r.Code)
+		}
+	}
+
+	return resp, nil
 }
 
 func (s *service) DeleteUser(ctx context.Context, id uint) error {
