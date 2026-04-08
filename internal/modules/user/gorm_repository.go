@@ -113,3 +113,7 @@ func (r *gormRepository) Delete(ctx context.Context, id uint) error {
 	}
 	return nil
 }
+
+func (r *gormRepository) DeleteBatch(ctx context.Context, ids []uint) error {
+	return r.db.WithContext(ctx).Delete(&User{}, ids).Error
+}

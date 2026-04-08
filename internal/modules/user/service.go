@@ -19,6 +19,7 @@ type Service interface {
 	ListUsersPage(ctx context.Context, q ListUsersQuery) (UserPageResult, error)
 	UpdateUser(ctx context.Context, id uint, req UpdateUserRequest) (UserResponse, error)
 	DeleteUser(ctx context.Context, id uint) error
+	DeleteUserBatch(ctx context.Context, ids []uint) error
 }
 
 type service struct {
@@ -171,4 +172,8 @@ func (s *service) DeleteUser(ctx context.Context, id uint) error {
 		return errcode.ErrUserNotFound.AsError()
 	}
 	return err
+}
+
+func (s *service) DeleteUserBatch(ctx context.Context, ids []uint) error {
+	return s.repo.DeleteBatch(ctx, ids)
 }

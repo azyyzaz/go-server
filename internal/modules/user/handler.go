@@ -20,6 +20,7 @@ func NewHandler(svc Service) *Handler {
 func (h *Handler) Register(rg *gin.RouterGroup) {
 	rg.GET("", h.ListUsers)
 	rg.POST("", h.CreateUser)
+	rg.POST("/batch-delete", h.BatchDeleteUsers)
 	rg.GET("/:id", h.GetUser)
 	rg.PUT("/:id", h.UpdateUser)
 	rg.DELETE("/:id", h.DeleteUser)
@@ -131,6 +132,30 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 		return
 	}
 	response.Success(c, updated)
+}
+
+// BatchDeleteUsers godoc
+//
+//	@Summary		批量删除用户
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			body	body		BatchDeleteRequest	true	"用户ID列表"
+//	@Success		200		{object}	response.Body
+//	@Failure		400		{object}	response.Body
+//	@Security		BearerAuth
+//	@Router			/system/users/batch-delete [post]
+func (h *Handler) BatchDeleteUsers(c *gin.Context) {
+	var req BatchDeleteRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	if err := h.svc.DeleteUserBatch(c.Request.Context(), req.IDs); err != nil {
+		_ = c.Error(err)
+		return
+	}
+	response.Success(c, gin.H{"deleted": true})
 }
 
 // DeleteUser godoc

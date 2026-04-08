@@ -100,3 +100,4 @@
 {"level":"info","ts":"2026-04-05T21:57:59.814+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-05T21:58:14.921+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-05T23:09:20.363+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-08T14:28:54.746+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}

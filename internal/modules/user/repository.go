@@ -22,6 +22,7 @@ type Repository interface {
 	SetUserRoles(ctx context.Context, userID uint, roleIDs []uint) error
 	Update(ctx context.Context, user User) (User, error)
 	Delete(ctx context.Context, id uint) error
+	DeleteBatch(ctx context.Context, ids []uint) error
 }
 
 type inMemoryRepository struct {
@@ -138,5 +139,15 @@ func (r *inMemoryRepository) Delete(_ context.Context, id uint) error {
 		return ErrUserNotFound
 	}
 	delete(r.data, id)
+	return nil
+}
+
+func (r *inMemoryRepository) DeleteBatch(_ context.Context, ids []uint) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	for _, id := range ids {
+		delete(r.data, id)
+	}
 	return nil
 }

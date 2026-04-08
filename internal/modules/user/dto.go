@@ -50,6 +50,10 @@ type UserPageResult struct {
 	PageSize int            `json:"page_size"`
 }
 
+type BatchDeleteRequest struct {
+	IDs []uint `json:"ids" binding:"required,min=1"`
+}
+
 func toResponse(u User) UserResponse {
 	roles := make([]RoleInfo, 0, len(u.Roles))
 	for _, r := range u.Roles {
