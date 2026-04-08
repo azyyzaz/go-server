@@ -54,6 +54,14 @@ type BatchDeleteRequest struct {
 	IDs []uint `json:"ids" binding:"required,min=1"`
 }
 
+type UpdateStatusRequest struct {
+	Status int8 `json:"status"`
+}
+
+type ResetPasswordRequest struct {
+	Password string `json:"password" binding:"required,min=6"`
+}
+
 func toResponse(u User) UserResponse {
 	roles := make([]RoleInfo, 0, len(u.Roles))
 	for _, r := range u.Roles {

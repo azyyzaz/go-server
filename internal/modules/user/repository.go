@@ -23,6 +23,8 @@ type Repository interface {
 	Update(ctx context.Context, user User) (User, error)
 	Delete(ctx context.Context, id uint) error
 	DeleteBatch(ctx context.Context, ids []uint) error
+	UpdateStatus(ctx context.Context, id uint, status int8) error
+	UpdatePassword(ctx context.Context, id uint, hashedPwd string) error
 }
 
 type inMemoryRepository struct {
@@ -149,5 +151,31 @@ func (r *inMemoryRepository) DeleteBatch(_ context.Context, ids []uint) error {
 	for _, id := range ids {
 		delete(r.data, id)
 	}
+	return nil
+}
+
+func (r *inMemoryRepository) UpdateStatus(_ context.Context, id uint, status int8) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	u, ok := r.data[id]
+	if !ok {
+		return ErrUserNotFound
+	}
+	u.Status = status
+	r.data[id] = u
+	return nil
+}
+
+func (r *inMemoryRepository) UpdatePassword(_ context.Context, id uint, hashedPwd string) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	u, ok := r.data[id]
+	if !ok {
+		return ErrUserNotFound
+	}
+	u.Password = hashedPwd
+	r.data[id] = u
 	return nil
 }

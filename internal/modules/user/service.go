@@ -1,7 +1,10 @@
 package user
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
+	"fmt"
 	"strings"
 	"time"
 
@@ -20,6 +23,9 @@ type Service interface {
 	UpdateUser(ctx context.Context, id uint, req UpdateUserRequest) (UserResponse, error)
 	DeleteUser(ctx context.Context, id uint) error
 	DeleteUserBatch(ctx context.Context, ids []uint) error
+	UpdateUserStatus(ctx context.Context, id uint, status int8) (UserResponse, error)
+	ResetPassword(ctx context.Context, id uint, newPassword string) error
+	ExportUsers(ctx context.Context, q ListUsersQuery) ([]byte, error)
 }
 
 type service struct {
@@ -176,4 +182,62 @@ func (s *service) DeleteUser(ctx context.Context, id uint) error {
 
 func (s *service) DeleteUserBatch(ctx context.Context, ids []uint) error {
 	return s.repo.DeleteBatch(ctx, ids)
+}
+
+func (s *service) UpdateUserStatus(ctx context.Context, id uint, status int8) (UserResponse, error) {
+	if _, err := s.repo.GetByID(ctx, id); err != nil {
+		if err == ErrUserNotFound {
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
+		}
+		return UserResponse{}, err
+	}
+	if err := s.repo.UpdateStatus(ctx, id, status); err != nil {
+		return UserResponse{}, err
+	}
+	return s.GetUser(ctx, id)
+}
+
+func (s *service) ResetPassword(ctx context.Context, id uint, newPassword string) error {
+	if _, err := s.repo.GetByID(ctx, id); err != nil {
+		if err == ErrUserNotFound {
+			return errcode.ErrUserNotFound.AsError()
+		}
+		return err
+	}
+	hashed, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return errcode.ErrInternalError.AsError()
+	}
+	return s.repo.UpdatePassword(ctx, id, string(hashed))
+}
+
+func (s *service) ExportUsers(ctx context.Context, q ListUsersQuery) ([]byte, error) {
+	q.Page = 1
+	q.PageSize = 10000
+	users, _, err := s.repo.ListPage(ctx, q)
+	if err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	buf.Write([]byte{0xEF, 0xBB, 0xBF}) // UTF-8 BOM，防止 Excel 中文乱码
+	w := csv.NewWriter(&buf)
+	_ = w.Write([]string{"ID", "用户名", "姓名", "邮箱", "手机", "状态", "创建时间"})
+	for _, u := range users {
+		status := "启用"
+		if u.Status == 0 {
+			status = "禁用"
+		}
+		_ = w.Write([]string{
+			strings.TrimSpace(fmt.Sprintf("%d", u.ID)),
+			u.Username,
+			u.Name,
+			u.Email,
+			u.Phone,
+			status,
+			u.CreatedAt.Format("2006-01-02 15:04:05"),
+		})
+	}
+	w.Flush()
+	return buf.Bytes(), nil
 }

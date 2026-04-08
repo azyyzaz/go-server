@@ -117,3 +117,25 @@ func (r *gormRepository) Delete(ctx context.Context, id uint) error {
 func (r *gormRepository) DeleteBatch(ctx context.Context, ids []uint) error {
 	return r.db.WithContext(ctx).Delete(&User{}, ids).Error
 }
+
+func (r *gormRepository) UpdateStatus(ctx context.Context, id uint, status int8) error {
+	result := r.db.WithContext(ctx).Model(&User{}).Where("id = ?", id).Update("status", status)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return ErrUserNotFound
+	}
+	return nil
+}
+
+func (r *gormRepository) UpdatePassword(ctx context.Context, id uint, hashedPwd string) error {
+	result := r.db.WithContext(ctx).Model(&User{}).Where("id = ?", id).Update("password", hashedPwd)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return ErrUserNotFound
+	}
+	return nil
+}
