@@ -19,10 +19,13 @@ func NewHandler(svc Service) *Handler {
 
 func (h *Handler) Register(rg *gin.RouterGroup) {
 	rg.GET("", h.ListUsers)
+	rg.GET("/export", h.ExportUsers)
 	rg.POST("", h.CreateUser)
 	rg.POST("/batch-delete", h.BatchDeleteUsers)
 	rg.GET("/:id", h.GetUser)
 	rg.PUT("/:id", h.UpdateUser)
+	rg.PUT("/:id/status", h.UpdateUserStatus)
+	rg.POST("/:id/reset-password", h.ResetPassword)
 	rg.DELETE("/:id", h.DeleteUser)
 }
 
@@ -179,4 +182,93 @@ func (h *Handler) DeleteUser(c *gin.Context) {
 		return
 	}
 	response.Success(c, gin.H{"deleted": true})
+}
+
+// UpdateUserStatus godoc
+//
+//	@Summary		启用/禁用用户
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"用户ID"
+//	@Param			body	body		UpdateStatusRequest	true	"状态 1=启用 0=禁用"
+//	@Success		200		{object}	response.Body{data=UserResponse}
+//	@Failure		400		{object}	response.Body
+//	@Failure		404		{object}	response.Body
+//	@Security		BearerAuth
+//	@Router			/system/users/{id}/status [put]
+func (h *Handler) UpdateUserStatus(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	var req UpdateStatusRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	updated, err := h.svc.UpdateUserStatus(c.Request.Context(), uint(id), req.Status)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	response.Success(c, updated)
+}
+
+// ResetPassword godoc
+//
+//	@Summary		重置用户密码
+//	@Tags			Users
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int					true	"用户ID"
+//	@Param			body	body		ResetPasswordRequest	true	"新密码（最少6位）"
+//	@Success		200		{object}	response.Body
+//	@Failure		400		{object}	response.Body
+//	@Failure		404		{object}	response.Body
+//	@Security		BearerAuth
+//	@Router			/system/users/{id}/reset-password [post]
+func (h *Handler) ResetPassword(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	var req ResetPasswordRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	if err := h.svc.ResetPassword(c.Request.Context(), uint(id), req.Password); err != nil {
+		_ = c.Error(err)
+		return
+	}
+	response.Success(c, gin.H{"reset": true})
+}
+
+// ExportUsers godoc
+//
+//	@Summary		导出用户列表（CSV）
+//	@Tags			Users
+//	@Produce		text/csv
+//	@Param			username	query		string	false	"用户名（模糊）"
+//	@Param			name		query		string	false	"姓名（模糊）"
+//	@Param			status		query		int		false	"状态 1=启用 0=禁用"
+//	@Success		200			{file}		binary
+//	@Security		BearerAuth
+//	@Router			/system/users/export [get]
+func (h *Handler) ExportUsers(c *gin.Context) {
+	var q ListUsersQuery
+	if err := c.ShouldBindQuery(&q); err != nil {
+		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		return
+	}
+	data, err := h.svc.ExportUsers(c.Request.Context(), q)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+	c.Header("Content-Disposition", "attachment; filename=\"users.csv\"")
+	c.Data(200, "text/csv; charset=utf-8", data)
 }
