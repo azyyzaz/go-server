@@ -35,8 +35,10 @@ func (s *service) Login(ctx context.Context, req LoginRequest) (TokenResponse, e
 
 	u, err := s.userSvc.GetByUsername(ctx, req.Username)
 	if err != nil {
-		// 统一返回"用户名或密码错误"，不暴露用户是否存在
 		return TokenResponse{}, errcode.ErrInvalidCredentials.AsError()
+	}
+	if u.Status == 0 {
+		return TokenResponse{}, errcode.ErrUserDisabled.AsError()
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(req.Password)); err != nil {

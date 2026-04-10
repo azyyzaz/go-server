@@ -3,14 +3,14 @@ package user
 import (
 	"bytes"
 	"context"
-	"encoding/csv"
-	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
 	appcasbin "go-server/internal/casbin"
 	"go-server/internal/errcode"
 
+	"github.com/xuri/excelize/v2"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -60,20 +60,17 @@ func (s *service) CreateUser(ctx context.Context, req CreateUserRequest) (UserRe
 		return UserResponse{}, err
 	}
 
-	// 角色分配
 	if len(req.RoleIDs) > 0 {
 		if err := s.repo.SetUserRoles(ctx, created.ID, req.RoleIDs); err != nil {
 			return UserResponse{}, err
 		}
 	}
 
-	// 重新查一次，带上 Roles
 	resp, err := s.GetUser(ctx, created.ID)
 	if err != nil {
 		return UserResponse{}, err
 	}
 
-	// 同步写入 Casbin：用户名 → 角色 code
 	if enforcer := appcasbin.Get(); enforcer != nil {
 		for _, r := range resp.Roles {
 			_, _ = enforcer.AddRoleForUser(resp.Username, r.Code)
@@ -161,7 +158,6 @@ func (s *service) UpdateUser(ctx context.Context, id uint, req UpdateUserRequest
 		return UserResponse{}, err
 	}
 
-	// 同步 Casbin：先删旧绑定，再写新角色
 	if enforcer := appcasbin.Get(); enforcer != nil {
 		_, _ = enforcer.DeleteRolesForUser(resp.Username)
 		for _, r := range resp.Roles {
@@ -192,6 +188,9 @@ func (s *service) UpdateUserStatus(ctx context.Context, id uint, status int8) (U
 		return UserResponse{}, err
 	}
 	if err := s.repo.UpdateStatus(ctx, id, status); err != nil {
+		if err == ErrUserNotFound {
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
+		}
 		return UserResponse{}, err
 	}
 	return s.GetUser(ctx, id)
@@ -219,25 +218,76 @@ func (s *service) ExportUsers(ctx context.Context, q ListUsersQuery) ([]byte, er
 		return nil, err
 	}
 
-	var buf bytes.Buffer
-	buf.Write([]byte{0xEF, 0xBB, 0xBF}) // UTF-8 BOM，防止 Excel 中文乱码
-	w := csv.NewWriter(&buf)
-	_ = w.Write([]string{"ID", "用户名", "姓名", "邮箱", "手机", "状态", "创建时间"})
-	for _, u := range users {
+	file := excelize.NewFile()
+	defer func() { _ = file.Close() }()
+
+	const sheetName = "Users"
+	defaultSheet := file.GetSheetName(file.GetActiveSheetIndex())
+	if defaultSheet != sheetName {
+		file.SetSheetName(defaultSheet, sheetName)
+	}
+
+	headers := []string{"ID", "用户名", "姓名", "邮箱", "手机", "状态", "创建时间"}
+	for idx, header := range headers {
+		cell, _ := excelize.CoordinatesToCellName(idx+1, 1)
+		if err := file.SetCellValue(sheetName, cell, header); err != nil {
+			return nil, errcode.ErrInternalError.AsError()
+		}
+	}
+
+	headerStyle, err := file.NewStyle(&excelize.Style{
+		Font:      &excelize.Font{Bold: true},
+		Alignment: &excelize.Alignment{Horizontal: "center"},
+	})
+	if err != nil {
+		return nil, errcode.ErrInternalError.AsError()
+	}
+	if err := file.SetCellStyle(sheetName, "A1", "G1", headerStyle); err != nil {
+		return nil, errcode.ErrInternalError.AsError()
+	}
+
+	for idx, u := range users {
+		row := idx + 2
 		status := "启用"
 		if u.Status == 0 {
 			status = "禁用"
 		}
-		_ = w.Write([]string{
-			strings.TrimSpace(fmt.Sprintf("%d", u.ID)),
+
+		values := []string{
+			strconv.FormatUint(uint64(u.ID), 10),
 			u.Username,
 			u.Name,
 			u.Email,
 			u.Phone,
 			status,
 			u.CreatedAt.Format("2006-01-02 15:04:05"),
-		})
+		}
+		for col, value := range values {
+			cell, _ := excelize.CoordinatesToCellName(col+1, row)
+			if err := file.SetCellValue(sheetName, cell, value); err != nil {
+				return nil, errcode.ErrInternalError.AsError()
+			}
+		}
 	}
-	w.Flush()
+
+	widths := map[string]float64{
+		"A": 10,
+		"B": 18,
+		"C": 18,
+		"D": 28,
+		"E": 18,
+		"F": 12,
+		"G": 22,
+	}
+	for column, width := range widths {
+		if err := file.SetColWidth(sheetName, column, column, width); err != nil {
+			return nil, errcode.ErrInternalError.AsError()
+		}
+	}
+
+	var buf bytes.Buffer
+	if err := file.Write(&buf); err != nil {
+		return nil, errcode.ErrInternalError.AsError()
+	}
 	return buf.Bytes(), nil
 }

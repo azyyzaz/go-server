@@ -23,7 +23,7 @@ type ListUsersQuery struct {
 	PageSize int    `form:"page_size" binding:"omitempty,min=1,max=100"`
 	Username string `form:"username"`
 	Name     string `form:"name"`
-	Status   *int8  `form:"status"`
+	Status   *int8  `form:"status"    binding:"omitempty,oneof=0 1"`
 }
 
 type RoleInfo struct {
@@ -55,7 +55,7 @@ type BatchDeleteRequest struct {
 }
 
 type UpdateStatusRequest struct {
-	Status int8 `json:"status"`
+	Status int8 `json:"status" binding:"oneof=0 1"`
 }
 
 type ResetPasswordRequest struct {
