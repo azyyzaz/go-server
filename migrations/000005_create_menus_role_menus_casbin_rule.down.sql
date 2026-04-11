@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS casbin_rule;
+DROP TABLE IF EXISTS role_menus;
+DROP TABLE IF EXISTS menus;

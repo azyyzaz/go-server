@@ -1,0 +1,39 @@
+CREATE TABLE menus (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    parent_id BIGINT UNSIGNED DEFAULT NULL,
+    name VARCHAR(100) NOT NULL COMMENT '菜单名称',
+    type VARCHAR(20) NOT NULL COMMENT '目录/菜单/按钮',
+    path VARCHAR(200) DEFAULT NULL COMMENT '路由路径',
+    component VARCHAR(255) DEFAULT NULL COMMENT '前端组件',
+    permission VARCHAR(100) DEFAULT NULL COMMENT '权限标识',
+    sort INT NOT NULL DEFAULT 0 COMMENT '排序',
+    visible TINYINT NOT NULL DEFAULT 1 COMMENT '1=显示 0=隐藏',
+    status TINYINT NOT NULL DEFAULT 1 COMMENT '1=启用 0=禁用',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY idx_menus_parent_id (parent_id),
+    CONSTRAINT fk_menus_parent FOREIGN KEY (parent_id) REFERENCES menus(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE role_menus (
+    role_id BIGINT UNSIGNED NOT NULL,
+    menu_id BIGINT UNSIGNED NOT NULL,
+    PRIMARY KEY (role_id, menu_id),
+    CONSTRAINT fk_rm_role FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
+    CONSTRAINT fk_rm_menu FOREIGN KEY (menu_id) REFERENCES menus(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE casbin_rule (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    ptype VARCHAR(16) NOT NULL,
+    v0 VARCHAR(255) DEFAULT '',
+    v1 VARCHAR(255) DEFAULT '',
+    v2 VARCHAR(255) DEFAULT '',
+    v3 VARCHAR(255) DEFAULT '',
+    v4 VARCHAR(255) DEFAULT '',
+    v5 VARCHAR(255) DEFAULT '',
+    KEY idx_casbin_ptype (ptype),
+    KEY idx_casbin_v0 (v0),
+    KEY idx_casbin_v1 (v1),
+    KEY idx_casbin_v2 (v2)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

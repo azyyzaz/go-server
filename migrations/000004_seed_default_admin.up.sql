@@ -7,9 +7,3 @@ VALUES (
     'admin@example.com',
     1
 );
-
--- 为 admin 用户分配管理员角色
-INSERT INTO user_roles (user_id, role_id)
-SELECT u.id, r.id
-FROM users u, roles r
-WHERE u.username = 'admin' AND r.code = 'admin';

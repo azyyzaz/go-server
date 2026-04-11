@@ -35,6 +35,11 @@ const (
 	ErrInvalidCredentials ErrCode = 20003
 	ErrCaptchaInvalid     ErrCode = 20004
 	ErrUserDisabled       ErrCode = 20005
+
+	ErrRoleNotFound      ErrCode = 30001
+	ErrRoleCodeExists    ErrCode = 30002
+	ErrRoleHasUsers      ErrCode = 30003
+	ErrRoleCodeImmutable ErrCode = 30004
 )
 
 var table = map[ErrCode]meta{
@@ -49,4 +54,9 @@ var table = map[ErrCode]meta{
 	ErrInvalidCredentials: {http.StatusUnauthorized, "INVALID_CREDENTIALS", "invalid username or password", "用户名或密码错误"},
 	ErrCaptchaInvalid:     {http.StatusBadRequest, "CAPTCHA_INVALID", "captcha invalid or expired", "验证码错误或已过期"},
 	ErrUserDisabled:       {http.StatusForbidden, "USER_DISABLED", "user is disabled", "用户已被禁用"},
+
+	ErrRoleNotFound:      {http.StatusNotFound, "ROLE_NOT_FOUND", "role not found", "角色不存在"},
+	ErrRoleCodeExists:    {http.StatusConflict, "ROLE_CODE_EXISTS", "role code already exists", "角色标识已存在"},
+	ErrRoleHasUsers:      {http.StatusConflict, "ROLE_HAS_USERS", "role still has users", "角色下仍有用户，不能删除"},
+	ErrRoleCodeImmutable: {http.StatusBadRequest, "ROLE_CODE_IMMUTABLE", "role code cannot be changed", "角色标识创建后不可修改"},
 }

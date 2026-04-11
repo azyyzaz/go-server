@@ -71,7 +71,7 @@ func Run() error {
 		jwtBlacklist = appjwt.NewBlacklist(redisClient)
 	}
 
-	casbinEnforcer, err := appcasbin.Init("configs/rbac_model.conf", "configs/rbac_policy.csv")
+	casbinEnforcer, err := appcasbin.Init("configs/rbac_model.conf", "configs/rbac_policy.csv", gormDB)
 	if err != nil {
 		logger.L().Fatal("casbin init failed", zap.Error(err))
 	}

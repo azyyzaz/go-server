@@ -9,6 +9,7 @@ import (
 	"go-server/internal/modules/auth"
 	"go-server/internal/modules/captcha"
 	"go-server/internal/modules/health"
+	"go-server/internal/modules/role"
 	"go-server/internal/modules/user"
 
 	"github.com/casbin/casbin/v2"
@@ -66,6 +67,16 @@ func New(cfg config.Config, db *gorm.DB, jwtManager *appjwt.Manager, jwtBlacklis
 
 	userHandler := user.NewHandler(userService)
 	userHandler.Register(api.Group("/system/users"))
+
+	var roleRepo role.Repository
+	if db != nil {
+		roleRepo = role.NewGORMRepository(db)
+	} else {
+		roleRepo = role.NewInMemoryRepository()
+	}
+	roleService := role.NewService(roleRepo)
+	roleHandler := role.NewHandler(roleService)
+	roleHandler.Register(api.Group("/system/roles"))
 
 	captchaSvc := captcha.NewService()
 	captchaHandler := captcha.NewHandler(captchaSvc)
