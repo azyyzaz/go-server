@@ -8,6 +8,7 @@ type CreateUserRequest struct {
 	Name     string `json:"name"     binding:"required,min=2,max=50"`
 	Email    string `json:"email"    binding:"required,email"`
 	Phone    string `json:"phone"`
+	DeptID   *uint  `json:"dept_id"`
 	RoleIDs  []uint `json:"role_ids"`
 }
 
@@ -15,6 +16,7 @@ type UpdateUserRequest struct {
 	Name    string `json:"name"  binding:"required,min=2,max=50"`
 	Email   string `json:"email" binding:"required,email"`
 	Phone   string `json:"phone"`
+	DeptID  *uint  `json:"dept_id"`
 	RoleIDs []uint `json:"role_ids"`
 }
 
@@ -38,6 +40,7 @@ type UserResponse struct {
 	Name      string     `json:"name"`
 	Email     string     `json:"email"`
 	Phone     string     `json:"phone"`
+	DeptID    *uint      `json:"dept_id,omitempty"`
 	Status    int8       `json:"status"`
 	Roles     []RoleInfo `json:"roles"`
 	CreatedAt time.Time  `json:"created_at"`
@@ -73,6 +76,7 @@ func toResponse(u User) UserResponse {
 		Name:      u.Name,
 		Email:     u.Email,
 		Phone:     u.Phone,
+		DeptID:    u.DeptID,
 		Status:    u.Status,
 		Roles:     roles,
 		CreatedAt: u.CreatedAt,

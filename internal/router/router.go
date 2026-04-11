@@ -8,18 +8,22 @@ import (
 	"go-server/internal/middleware"
 	"go-server/internal/modules/auth"
 	"go-server/internal/modules/captcha"
+	"go-server/internal/modules/dept"
+	"go-server/internal/modules/dict"
 	"go-server/internal/modules/health"
+	"go-server/internal/modules/menu"
 	"go-server/internal/modules/role"
 	"go-server/internal/modules/user"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
+	rdb "github.com/redis/go-redis/v9"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
-func New(cfg config.Config, db *gorm.DB, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
+func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
 	if cfg.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -77,6 +81,36 @@ func New(cfg config.Config, db *gorm.DB, jwtManager *appjwt.Manager, jwtBlacklis
 	roleService := role.NewService(roleRepo)
 	roleHandler := role.NewHandler(roleService)
 	roleHandler.Register(api.Group("/system/roles"))
+
+	var menuRepo menu.Repository
+	if db != nil {
+		menuRepo = menu.NewGORMRepository(db)
+	} else {
+		menuRepo = menu.NewInMemoryRepository()
+	}
+	menuService := menu.NewService(menuRepo)
+	menuHandler := menu.NewHandler(menuService)
+	menuHandler.Register(api.Group("/system/menus"))
+
+	var deptRepo dept.Repository
+	if db != nil {
+		deptRepo = dept.NewGORMRepository(db)
+	} else {
+		deptRepo = dept.NewInMemoryRepository()
+	}
+	deptService := dept.NewService(deptRepo)
+	deptHandler := dept.NewHandler(deptService)
+	deptHandler.Register(api.Group("/system/depts"))
+
+	var dictRepo dict.Repository
+	if db != nil {
+		dictRepo = dict.NewGORMRepository(db)
+	} else {
+		dictRepo = dict.NewInMemoryRepository()
+	}
+	dictService := dict.NewService(dictRepo, redisClient)
+	dictHandler := dict.NewHandler(dictService)
+	dictHandler.Register(api.Group("/system/dicts"))
 
 	captchaSvc := captcha.NewService()
 	captchaHandler := captcha.NewHandler(captchaSvc)

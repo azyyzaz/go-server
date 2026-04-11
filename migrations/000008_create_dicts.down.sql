@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS dict_data;
+DROP TABLE IF EXISTS dict_types;

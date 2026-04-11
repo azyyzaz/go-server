@@ -40,6 +40,23 @@ const (
 	ErrRoleCodeExists    ErrCode = 30002
 	ErrRoleHasUsers      ErrCode = 30003
 	ErrRoleCodeImmutable ErrCode = 30004
+
+	ErrMenuNotFound      ErrCode = 40001
+	ErrMenuNameExists    ErrCode = 40002
+	ErrMenuHasChildren   ErrCode = 40003
+	ErrMenuParentInvalid ErrCode = 40004
+
+	ErrDeptNotFound      ErrCode = 50001
+	ErrDeptNameExists    ErrCode = 50002
+	ErrDeptHasChildren   ErrCode = 50003
+	ErrDeptHasUsers      ErrCode = 50004
+	ErrDeptParentInvalid ErrCode = 50005
+
+	ErrDictTypeNotFound    ErrCode = 60001
+	ErrDictTypeCodeExists  ErrCode = 60002
+	ErrDictTypeHasItems    ErrCode = 60003
+	ErrDictDataNotFound    ErrCode = 60004
+	ErrDictDataLabelExists ErrCode = 60005
 )
 
 var table = map[ErrCode]meta{
@@ -59,4 +76,21 @@ var table = map[ErrCode]meta{
 	ErrRoleCodeExists:    {http.StatusConflict, "ROLE_CODE_EXISTS", "role code already exists", "角色标识已存在"},
 	ErrRoleHasUsers:      {http.StatusConflict, "ROLE_HAS_USERS", "role still has users", "角色下仍有用户，不能删除"},
 	ErrRoleCodeImmutable: {http.StatusBadRequest, "ROLE_CODE_IMMUTABLE", "role code cannot be changed", "角色标识创建后不可修改"},
+
+	ErrMenuNotFound:      {http.StatusNotFound, "MENU_NOT_FOUND", "menu not found", "菜单不存在"},
+	ErrMenuNameExists:    {http.StatusConflict, "MENU_NAME_EXISTS", "menu name already exists", "同级菜单名称已存在"},
+	ErrMenuHasChildren:   {http.StatusConflict, "MENU_HAS_CHILDREN", "menu still has children", "该菜单下仍有子节点，不能删除"},
+	ErrMenuParentInvalid: {http.StatusBadRequest, "MENU_PARENT_INVALID", "invalid menu parent", "菜单父节点不合法"},
+
+	ErrDeptNotFound:      {http.StatusNotFound, "DEPT_NOT_FOUND", "department not found", "部门不存在"},
+	ErrDeptNameExists:    {http.StatusConflict, "DEPT_NAME_EXISTS", "department name already exists", "同级部门名称已存在"},
+	ErrDeptHasChildren:   {http.StatusConflict, "DEPT_HAS_CHILDREN", "department still has children", "该部门下仍有子部门，不能删除"},
+	ErrDeptHasUsers:      {http.StatusConflict, "DEPT_HAS_USERS", "department still has users", "该部门下仍有用户，不能删除"},
+	ErrDeptParentInvalid: {http.StatusBadRequest, "DEPT_PARENT_INVALID", "invalid department parent", "部门父节点不合法"},
+
+	ErrDictTypeNotFound:    {http.StatusNotFound, "DICT_TYPE_NOT_FOUND", "dict type not found", "字典类型不存在"},
+	ErrDictTypeCodeExists:  {http.StatusConflict, "DICT_TYPE_CODE_EXISTS", "dict type code already exists", "字典类型标识已存在"},
+	ErrDictTypeHasItems:    {http.StatusConflict, "DICT_TYPE_HAS_ITEMS", "dict type still has items", "字典类型下仍有数据，不能删除"},
+	ErrDictDataNotFound:    {http.StatusNotFound, "DICT_DATA_NOT_FOUND", "dict data not found", "字典数据不存在"},
+	ErrDictDataLabelExists: {http.StatusConflict, "DICT_DATA_LABEL_EXISTS", "dict data label already exists", "同一字典类型下的标签已存在"},
 }

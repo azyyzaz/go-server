@@ -14,6 +14,7 @@ type User struct {
 	Name      string      `gorm:"size:100;not null"`
 	Email     string      `gorm:"uniqueIndex;size:191;not null"`
 	Phone     string      `gorm:"size:20"`
+	DeptID    *uint       `gorm:"index"`
 	Status    int8        `gorm:"default:1;comment:1=active 0=disabled"`
 	Roles     []role.Role `gorm:"many2many:user_roles;"`
 	CreatedAt time.Time

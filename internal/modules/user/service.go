@@ -48,6 +48,7 @@ func (s *service) CreateUser(ctx context.Context, req CreateUserRequest) (UserRe
 		Name:      strings.TrimSpace(req.Name),
 		Email:     strings.ToLower(strings.TrimSpace(req.Email)),
 		Phone:     strings.TrimSpace(req.Phone),
+		DeptID:    req.DeptID,
 		Status:    1,
 		CreatedAt: time.Now().UTC(),
 	}
@@ -144,6 +145,7 @@ func (s *service) UpdateUser(ctx context.Context, id uint, req UpdateUserRequest
 	u.Name = strings.TrimSpace(req.Name)
 	u.Email = strings.ToLower(strings.TrimSpace(req.Email))
 	u.Phone = strings.TrimSpace(req.Phone)
+	u.DeptID = req.DeptID
 
 	if _, err := s.repo.Update(ctx, u); err != nil {
 		return UserResponse{}, err

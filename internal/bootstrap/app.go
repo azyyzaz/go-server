@@ -76,7 +76,7 @@ func Run() error {
 		logger.L().Fatal("casbin init failed", zap.Error(err))
 	}
 
-	engine := router.New(cfg, gormDB, jwtManager, jwtBlacklist, casbinEnforcer)
+	engine := router.New(cfg, gormDB, redisClient, jwtManager, jwtBlacklist, casbinEnforcer)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),
