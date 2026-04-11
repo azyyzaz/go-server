@@ -6,6 +6,7 @@ import (
 	"go-server/internal/config"
 	appjwt "go-server/internal/jwt"
 	"go-server/internal/middleware"
+	"go-server/internal/modules/audit"
 	"go-server/internal/modules/auth"
 	"go-server/internal/modules/captcha"
 	"go-server/internal/modules/dept"
@@ -23,7 +24,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer) *gin.Engine {
+func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer, auditSvc audit.Service) *gin.Engine {
 	if cfg.Env == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -33,6 +34,7 @@ func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *ap
 	r.Use(middleware.Logger())
 	r.Use(middleware.Recovery())
 	r.Use(middleware.ErrorHandler())
+	r.Use(middleware.AuditLog(auditSvc))
 
 	// Swagger UI（不走鉴权）
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -46,6 +48,11 @@ func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *ap
 		"/api/v1/auth",
 		"/api/v1/health",
 	))
+
+	if auditSvc != nil {
+		auditHandler := audit.NewHandler(auditSvc)
+		auditHandler.Register(api.Group("/system/audits"))
+	}
 
 	healthHandler := health.NewHandler()
 	healthHandler.Register(api.Group("/health"))
@@ -116,7 +123,7 @@ func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *ap
 	captchaHandler := captcha.NewHandler(captchaSvc)
 	captchaHandler.Register(api.Group("/auth"))
 
-	authService := auth.NewService(userService, jwtManager, jwtBlacklist, captchaSvc)
+	authService := auth.NewService(userService, jwtManager, jwtBlacklist, captchaSvc, auditSvc)
 	authHandler := auth.NewHandler(authService)
 	authHandler.Register(api.Group("/auth"))
 

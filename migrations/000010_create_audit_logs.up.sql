@@ -1,0 +1,43 @@
+CREATE TABLE operation_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    request_id VARCHAR(64) NOT NULL DEFAULT '',
+    user_id BIGINT UNSIGNED DEFAULT NULL,
+    username VARCHAR(100) NOT NULL DEFAULT '',
+    method VARCHAR(10) NOT NULL DEFAULT '',
+    path VARCHAR(255) NOT NULL DEFAULT '',
+    module VARCHAR(100) NOT NULL DEFAULT '',
+    action VARCHAR(100) NOT NULL DEFAULT '',
+    ip VARCHAR(64) NOT NULL DEFAULT '',
+    status_code INT NOT NULL DEFAULT 0,
+    result VARCHAR(20) NOT NULL DEFAULT '',
+    request_body TEXT,
+    error_message VARCHAR(255) NOT NULL DEFAULT '',
+    latency_ms BIGINT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_operation_logs_created_at (created_at),
+    KEY idx_operation_logs_request_id (request_id),
+    KEY idx_operation_logs_user_id (user_id),
+    KEY idx_operation_logs_username (username),
+    KEY idx_operation_logs_method (method),
+    KEY idx_operation_logs_path (path),
+    KEY idx_operation_logs_status_code (status_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE login_logs (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    request_id VARCHAR(64) NOT NULL DEFAULT '',
+    user_id BIGINT UNSIGNED DEFAULT NULL,
+    username VARCHAR(100) NOT NULL DEFAULT '',
+    ip VARCHAR(64) NOT NULL DEFAULT '',
+    region VARCHAR(100) NOT NULL DEFAULT '',
+    user_agent VARCHAR(512) NOT NULL DEFAULT '',
+    success TINYINT(1) NOT NULL DEFAULT 0,
+    fail_reason VARCHAR(255) NOT NULL DEFAULT '',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_login_logs_created_at (created_at),
+    KEY idx_login_logs_request_id (request_id),
+    KEY idx_login_logs_user_id (user_id),
+    KEY idx_login_logs_username (username),
+    KEY idx_login_logs_ip (ip),
+    KEY idx_login_logs_success (success)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -103,3 +103,19 @@
 {"level":"info","ts":"2026-04-08T14:28:54.746+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-08T16:45:24.256+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-08T16:45:46.080+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260408084546-838b7481d2cd","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0005075}
+{"level":"info","ts":"2026-04-11T20:28:14.217+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T20:28:24.696+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411122824-2d95416e434d","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0005034}
+{"level":"info","ts":"2026-04-11T20:36:55.047+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T20:37:02.840+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411123702-b2a7962d0f9c","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.000765}
+{"level":"info","ts":"2026-04-11T20:47:34.481+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T20:47:38.604+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411124738-4af55213970f","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0005061}
+{"level":"info","ts":"2026-04-11T20:48:09.560+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411124809-003c932f2154","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0005085}
+{"level":"info","ts":"2026-04-11T20:49:08.817+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411124908-3be8bbe70bc3","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0}
+{"level":"info","ts":"2026-04-11T20:51:31.033+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T20:51:34.599+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411125134-5e389e9508ec","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0006849}
+{"level":"warn","ts":"2026-04-11T20:51:34.683+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411125134-99fa3e977ab4","status":404,"method":"GET","path":"/favicon.ico","query":"","ip":"::1","error":"","latency":0}
+{"level":"info","ts":"2026-04-11T20:52:57.649+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411125257-4388a9f43a48","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0005041}
+{"level":"info","ts":"2026-04-11T21:01:47.050+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T21:02:55.398+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T21:04:19.161+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
+{"level":"info","ts":"2026-04-11T21:04:40.341+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}

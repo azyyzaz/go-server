@@ -17,11 +17,12 @@ const docTemplate = `{
     "paths": {
         "/auth/captcha": {
             "get": {
+                "description": "生成登录验证码，返回验证码 ID 和图片内容。",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "认证授权"
                 ],
                 "summary": "获取图形验证码",
                 "responses": {
@@ -48,6 +49,7 @@ const docTemplate = `{
         },
         "/auth/login": {
             "post": {
+                "description": "使用用户名、密码和验证码完成登录，成功后返回 access_token 和 refresh_token。",
                 "consumes": [
                     "application/json"
                 ],
@@ -55,12 +57,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "认证授权"
                 ],
                 "summary": "用户登录",
                 "parameters": [
                     {
-                        "description": "登录信息",
+                        "description": "登录请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -110,6 +112,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "将当前 access_token 加入黑名单，使其立即失效。",
                 "consumes": [
                     "application/json"
                 ],
@@ -117,12 +120,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "认证授权"
                 ],
                 "summary": "用户登出",
                 "parameters": [
                     {
-                        "description": "access_token",
+                        "description": "登出请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -149,6 +152,7 @@ const docTemplate = `{
         },
         "/auth/refresh": {
             "post": {
+                "description": "使用 refresh_token 换取一组新的 access_token 和 refresh_token。",
                 "consumes": [
                     "application/json"
                 ],
@@ -156,12 +160,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Auth"
+                    "认证授权"
                 ],
-                "summary": "刷新 Token",
+                "summary": "刷新令牌",
                 "parameters": [
                     {
-                        "description": "refresh_token",
+                        "description": "刷新令牌请求参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -198,6 +202,2433 @@ const docTemplate = `{
                 }
             }
         },
+        "/health": {
+            "get": {
+                "description": "用于确认服务是否正常启动并可对外提供请求处理能力。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "健康检查"
+                ],
+                "summary": "服务健康检查",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": true
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/system/audits/login-logs": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按用户名、IP、登录结果和时间范围筛选登录日志。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "审计日志"
+                ],
+                "summary": "查询登录日志",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "IP 地址",
+                        "name": "ip",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "登录是否成功",
+                        "name": "success",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end_time",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_audit.LoginLogPageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/audits/operation-logs": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按用户名、请求方法、路径、状态码和时间范围筛选操作日志。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "审计日志"
+                ],
+                "summary": "查询操作日志",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求方法",
+                        "name": "method",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求路径",
+                        "name": "path",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "响应状态码",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end_time",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_audit.OperationLogPageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/depts": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "返回完整部门树结构，常用于组织架构管理页面。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "查询部门树",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_dept.DeptTreeNode"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "创建新的部门节点，可指定上级部门。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "创建部门",
+                "parameters": [
+                    {
+                        "description": "部门创建参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dept.CreateDeptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/depts/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据部门 ID 查询部门详细信息。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "获取部门详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "部门 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改部门名称、负责人、联系方式、排序和状态等信息。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "更新部门",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "部门 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "部门更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dept.UpdateDeptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据部门 ID 删除部门节点。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "删除部门",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "部门 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/depts/{id}/users": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页查询归属于指定部门的用户。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "部门管理"
+                ],
+                "summary": "查询部门下的用户列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "部门 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dept.DeptUserPageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dicts/items": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按字典类型、标签、状态等条件筛选字典数据项。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "查询字典数据列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典类型 ID",
+                        "name": "type_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "字典类型编码",
+                        "name": "type_code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "字典标签",
+                        "name": "label",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态：0 禁用，1 启用",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "在指定字典类型下新增一个字典数据项。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "创建字典数据",
+                "parameters": [
+                    {
+                        "description": "字典数据创建参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dict.CreateDictDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dicts/items/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据字典数据 ID 查询详细信息。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "获取字典数据详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典数据 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改字典数据项的标签、值、排序、状态和备注。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "更新字典数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典数据 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "字典数据更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dict.UpdateDictDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据字典数据 ID 删除字典数据项。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "删除字典数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典数据 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dicts/lookup/{code}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据字典类型编码返回对应的可用字典数据项。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "按类型编码查询字典数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "字典类型编码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dicts/types": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按名称或编码筛选字典类型。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "查询字典类型列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "字典类型名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "字典类型编码",
+                        "name": "code",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "创建新的字典类型，用于归类字典数据项。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "创建字典类型",
+                "parameters": [
+                    {
+                        "description": "字典类型创建参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dict.CreateDictTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/dicts/types/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据字典类型 ID 查询详细信息。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "获取字典类型详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典类型 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改字典类型的名称、编码、备注和状态。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "更新字典类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典类型 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "字典类型更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_dict.UpdateDictTypeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据字典类型 ID 删除字典类型。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "字典管理"
+                ],
+                "summary": "删除字典类型",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "字典类型 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/menus": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "返回完整菜单树，常用于菜单管理页面展示。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "查询菜单树",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "创建目录、菜单或按钮类型的权限节点。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "创建菜单",
+                "parameters": [
+                    {
+                        "description": "菜单创建参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_menu.CreateMenuRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/menus/current": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据当前登录用户的权限返回可见菜单树。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "查询当前用户菜单",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/menus/sort": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "批量更新多个菜单节点的排序值。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "更新菜单排序",
+                "parameters": [
+                    {
+                        "description": "菜单排序更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_menu.UpdateMenuSortsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/menus/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据菜单 ID 查询菜单详情。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "获取菜单详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "菜单 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改菜单节点的名称、路径、组件、权限标识和显示状态等信息。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "更新菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "菜单 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "菜单更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_menu.UpdateMenuRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据菜单 ID 删除菜单节点。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜单管理"
+                ],
+                "summary": "删除菜单",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "菜单 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/roles": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按角色名称、编码、状态等条件筛选角色，并返回分页结果。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "分页查询角色列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色名称",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色编码",
+                        "name": "code",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态：0 禁用，1 启用",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RolePageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "创建新的角色，并设置基础信息和启用状态。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "创建角色",
+                "parameters": [
+                    {
+                        "description": "角色创建参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_role.CreateRoleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/roles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据角色 ID 查询角色详细信息。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "获取角色详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改角色名称、编码、备注和状态等信息。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "更新角色信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "角色更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_role.UpdateRoleRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据角色 ID 删除角色。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "删除角色",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/roles/{id}/apis": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "查询角色当前拥有的接口访问权限。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "获取角色接口权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleAPIsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "为角色分配接口访问权限。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "更新角色接口权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "接口权限列表",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_role.AssignAPIsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/roles/{id}/menus": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "查询角色已勾选的菜单 ID 及完整菜单树结构。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "获取角色菜单权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleMenusResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "为角色分配菜单权限。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "更新角色菜单权限",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "菜单 ID 列表",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_role.AssignMenusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/roles/{id}/users": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "分页查询绑定到指定角色的用户。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "角色管理"
+                ],
+                "summary": "查询角色下的用户列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "角色 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_role.RoleUserPageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
         "/system/users": {
             "get": {
                 "security": [
@@ -205,41 +2636,42 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "按用户名、姓名、状态等条件筛选用户，并返回分页结果。",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "用户管理"
                 ],
-                "summary": "用户列表（分页+搜索+筛选）",
+                "summary": "分页查询用户列表",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "页码（默认1）",
+                        "description": "页码",
                         "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "每页条数（默认10，最大100）",
+                        "description": "每页条数",
                         "name": "page_size",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "用户名（模糊）",
+                        "description": "用户名",
                         "name": "username",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "姓名（模糊）",
+                        "description": "姓名",
                         "name": "name",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "description": "状态 1=启用 0=禁用",
+                        "description": "状态：0 禁用，1 启用",
                         "name": "status",
                         "in": "query"
                     }
@@ -262,6 +2694,18 @@ const docTemplate = `{
                                 }
                             ]
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
                     }
                 }
             },
@@ -271,6 +2715,7 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "创建一个新的系统用户，并绑定部门和角色信息。",
                 "consumes": [
                     "application/json"
                 ],
@@ -278,12 +2723,12 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "用户管理"
                 ],
-                "summary": "新增用户（含角色分配）",
+                "summary": "创建用户",
                 "parameters": [
                     {
-                        "description": "用户信息，role_ids 为角色ID列表（可选）",
+                        "description": "用户创建参数",
                         "name": "body",
                         "in": "body",
                         "required": true,
@@ -316,6 +2761,147 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/go-server_internal_response.Body"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/users/batch-delete": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "根据用户 ID 列表一次性删除多个用户。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "批量删除用户",
+                "parameters": [
+                    {
+                        "description": "待删除的用户 ID 列表",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_user.BatchDeleteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/users/export": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按照筛选条件导出用户数据，返回 Excel 文件。",
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "导出用户列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "username",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "姓名",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "状态：0 禁用，1 启用",
+                        "name": "status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
                     }
                 }
             }
@@ -327,17 +2913,18 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "根据用户 ID 查询单个用户的详细信息。",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "用户管理"
                 ],
                 "summary": "获取用户详情",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "用户ID",
+                        "description": "用户 ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -362,6 +2949,92 @@ const docTemplate = `{
                             ]
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "修改用户基础资料、所属部门和角色信息。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "更新用户信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "用户更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_user.UpdateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -376,17 +3049,18 @@ const docTemplate = `{
                         "BearerAuth": []
                     }
                 ],
+                "description": "根据用户 ID 删除单个用户。",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Users"
+                    "用户管理"
                 ],
                 "summary": "删除用户",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "用户ID",
+                        "description": "用户 ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -395,6 +3069,188 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/users/{id}/reset-password": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "为指定用户重置登录密码。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "重置用户密码",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "密码重置参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_user.ResetPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/users/{id}/status": {
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "启用或禁用指定用户账号。",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户管理"
+                ],
+                "summary": "修改用户状态",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "用户 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "状态更新参数",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/internal_modules_user.UpdateStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/go-server_internal_response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/go-server_internal_response.Body"
                         }
@@ -425,6 +3281,162 @@ const docTemplate = `{
                 }
             }
         },
+        "internal_modules_audit.LoginLogPageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_audit.LoginLogResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_audit.LoginLogResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "fail_reason": {
+                    "type": "string",
+                    "example": ""
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "ip": {
+                    "type": "string",
+                    "example": "127.0.0.1"
+                },
+                "region": {
+                    "type": "string",
+                    "example": "上海"
+                },
+                "request_id": {
+                    "type": "string",
+                    "example": "20260411122824-2d95416e434d"
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "user_agent": {
+                    "type": "string",
+                    "example": "Mozilla/5.0"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
+        "internal_modules_audit.OperationLogPageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_audit.OperationLogResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_audit.OperationLogResponse": {
+            "type": "object",
+            "properties": {
+                "action": {
+                    "type": "string",
+                    "example": "用户登录"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "error_message": {
+                    "type": "string",
+                    "example": ""
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "ip": {
+                    "type": "string",
+                    "example": "127.0.0.1"
+                },
+                "latency_ms": {
+                    "type": "integer",
+                    "example": 12
+                },
+                "method": {
+                    "type": "string",
+                    "example": "POST"
+                },
+                "module": {
+                    "type": "string",
+                    "example": "认证授权"
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/api/v1/auth/login"
+                },
+                "request_body": {
+                    "type": "string",
+                    "example": "{\"username\":\"admin\"}"
+                },
+                "request_id": {
+                    "type": "string",
+                    "example": "20260411122824-2d95416e434d"
+                },
+                "result": {
+                    "type": "string",
+                    "example": "success"
+                },
+                "status_code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "user_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "admin"
+                }
+            }
+        },
         "internal_modules_auth.LoginRequest": {
             "type": "object",
             "required": [
@@ -435,16 +3447,20 @@ const docTemplate = `{
             ],
             "properties": {
                 "captcha_code": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1234"
                 },
                 "captcha_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "captcha-8f3a2c1d"
                 },
                 "password": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin123"
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 }
             }
         },
@@ -455,7 +3471,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "access_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token"
                 }
             }
         },
@@ -466,7 +3483,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "refresh_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token"
                 }
             }
         },
@@ -474,10 +3492,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "access_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token"
                 },
                 "refresh_token": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token"
                 }
             }
         },
@@ -485,10 +3505,1018 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "captcha_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "captcha-8f3a2c1d"
                 },
                 "image_base64": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA..."
+                }
+            }
+        },
+        "internal_modules_dept.CreateDeptRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "rd@example.com"
+                },
+                "leader": {
+                    "type": "string",
+                    "example": "李经理"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "研发部"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138001"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dept.DeptResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "rd@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "leader": {
+                    "type": "string",
+                    "example": "李经理"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "研发部"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138001"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dept.DeptTreeNode": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_dept.DeptTreeNode"
+                    }
+                },
+                "email": {
+                    "type": "string",
+                    "example": "rd@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "leader": {
+                    "type": "string",
+                    "example": "李经理"
+                },
+                "name": {
+                    "type": "string",
+                    "example": "研发部"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138001"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dept.DeptUserPageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_dept.DeptUserResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dept.DeptUserResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "zhangsan@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "张三"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138000"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "zhangsan"
+                }
+            }
+        },
+        "internal_modules_dept.UpdateDeptRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "rd@example.com"
+                },
+                "leader": {
+                    "type": "string",
+                    "example": "李经理"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "研发部"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138001"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dict.CreateDictDataRequest": {
+            "type": "object",
+            "required": [
+                "label",
+                "type_id",
+                "value"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "启用"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "启用状态"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                },
+                "type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "1"
+                }
+            }
+        },
+        "internal_modules_dict.CreateDictTypeRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "user_status"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "用户状态"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "用户启用禁用状态"
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dict.DictDataResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "type": "string",
+                    "example": "启用"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "启用状态"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "type_code": {
+                    "type": "string",
+                    "example": "user_status"
+                },
+                "type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "value": {
+                    "type": "string",
+                    "example": "1"
+                }
+            }
+        },
+        "internal_modules_dict.DictTypeResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "user_status"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "用户状态"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "用户启用禁用状态"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_dict.UpdateDictDataRequest": {
+            "type": "object",
+            "required": [
+                "label",
+                "type_id",
+                "value"
+            ],
+            "properties": {
+                "label": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "启用"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "启用状态"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                },
+                "type_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "1"
+                }
+            }
+        },
+        "internal_modules_dict.UpdateDictTypeRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "user_status"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "用户状态"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "用户启用禁用状态"
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_menu.CreateMenuRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "type"
+            ],
+            "properties": {
+                "component": {
+                    "type": "string",
+                    "example": "/system/user/index"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "用户管理"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/system/user"
+                },
+                "permission": {
+                    "type": "string",
+                    "example": "system:user:list"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "directory",
+                        "menu",
+                        "button"
+                    ],
+                    "example": "menu"
+                },
+                "visible": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_menu.MenuResponse": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "type": "string",
+                    "example": "/system/user/index"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "用户管理"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/system/user"
+                },
+                "permission": {
+                    "type": "string",
+                    "example": "system:user:list"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "example": "menu"
+                },
+                "visible": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_menu.MenuSortItem": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 10
+                }
+            }
+        },
+        "internal_modules_menu.MenuTreeNode": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                    }
+                },
+                "component": {
+                    "type": "string",
+                    "example": "/system/index"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "系统管理"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/system"
+                },
+                "permission": {
+                    "type": "string",
+                    "example": "system:user:list"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "example": "directory"
+                },
+                "visible": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_menu.UpdateMenuRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "type"
+            ],
+            "properties": {
+                "component": {
+                    "type": "string",
+                    "example": "/system/user/index"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1,
+                    "example": "用户管理"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/system/user"
+                },
+                "permission": {
+                    "type": "string",
+                    "example": "system:user:list"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "directory",
+                        "menu",
+                        "button"
+                    ],
+                    "example": "menu"
+                },
+                "visible": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_menu.UpdateMenuSortsRequest": {
+            "type": "object",
+            "required": [
+                "items"
+            ],
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_menu.MenuSortItem"
+                    }
+                }
+            }
+        },
+        "internal_modules_role.APIPermission": {
+            "type": "object",
+            "required": [
+                "method",
+                "path"
+            ],
+            "properties": {
+                "method": {
+                    "type": "string",
+                    "example": "GET"
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/api/v1/system/users"
+                }
+            }
+        },
+        "internal_modules_role.AssignAPIsRequest": {
+            "type": "object",
+            "properties": {
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.APIPermission"
+                    }
+                }
+            }
+        },
+        "internal_modules_role.AssignMenusRequest": {
+            "type": "object",
+            "properties": {
+                "menu_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
+                }
+            }
+        },
+        "internal_modules_role.CreateRoleRequest": {
+            "type": "object",
+            "required": [
+                "code",
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2,
+                    "example": "admin"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2,
+                    "example": "管理员"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "系统管理员角色"
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_role.MenuTreeNode": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.MenuTreeNode"
+                    }
+                },
+                "component": {
+                    "type": "string",
+                    "example": "/system/index"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "系统管理"
+                },
+                "parent_id": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "path": {
+                    "type": "string",
+                    "example": "/system"
+                },
+                "permission": {
+                    "type": "string",
+                    "example": "system:user:list"
+                },
+                "sort": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "type": {
+                    "type": "string",
+                    "example": "directory"
+                },
+                "visible": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_role.RoleAPIsResponse": {
+            "type": "object",
+            "properties": {
+                "permissions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.APIPermission"
+                    }
+                }
+            }
+        },
+        "internal_modules_role.RoleMenusResponse": {
+            "type": "object",
+            "properties": {
+                "checked_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
+                },
+                "menus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.MenuTreeNode"
+                    }
+                }
+            }
+        },
+        "internal_modules_role.RolePageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_role.RoleResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "管理员"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "系统管理员角色"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_role.RoleUserPageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/internal_modules_role.RoleUserResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_role.RoleUserResponse": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "zhangsan@example.com"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "example": "张三"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138000"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "zhangsan"
+                }
+            }
+        },
+        "internal_modules_role.UpdateRoleRequest": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "admin"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2,
+                    "example": "管理员"
+                },
+                "remark": {
+                    "type": "string",
+                    "example": "系统管理员角色"
+                },
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_user.BatchDeleteRequest": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
                 }
             }
         },
@@ -501,31 +4529,57 @@ const docTemplate = `{
                 "username"
             ],
             "properties": {
+                "dept_id": {
+                    "type": "integer",
+                    "example": 1
+                },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "zhangsan@example.com"
                 },
                 "name": {
                     "type": "string",
                     "maxLength": 50,
-                    "minLength": 2
+                    "minLength": 2,
+                    "example": "张三"
                 },
                 "password": {
                     "type": "string",
-                    "minLength": 6
+                    "minLength": 6,
+                    "example": "Admin123!"
                 },
                 "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "13800138000"
                 },
                 "role_ids": {
                     "type": "array",
                     "items": {
                         "type": "integer"
-                    }
+                    },
+                    "example": [
+                        1,
+                        2
+                    ]
                 },
                 "username": {
                     "type": "string",
                     "maxLength": 50,
-                    "minLength": 3
+                    "minLength": 3,
+                    "example": "zhangsan"
+                }
+            }
+        },
+        "internal_modules_user.ResetPasswordRequest": {
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "minLength": 6,
+                    "example": "NewPass123!"
                 }
             }
         },
@@ -533,13 +4587,66 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "code": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "admin"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "管理员"
+                }
+            }
+        },
+        "internal_modules_user.UpdateStatusRequest": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1
+                    ],
+                    "example": 1
+                }
+            }
+        },
+        "internal_modules_user.UpdateUserRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "name"
+            ],
+            "properties": {
+                "dept_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "email": {
+                    "type": "string",
+                    "example": "zhangsan@example.com"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 2,
+                    "example": "张三"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13800138000"
+                },
+                "role_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2
+                    ]
                 }
             }
         },
@@ -553,13 +4660,16 @@ const docTemplate = `{
                     }
                 },
                 "page": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "page_size": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 10
                 },
                 "total": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         },
@@ -567,19 +4677,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "created_at": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2026-04-11T12:00:00Z"
+                },
+                "dept_id": {
+                    "type": "integer",
+                    "example": 1
                 },
                 "email": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "zhangsan@example.com"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "张三"
                 },
                 "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "13800138000"
                 },
                 "roles": {
                     "type": "array",
@@ -588,17 +4707,19 @@ const docTemplate = `{
                     }
                 },
                 "status": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "zhangsan"
                 }
             }
         }
     },
     "securityDefinitions": {
         "BearerAuth": {
-            "description": "格式: Bearer \u003ctoken\u003e",
+            "description": "请填写 Bearer Token，格式为：Bearer \u003ctoken\u003e",
             "type": "apiKey",
             "name": "Authorization",
             "in": "header"
@@ -612,8 +4733,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "Go Server API",
-	Description:      "企业级后台管理系统 API",
+	Title:            "Go Server 后台管理 API",
+	Description:      "企业级后台管理系统接口文档，覆盖认证、用户、角色、菜单、部门、字典和审计等业务模块。",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

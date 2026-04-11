@@ -22,9 +22,10 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 // Generate godoc
 //
 //	@Summary		获取图形验证码
-//	@Tags			Auth
+//	@Description	生成登录验证码，返回验证码 ID 和图片内容。
+//	@Tags			认证授权
 //	@Produce		json
-//	@Success		200	{object}	response.Body{data=GenerateResponse}
+//	@Success		200		{object}	response.Body{data=GenerateResponse}
 //	@Router			/auth/captcha [get]
 func (h *Handler) Generate(c *gin.Context) {
 	res, err := h.svc.Generate()

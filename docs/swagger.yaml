@@ -10,15 +10,132 @@ definitions:
       request_id:
         type: string
     type: object
+  internal_modules_audit.LoginLogPageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_audit.LoginLogResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_audit.LoginLogResponse:
+    properties:
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      fail_reason:
+        example: ""
+        type: string
+      id:
+        example: 1
+        type: integer
+      ip:
+        example: 127.0.0.1
+        type: string
+      region:
+        example: 上海
+        type: string
+      request_id:
+        example: 20260411122824-2d95416e434d
+        type: string
+      success:
+        example: true
+        type: boolean
+      user_agent:
+        example: Mozilla/5.0
+        type: string
+      user_id:
+        example: 1
+        type: integer
+      username:
+        example: admin
+        type: string
+    type: object
+  internal_modules_audit.OperationLogPageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_audit.OperationLogResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_audit.OperationLogResponse:
+    properties:
+      action:
+        example: 用户登录
+        type: string
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      error_message:
+        example: ""
+        type: string
+      id:
+        example: 1
+        type: integer
+      ip:
+        example: 127.0.0.1
+        type: string
+      latency_ms:
+        example: 12
+        type: integer
+      method:
+        example: POST
+        type: string
+      module:
+        example: 认证授权
+        type: string
+      path:
+        example: /api/v1/auth/login
+        type: string
+      request_body:
+        example: '{"username":"admin"}'
+        type: string
+      request_id:
+        example: 20260411122824-2d95416e434d
+        type: string
+      result:
+        example: success
+        type: string
+      status_code:
+        example: 200
+        type: integer
+      user_id:
+        example: 1
+        type: integer
+      username:
+        example: admin
+        type: string
+    type: object
   internal_modules_auth.LoginRequest:
     properties:
       captcha_code:
+        example: "1234"
         type: string
       captcha_id:
+        example: captcha-8f3a2c1d
         type: string
       password:
+        example: admin123
         type: string
       username:
+        example: admin
         type: string
     required:
     - captcha_code
@@ -29,6 +146,7 @@ definitions:
   internal_modules_auth.LogoutRequest:
     properties:
       access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token
         type: string
     required:
     - access_token
@@ -36,6 +154,7 @@ definitions:
   internal_modules_auth.RefreshRequest:
     properties:
       refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token
         type: string
     required:
     - refresh_token
@@ -43,35 +162,783 @@ definitions:
   internal_modules_auth.TokenResponse:
     properties:
       access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token
         type: string
       refresh_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token
         type: string
     type: object
   internal_modules_captcha.GenerateResponse:
     properties:
       captcha_id:
+        example: captcha-8f3a2c1d
         type: string
       image_base64:
+        example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...
         type: string
+    type: object
+  internal_modules_dept.CreateDeptRequest:
+    properties:
+      email:
+        example: rd@example.com
+        type: string
+      leader:
+        example: 李经理
+        type: string
+      name:
+        example: 研发部
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      phone:
+        example: "13800138001"
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - name
+    type: object
+  internal_modules_dept.DeptResponse:
+    properties:
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      email:
+        example: rd@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      leader:
+        example: 李经理
+        type: string
+      name:
+        example: 研发部
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      phone:
+        example: "13800138001"
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_dept.DeptTreeNode:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/internal_modules_dept.DeptTreeNode'
+        type: array
+      email:
+        example: rd@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      leader:
+        example: 李经理
+        type: string
+      name:
+        example: 研发部
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      phone:
+        example: "13800138001"
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_dept.DeptUserPageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_dept.DeptUserResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_dept.DeptUserResponse:
+    properties:
+      email:
+        example: zhangsan@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 张三
+        type: string
+      phone:
+        example: "13800138000"
+        type: string
+      status:
+        example: 1
+        type: integer
+      username:
+        example: zhangsan
+        type: string
+    type: object
+  internal_modules_dept.UpdateDeptRequest:
+    properties:
+      email:
+        example: rd@example.com
+        type: string
+      leader:
+        example: 李经理
+        type: string
+      name:
+        example: 研发部
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      phone:
+        example: "13800138001"
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - name
+    type: object
+  internal_modules_dict.CreateDictDataRequest:
+    properties:
+      label:
+        example: 启用
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        example: 启用状态
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      type_id:
+        example: 1
+        type: integer
+      value:
+        example: "1"
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - label
+    - type_id
+    - value
+    type: object
+  internal_modules_dict.CreateDictTypeRequest:
+    properties:
+      code:
+        example: user_status
+        maxLength: 100
+        minLength: 1
+        type: string
+      name:
+        example: 用户状态
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        example: 用户启用禁用状态
+        type: string
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - code
+    - name
+    type: object
+  internal_modules_dict.DictDataResponse:
+    properties:
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      label:
+        example: 启用
+        type: string
+      remark:
+        example: 启用状态
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+      type_code:
+        example: user_status
+        type: string
+      type_id:
+        example: 1
+        type: integer
+      value:
+        example: "1"
+        type: string
+    type: object
+  internal_modules_dict.DictTypeResponse:
+    properties:
+      code:
+        example: user_status
+        type: string
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 用户状态
+        type: string
+      remark:
+        example: 用户启用禁用状态
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_dict.UpdateDictDataRequest:
+    properties:
+      label:
+        example: 启用
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        example: 启用状态
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      type_id:
+        example: 1
+        type: integer
+      value:
+        example: "1"
+        maxLength: 100
+        minLength: 1
+        type: string
+    required:
+    - label
+    - type_id
+    - value
+    type: object
+  internal_modules_dict.UpdateDictTypeRequest:
+    properties:
+      code:
+        example: user_status
+        maxLength: 100
+        minLength: 1
+        type: string
+      name:
+        example: 用户状态
+        maxLength: 100
+        minLength: 1
+        type: string
+      remark:
+        example: 用户启用禁用状态
+        type: string
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - code
+    - name
+    type: object
+  internal_modules_menu.CreateMenuRequest:
+    properties:
+      component:
+        example: /system/user/index
+        type: string
+      name:
+        example: 用户管理
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      path:
+        example: /system/user
+        type: string
+      permission:
+        example: system:user:list
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      type:
+        enum:
+        - directory
+        - menu
+        - button
+        example: menu
+        type: string
+      visible:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - name
+    - type
+    type: object
+  internal_modules_menu.MenuResponse:
+    properties:
+      component:
+        example: /system/user/index
+        type: string
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 用户管理
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      path:
+        example: /system/user
+        type: string
+      permission:
+        example: system:user:list
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+      type:
+        example: menu
+        type: string
+      visible:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_menu.MenuSortItem:
+    properties:
+      id:
+        example: 1
+        type: integer
+      sort:
+        example: 10
+        type: integer
+    required:
+    - id
+    type: object
+  internal_modules_menu.MenuTreeNode:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+        type: array
+      component:
+        example: /system/index
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 系统管理
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      path:
+        example: /system
+        type: string
+      permission:
+        example: system:user:list
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+      type:
+        example: directory
+        type: string
+      visible:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_menu.UpdateMenuRequest:
+    properties:
+      component:
+        example: /system/user/index
+        type: string
+      name:
+        example: 用户管理
+        maxLength: 100
+        minLength: 1
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      path:
+        example: /system/user
+        type: string
+      permission:
+        example: system:user:list
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+      type:
+        enum:
+        - directory
+        - menu
+        - button
+        example: menu
+        type: string
+      visible:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - name
+    - type
+    type: object
+  internal_modules_menu.UpdateMenuSortsRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_menu.MenuSortItem'
+        minItems: 1
+        type: array
+    required:
+    - items
+    type: object
+  internal_modules_role.APIPermission:
+    properties:
+      method:
+        example: GET
+        type: string
+      path:
+        example: /api/v1/system/users
+        type: string
+    required:
+    - method
+    - path
+    type: object
+  internal_modules_role.AssignAPIsRequest:
+    properties:
+      permissions:
+        items:
+          $ref: '#/definitions/internal_modules_role.APIPermission'
+        type: array
+    type: object
+  internal_modules_role.AssignMenusRequest:
+    properties:
+      menu_ids:
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        type: array
+    type: object
+  internal_modules_role.CreateRoleRequest:
+    properties:
+      code:
+        example: admin
+        maxLength: 50
+        minLength: 2
+        type: string
+      name:
+        example: 管理员
+        maxLength: 50
+        minLength: 2
+        type: string
+      remark:
+        example: 系统管理员角色
+        type: string
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - code
+    - name
+    type: object
+  internal_modules_role.MenuTreeNode:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/internal_modules_role.MenuTreeNode'
+        type: array
+      component:
+        example: /system/index
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 系统管理
+        type: string
+      parent_id:
+        example: 0
+        type: integer
+      path:
+        example: /system
+        type: string
+      permission:
+        example: system:user:list
+        type: string
+      sort:
+        example: 1
+        type: integer
+      status:
+        example: 1
+        type: integer
+      type:
+        example: directory
+        type: string
+      visible:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_role.RoleAPIsResponse:
+    properties:
+      permissions:
+        items:
+          $ref: '#/definitions/internal_modules_role.APIPermission'
+        type: array
+    type: object
+  internal_modules_role.RoleMenusResponse:
+    properties:
+      checked_ids:
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        type: array
+      menus:
+        items:
+          $ref: '#/definitions/internal_modules_role.MenuTreeNode'
+        type: array
+    type: object
+  internal_modules_role.RolePageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_role.RoleResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_role.RoleResponse:
+    properties:
+      code:
+        example: admin
+        type: string
+      created_at:
+        example: "2026-04-11T12:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 管理员
+        type: string
+      remark:
+        example: 系统管理员角色
+        type: string
+      status:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_role.RoleUserPageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/internal_modules_role.RoleUserResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  internal_modules_role.RoleUserResponse:
+    properties:
+      email:
+        example: zhangsan@example.com
+        type: string
+      id:
+        example: 1
+        type: integer
+      name:
+        example: 张三
+        type: string
+      phone:
+        example: "13800138000"
+        type: string
+      status:
+        example: 1
+        type: integer
+      username:
+        example: zhangsan
+        type: string
+    type: object
+  internal_modules_role.UpdateRoleRequest:
+    properties:
+      code:
+        example: admin
+        type: string
+      name:
+        example: 管理员
+        maxLength: 50
+        minLength: 2
+        type: string
+      remark:
+        example: 系统管理员角色
+        type: string
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    required:
+    - name
+    type: object
+  internal_modules_user.BatchDeleteRequest:
+    properties:
+      ids:
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        minItems: 1
+        type: array
+    required:
+    - ids
     type: object
   internal_modules_user.CreateUserRequest:
     properties:
+      dept_id:
+        example: 1
+        type: integer
       email:
+        example: zhangsan@example.com
         type: string
       name:
+        example: 张三
         maxLength: 50
         minLength: 2
         type: string
       password:
+        example: Admin123!
         minLength: 6
         type: string
       phone:
+        example: "13800138000"
         type: string
       role_ids:
+        example:
+        - 1
+        - 2
         items:
           type: integer
         type: array
       username:
+        example: zhangsan
         maxLength: 50
         minLength: 3
         type: string
@@ -81,14 +948,62 @@ definitions:
     - password
     - username
     type: object
+  internal_modules_user.ResetPasswordRequest:
+    properties:
+      password:
+        example: NewPass123!
+        minLength: 6
+        type: string
+    required:
+    - password
+    type: object
   internal_modules_user.RoleInfo:
     properties:
       code:
+        example: admin
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: 管理员
         type: string
+    type: object
+  internal_modules_user.UpdateStatusRequest:
+    properties:
+      status:
+        enum:
+        - 0
+        - 1
+        example: 1
+        type: integer
+    type: object
+  internal_modules_user.UpdateUserRequest:
+    properties:
+      dept_id:
+        example: 1
+        type: integer
+      email:
+        example: zhangsan@example.com
+        type: string
+      name:
+        example: 张三
+        maxLength: 50
+        minLength: 2
+        type: string
+      phone:
+        example: "13800138000"
+        type: string
+      role_ids:
+        example:
+        - 1
+        - 2
+        items:
+          type: integer
+        type: array
+    required:
+    - email
+    - name
     type: object
   internal_modules_user.UserPageResult:
     properties:
@@ -97,42 +1012,56 @@ definitions:
           $ref: '#/definitions/internal_modules_user.UserResponse'
         type: array
       page:
+        example: 1
         type: integer
       page_size:
+        example: 10
         type: integer
       total:
+        example: 1
         type: integer
     type: object
   internal_modules_user.UserResponse:
     properties:
       created_at:
+        example: "2026-04-11T12:00:00Z"
         type: string
+      dept_id:
+        example: 1
+        type: integer
       email:
+        example: zhangsan@example.com
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: 张三
         type: string
       phone:
+        example: "13800138000"
         type: string
       roles:
         items:
           $ref: '#/definitions/internal_modules_user.RoleInfo'
         type: array
       status:
+        example: 1
         type: integer
       username:
+        example: zhangsan
         type: string
     type: object
 host: localhost:8080
 info:
   contact: {}
-  description: 企业级后台管理系统 API
-  title: Go Server API
+  description: 企业级后台管理系统接口文档，覆盖认证、用户、角色、菜单、部门、字典和审计等业务模块。
+  title: Go Server 后台管理 API
   version: "1.0"
 paths:
   /auth/captcha:
     get:
+      description: 生成登录验证码，返回验证码 ID 和图片内容。
       produces:
       - application/json
       responses:
@@ -147,13 +1076,14 @@ paths:
               type: object
       summary: 获取图形验证码
       tags:
-      - Auth
+      - 认证授权
   /auth/login:
     post:
       consumes:
       - application/json
+      description: 使用用户名、密码和验证码完成登录，成功后返回 access_token 和 refresh_token。
       parameters:
-      - description: 登录信息
+      - description: 登录请求参数
         in: body
         name: body
         required: true
@@ -181,13 +1111,14 @@ paths:
             $ref: '#/definitions/go-server_internal_response.Body'
       summary: 用户登录
       tags:
-      - Auth
+      - 认证授权
   /auth/logout:
     post:
       consumes:
       - application/json
+      description: 将当前 access_token 加入黑名单，使其立即失效。
       parameters:
-      - description: access_token
+      - description: 登出请求参数
         in: body
         name: body
         required: true
@@ -208,13 +1139,14 @@ paths:
       - BearerAuth: []
       summary: 用户登出
       tags:
-      - Auth
+      - 认证授权
   /auth/refresh:
     post:
       consumes:
       - application/json
+      description: 使用 refresh_token 换取一组新的 access_token 和 refresh_token。
       parameters:
-      - description: refresh_token
+      - description: 刷新令牌请求参数
         in: body
         name: body
         required: true
@@ -236,29 +1168,1479 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/go-server_internal_response.Body'
-      summary: 刷新 Token
+      summary: 刷新令牌
       tags:
-      - Auth
-  /system/users:
+      - 认证授权
+  /health:
     get:
+      description: 用于确认服务是否正常启动并可对外提供请求处理能力。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties: true
+                  type: object
+              type: object
+      summary: 服务健康检查
+      tags:
+      - 健康检查
+  /system/audits/login-logs:
+    get:
+      description: 按用户名、IP、登录结果和时间范围筛选登录日志。
       parameters:
-      - description: 页码（默认1）
+      - description: 页码
         in: query
         name: page
         type: integer
-      - description: 每页条数（默认10，最大100）
+      - description: 每页条数
         in: query
         name: page_size
         type: integer
-      - description: 用户名（模糊）
+      - description: 用户名
         in: query
         name: username
         type: string
-      - description: 姓名（模糊）
+      - description: IP 地址
+        in: query
+        name: ip
+        type: string
+      - description: 登录是否成功
+        in: query
+        name: success
+        type: boolean
+      - description: 开始时间
+        in: query
+        name: start_time
+        type: string
+      - description: 结束时间
+        in: query
+        name: end_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_audit.LoginLogPageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询登录日志
+      tags:
+      - 审计日志
+  /system/audits/operation-logs:
+    get:
+      description: 按用户名、请求方法、路径、状态码和时间范围筛选操作日志。
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      - description: 请求方法
+        in: query
+        name: method
+        type: string
+      - description: 请求路径
+        in: query
+        name: path
+        type: string
+      - description: 响应状态码
+        in: query
+        name: status
+        type: integer
+      - description: 开始时间
+        in: query
+        name: start_time
+        type: string
+      - description: 结束时间
+        in: query
+        name: end_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_audit.OperationLogPageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询操作日志
+      tags:
+      - 审计日志
+  /system/depts:
+    get:
+      description: 返回完整部门树结构，常用于组织架构管理页面。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_dept.DeptTreeNode'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询部门树
+      tags:
+      - 部门管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的部门节点，可指定上级部门。
+      parameters:
+      - description: 部门创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dept.CreateDeptRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建部门
+      tags:
+      - 部门管理
+  /system/depts/{id}:
+    delete:
+      description: 根据部门 ID 删除部门节点。
+      parameters:
+      - description: 部门 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除部门
+      tags:
+      - 部门管理
+    get:
+      description: 根据部门 ID 查询部门详细信息。
+      parameters:
+      - description: 部门 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取部门详情
+      tags:
+      - 部门管理
+    put:
+      consumes:
+      - application/json
+      description: 修改部门名称、负责人、联系方式、排序和状态等信息。
+      parameters:
+      - description: 部门 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 部门更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dept.UpdateDeptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新部门
+      tags:
+      - 部门管理
+  /system/depts/{id}/users:
+    get:
+      description: 分页查询归属于指定部门的用户。
+      parameters:
+      - description: 部门 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dept.DeptUserPageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询部门下的用户列表
+      tags:
+      - 部门管理
+  /system/dicts/items:
+    get:
+      description: 按字典类型、标签、状态等条件筛选字典数据项。
+      parameters:
+      - description: 字典类型 ID
+        in: query
+        name: type_id
+        type: integer
+      - description: 字典类型编码
+        in: query
+        name: type_code
+        type: string
+      - description: 字典标签
+        in: query
+        name: label
+        type: string
+      - description: 状态：0 禁用，1 启用
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询字典数据列表
+      tags:
+      - 字典管理
+    post:
+      consumes:
+      - application/json
+      description: 在指定字典类型下新增一个字典数据项。
+      parameters:
+      - description: 字典数据创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dict.CreateDictDataRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建字典数据
+      tags:
+      - 字典管理
+  /system/dicts/items/{id}:
+    delete:
+      description: 根据字典数据 ID 删除字典数据项。
+      parameters:
+      - description: 字典数据 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除字典数据
+      tags:
+      - 字典管理
+    get:
+      description: 根据字典数据 ID 查询详细信息。
+      parameters:
+      - description: 字典数据 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取字典数据详情
+      tags:
+      - 字典管理
+    put:
+      consumes:
+      - application/json
+      description: 修改字典数据项的标签、值、排序、状态和备注。
+      parameters:
+      - description: 字典数据 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 字典数据更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dict.UpdateDictDataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新字典数据
+      tags:
+      - 字典管理
+  /system/dicts/lookup/{code}:
+    get:
+      description: 根据字典类型编码返回对应的可用字典数据项。
+      parameters:
+      - description: 字典类型编码
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 按类型编码查询字典数据
+      tags:
+      - 字典管理
+  /system/dicts/types:
+    get:
+      description: 按名称或编码筛选字典类型。
+      parameters:
+      - description: 字典类型名称
         in: query
         name: name
         type: string
-      - description: 状态 1=启用 0=禁用
+      - description: 字典类型编码
+        in: query
+        name: code
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+                  type: array
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询字典类型列表
+      tags:
+      - 字典管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的字典类型，用于归类字典数据项。
+      parameters:
+      - description: 字典类型创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dict.CreateDictTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建字典类型
+      tags:
+      - 字典管理
+  /system/dicts/types/{id}:
+    delete:
+      description: 根据字典类型 ID 删除字典类型。
+      parameters:
+      - description: 字典类型 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除字典类型
+      tags:
+      - 字典管理
+    get:
+      description: 根据字典类型 ID 查询详细信息。
+      parameters:
+      - description: 字典类型 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取字典类型详情
+      tags:
+      - 字典管理
+    put:
+      consumes:
+      - application/json
+      description: 修改字典类型的名称、编码、备注和状态。
+      parameters:
+      - description: 字典类型 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 字典类型更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_dict.UpdateDictTypeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新字典类型
+      tags:
+      - 字典管理
+  /system/menus:
+    get:
+      description: 返回完整菜单树，常用于菜单管理页面展示。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询菜单树
+      tags:
+      - 菜单管理
+    post:
+      consumes:
+      - application/json
+      description: 创建目录、菜单或按钮类型的权限节点。
+      parameters:
+      - description: 菜单创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_menu.CreateMenuRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建菜单
+      tags:
+      - 菜单管理
+  /system/menus/{id}:
+    delete:
+      description: 根据菜单 ID 删除菜单节点。
+      parameters:
+      - description: 菜单 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除菜单
+      tags:
+      - 菜单管理
+    get:
+      description: 根据菜单 ID 查询菜单详情。
+      parameters:
+      - description: 菜单 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取菜单详情
+      tags:
+      - 菜单管理
+    put:
+      consumes:
+      - application/json
+      description: 修改菜单节点的名称、路径、组件、权限标识和显示状态等信息。
+      parameters:
+      - description: 菜单 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 菜单更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_menu.UpdateMenuRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新菜单
+      tags:
+      - 菜单管理
+  /system/menus/current:
+    get:
+      description: 根据当前登录用户的权限返回可见菜单树。
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+                  type: array
+              type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询当前用户菜单
+      tags:
+      - 菜单管理
+  /system/menus/sort:
+    put:
+      consumes:
+      - application/json
+      description: 批量更新多个菜单节点的排序值。
+      parameters:
+      - description: 菜单排序更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_menu.UpdateMenuSortsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新菜单排序
+      tags:
+      - 菜单管理
+  /system/roles:
+    get:
+      description: 按角色名称、编码、状态等条件筛选角色，并返回分页结果。
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 角色名称
+        in: query
+        name: name
+        type: string
+      - description: 角色编码
+        in: query
+        name: code
+        type: string
+      - description: 状态：0 禁用，1 启用
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RolePageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 分页查询角色列表
+      tags:
+      - 角色管理
+    post:
+      consumes:
+      - application/json
+      description: 创建新的角色，并设置基础信息和启用状态。
+      parameters:
+      - description: 角色创建参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_role.CreateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 创建角色
+      tags:
+      - 角色管理
+  /system/roles/{id}:
+    delete:
+      description: 根据角色 ID 删除角色。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除角色
+      tags:
+      - 角色管理
+    get:
+      description: 根据角色 ID 查询角色详细信息。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取角色详情
+      tags:
+      - 角色管理
+    put:
+      consumes:
+      - application/json
+      description: 修改角色名称、编码、备注和状态等信息。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 角色更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_role.UpdateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新角色信息
+      tags:
+      - 角色管理
+  /system/roles/{id}/apis:
+    get:
+      description: 查询角色当前拥有的接口访问权限。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleAPIsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取角色接口权限
+      tags:
+      - 角色管理
+    put:
+      consumes:
+      - application/json
+      description: 为角色分配接口访问权限。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 接口权限列表
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_role.AssignAPIsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新角色接口权限
+      tags:
+      - 角色管理
+  /system/roles/{id}/menus:
+    get:
+      description: 查询角色已勾选的菜单 ID 及完整菜单树结构。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleMenusResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 获取角色菜单权限
+      tags:
+      - 角色管理
+    put:
+      consumes:
+      - application/json
+      description: 为角色分配菜单权限。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 菜单 ID 列表
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_role.AssignMenusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新角色菜单权限
+      tags:
+      - 角色管理
+  /system/roles/{id}/users:
+    get:
+      description: 分页查询绑定到指定角色的用户。
+      parameters:
+      - description: 角色 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_role.RoleUserPageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询角色下的用户列表
+      tags:
+      - 角色管理
+  /system/users:
+    get:
+      description: 按用户名、姓名、状态等条件筛选用户，并返回分页结果。
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      - description: 姓名
+        in: query
+        name: name
+        type: string
+      - description: 状态：0 禁用，1 启用
         in: query
         name: status
         type: integer
@@ -274,16 +2656,25 @@ paths:
                 data:
                   $ref: '#/definitions/internal_modules_user.UserPageResult'
               type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
       security:
       - BearerAuth: []
-      summary: 用户列表（分页+搜索+筛选）
+      summary: 分页查询用户列表
       tags:
-      - Users
+      - 用户管理
     post:
       consumes:
       - application/json
+      description: 创建一个新的系统用户，并绑定部门和角色信息。
       parameters:
-      - description: 用户信息，role_ids 为角色ID列表（可选）
+      - description: 用户创建参数
         in: body
         name: body
         required: true
@@ -305,15 +2696,20 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
       security:
       - BearerAuth: []
-      summary: 新增用户（含角色分配）
+      summary: 创建用户
       tags:
-      - Users
+      - 用户管理
   /system/users/{id}:
     delete:
+      description: 根据用户 ID 删除单个用户。
       parameters:
-      - description: 用户ID
+      - description: 用户 ID
         in: path
         name: id
         required: true
@@ -324,6 +2720,21 @@ paths:
         "200":
           description: OK
           schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
             $ref: '#/definitions/go-server_internal_response.Body'
         "404":
           description: Not Found
@@ -333,10 +2744,11 @@ paths:
       - BearerAuth: []
       summary: 删除用户
       tags:
-      - Users
+      - 用户管理
     get:
+      description: 根据用户 ID 查询单个用户的详细信息。
       parameters:
-      - description: 用户ID
+      - description: 用户 ID
         in: path
         name: id
         required: true
@@ -353,6 +2765,14 @@ paths:
                 data:
                   $ref: '#/definitions/internal_modules_user.UserResponse'
               type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
         "404":
           description: Not Found
           schema:
@@ -361,10 +2781,232 @@ paths:
       - BearerAuth: []
       summary: 获取用户详情
       tags:
-      - Users
+      - 用户管理
+    put:
+      consumes:
+      - application/json
+      description: 修改用户基础资料、所属部门和角色信息。
+      parameters:
+      - description: 用户 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_user.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_user.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 更新用户信息
+      tags:
+      - 用户管理
+  /system/users/{id}/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: 为指定用户重置登录密码。
+      parameters:
+      - description: 用户 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 密码重置参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_user.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 重置用户密码
+      tags:
+      - 用户管理
+  /system/users/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: 启用或禁用指定用户账号。
+      parameters:
+      - description: 用户 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 状态更新参数
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_user.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/internal_modules_user.UserResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 修改用户状态
+      tags:
+      - 用户管理
+  /system/users/batch-delete:
+    post:
+      consumes:
+      - application/json
+      description: 根据用户 ID 列表一次性删除多个用户。
+      parameters:
+      - description: 待删除的用户 ID 列表
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/internal_modules_user.BatchDeleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/go-server_internal_response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 批量删除用户
+      tags:
+      - 用户管理
+  /system/users/export:
+    get:
+      description: 按照筛选条件导出用户数据，返回 Excel 文件。
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 用户名
+        in: query
+        name: username
+        type: string
+      - description: 姓名
+        in: query
+        name: name
+        type: string
+      - description: 状态：0 禁用，1 启用
+        in: query
+        name: status
+        type: integer
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/go-server_internal_response.Body'
+      security:
+      - BearerAuth: []
+      summary: 导出用户列表
+      tags:
+      - 用户管理
 securityDefinitions:
   BearerAuth:
-    description: '格式: Bearer <token>'
+    description: 请填写 Bearer Token，格式为：Bearer <token>
     in: header
     name: Authorization
     type: apiKey

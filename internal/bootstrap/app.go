@@ -1,14 +1,17 @@
 package bootstrap
 
 import (
+	"context"
 	"net/http"
 	"strings"
+	"time"
 
 	appcasbin "go-server/internal/casbin"
 	"go-server/internal/config"
 	"go-server/internal/db"
 	appjwt "go-server/internal/jwt"
 	"go-server/internal/logger"
+	"go-server/internal/modules/audit"
 	appredis "go-server/internal/redis"
 	"go-server/internal/router"
 
@@ -76,7 +79,22 @@ func Run() error {
 		logger.L().Fatal("casbin init failed", zap.Error(err))
 	}
 
-	engine := router.New(cfg, gormDB, redisClient, jwtManager, jwtBlacklist, casbinEnforcer)
+	var auditSvc audit.Service
+	if cfg.Audit.Enabled {
+		var auditRepo audit.Repository
+		if gormDB != nil {
+			auditRepo = audit.NewGORMRepository(gormDB)
+		} else {
+			auditRepo = audit.NewInMemoryRepository()
+		}
+		auditSvc = audit.NewService(auditRepo, cfg.Audit.RegionFallback)
+	}
+
+	if auditSvc != nil && cfg.Audit.RetentionDays > 0 && cfg.Audit.CleanupInterval > 0 {
+		go startAuditCleanup(context.Background(), auditSvc, cfg.Audit)
+	}
+
+	engine := router.New(cfg, gormDB, redisClient, jwtManager, jwtBlacklist, casbinEnforcer, auditSvc)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),
@@ -91,4 +109,21 @@ func Run() error {
 		zap.String("env", cfg.Env),
 	)
 	return srv.ListenAndServe()
+}
+
+func startAuditCleanup(ctx context.Context, auditSvc audit.Service, cfg config.AuditConfig) {
+	ticker := time.NewTicker(cfg.CleanupInterval)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-ticker.C:
+			before := time.Now().UTC().AddDate(0, 0, -cfg.RetentionDays)
+			if err := auditSvc.CleanupExpired(ctx, before); err != nil {
+				logger.L().Warn("audit cleanup failed", zap.Error(err))
+			}
+		case <-ctx.Done():
+			return
+		}
+	}
 }

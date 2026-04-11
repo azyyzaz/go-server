@@ -5,6 +5,7 @@ import (
 
 	"go-server/internal/errcode"
 	appjwt "go-server/internal/jwt"
+	"go-server/internal/modules/audit"
 	"go-server/internal/modules/captcha"
 	"go-server/internal/modules/user"
 
@@ -22,26 +23,31 @@ type service struct {
 	jwtManager *appjwt.Manager
 	blacklist  *appjwt.Blacklist
 	captchaSvc captcha.Service
+	auditSvc   audit.Service
 }
 
-func NewService(userSvc user.Service, jwtManager *appjwt.Manager, blacklist *appjwt.Blacklist, captchaSvc captcha.Service) Service {
-	return &service{userSvc: userSvc, jwtManager: jwtManager, blacklist: blacklist, captchaSvc: captchaSvc}
+func NewService(userSvc user.Service, jwtManager *appjwt.Manager, blacklist *appjwt.Blacklist, captchaSvc captcha.Service, auditSvc audit.Service) Service {
+	return &service{userSvc: userSvc, jwtManager: jwtManager, blacklist: blacklist, captchaSvc: captchaSvc, auditSvc: auditSvc}
 }
 
 func (s *service) Login(ctx context.Context, req LoginRequest) (TokenResponse, error) {
 	if !s.captchaSvc.Verify(req.CaptchaID, req.CaptchaCode) {
+		s.recordLogin(ctx, nil, req.Username, false, errcode.ErrCaptchaInvalid.AsError().Message)
 		return TokenResponse{}, errcode.ErrCaptchaInvalid.AsError()
 	}
 
 	u, err := s.userSvc.GetByUsername(ctx, req.Username)
 	if err != nil {
+		s.recordLogin(ctx, nil, req.Username, false, errcode.ErrInvalidCredentials.AsError().Message)
 		return TokenResponse{}, errcode.ErrInvalidCredentials.AsError()
 	}
 	if u.Status == 0 {
+		s.recordLogin(ctx, &u.ID, u.Username, false, errcode.ErrUserDisabled.AsError().Message)
 		return TokenResponse{}, errcode.ErrUserDisabled.AsError()
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(req.Password)); err != nil {
+		s.recordLogin(ctx, &u.ID, u.Username, false, errcode.ErrInvalidCredentials.AsError().Message)
 		return TokenResponse{}, errcode.ErrInvalidCredentials.AsError()
 	}
 
@@ -55,6 +61,7 @@ func (s *service) Login(ctx context.Context, req LoginRequest) (TokenResponse, e
 		return TokenResponse{}, errcode.ErrInternalError.AsError()
 	}
 
+	s.recordLogin(ctx, &u.ID, u.Username, true, "")
 	return TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
@@ -96,4 +103,20 @@ func (s *service) RefreshToken(ctx context.Context, refreshToken string) (TokenR
 		return TokenResponse{}, errcode.ErrInternalError.AsError()
 	}
 	return TokenResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
+}
+
+func (s *service) recordLogin(ctx context.Context, userID *uint, username string, success bool, failReason string) {
+	if s.auditSvc == nil {
+		return
+	}
+	meta := audit.LoginMetaFromContext(ctx)
+	_ = s.auditSvc.RecordLogin(ctx, audit.LoginLogEntry{
+		RequestID:  meta.RequestID,
+		UserID:     userID,
+		Username:   username,
+		IP:         meta.IP,
+		UserAgent:  meta.UserAgent,
+		Success:    success,
+		FailReason: failReason,
+	})
 }

@@ -15,6 +15,7 @@ type Config struct {
 	DB      DBConfig
 	Redis   RedisConfig
 	Log     LogConfig
+	Audit   AuditConfig
 	JWT     JWTConfig
 }
 
@@ -57,6 +58,13 @@ type LogConfig struct {
 	Compress   bool
 }
 
+type AuditConfig struct {
+	Enabled         bool
+	RetentionDays   int
+	CleanupInterval time.Duration
+	RegionFallback  string
+}
+
 func (c HTTPConfig) Addr() string {
 	return c.Host + ":" + c.Port
 }
@@ -93,6 +101,12 @@ func Load() Config {
 			MaxBackups: viper.GetInt("log.maxBackups"),
 			MaxAgeDays: viper.GetInt("log.maxAgeDays"),
 			Compress:   viper.GetBool("log.compress"),
+		},
+		Audit: AuditConfig{
+			Enabled:         viper.GetBool("audit.enabled"),
+			RetentionDays:   viper.GetInt("audit.retentionDays"),
+			CleanupInterval: viper.GetDuration("audit.cleanupInterval"),
+			RegionFallback:  viper.GetString("audit.regionFallback"),
 		},
 		JWT: JWTConfig{
 			Secret:          viper.GetString("jwt.secret"),

@@ -31,6 +31,12 @@ log:
   maxAgeDays: 30
   compress: false
 
+audit:
+  enabled: true
+  retentionDays: 30
+  cleanupInterval: "24h"
+  regionFallback: "未知"
+
 jwt:
   secret: "change-me-in-production"
   accessTokenTTL: "24h"
