@@ -35,6 +35,10 @@ func NewManager(secret string, accessTTL, refreshTTL time.Duration) *Manager {
 	}
 }
 
+func (m *Manager) RefreshTTL() time.Duration {
+	return m.refreshTokenTTL
+}
+
 func (m *Manager) GenerateAccessToken(userID uint, username string) (string, error) {
 	return m.generate(userID, username, AccessToken, m.accessTokenTTL)
 }

@@ -48,6 +48,7 @@ func TestLoginReturnsDisabledErrorForDisabledUser(t *testing.T) {
 		nil,
 		captchaStub{ok: true},
 		nil,
+		nil,
 	)
 
 	_, err = svc.Login(context.Background(), LoginRequest{
@@ -88,6 +89,7 @@ func TestLoginWritesAuditLog(t *testing.T) {
 		nil,
 		captchaStub{ok: true},
 		auditSvc,
+		nil,
 	)
 
 	ctx := audit.WithLoginMeta(context.Background(), audit.LoginMeta{

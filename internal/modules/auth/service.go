@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"time"
 
 	"go-server/internal/errcode"
 	appjwt "go-server/internal/jwt"
@@ -24,10 +25,18 @@ type service struct {
 	blacklist  *appjwt.Blacklist
 	captchaSvc captcha.Service
 	auditSvc   audit.Service
+	sessions   SessionTracker
 }
 
-func NewService(userSvc user.Service, jwtManager *appjwt.Manager, blacklist *appjwt.Blacklist, captchaSvc captcha.Service, auditSvc audit.Service) Service {
-	return &service{userSvc: userSvc, jwtManager: jwtManager, blacklist: blacklist, captchaSvc: captchaSvc, auditSvc: auditSvc}
+type SessionTracker interface {
+	MarkOnline(ctx context.Context, userID uint, ttl time.Duration) error
+}
+
+func NewService(userSvc user.Service, jwtManager *appjwt.Manager, blacklist *appjwt.Blacklist, captchaSvc captcha.Service, auditSvc audit.Service, sessions SessionTracker) Service {
+	if sessions == nil {
+		sessions = noopSessionTracker{}
+	}
+	return &service{userSvc: userSvc, jwtManager: jwtManager, blacklist: blacklist, captchaSvc: captchaSvc, auditSvc: auditSvc, sessions: sessions}
 }
 
 func (s *service) Login(ctx context.Context, req LoginRequest) (TokenResponse, error) {
@@ -62,6 +71,7 @@ func (s *service) Login(ctx context.Context, req LoginRequest) (TokenResponse, e
 	}
 
 	s.recordLogin(ctx, &u.ID, u.Username, true, "")
+	_ = s.sessions.MarkOnline(ctx, u.ID, s.jwtManager.RefreshTTL())
 	return TokenResponse{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
@@ -102,6 +112,7 @@ func (s *service) RefreshToken(ctx context.Context, refreshToken string) (TokenR
 	if err != nil {
 		return TokenResponse{}, errcode.ErrInternalError.AsError()
 	}
+	_ = s.sessions.MarkOnline(ctx, claims.UserID, s.jwtManager.RefreshTTL())
 	return TokenResponse{AccessToken: accessToken, RefreshToken: refreshToken}, nil
 }
 
@@ -119,4 +130,10 @@ func (s *service) recordLogin(ctx context.Context, userID *uint, username string
 		Success:    success,
 		FailReason: failReason,
 	})
+}
+
+type noopSessionTracker struct{}
+
+func (noopSessionTracker) MarkOnline(context.Context, uint, time.Duration) error {
+	return nil
 }
