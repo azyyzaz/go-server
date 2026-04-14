@@ -129,6 +129,14 @@ func (r *inMemoryRepository) Update(_ context.Context, u User) (User, error) {
 	if _, ok := r.data[u.ID]; !ok {
 		return User{}, ErrUserNotFound
 	}
+	for id, existing := range r.data {
+		if id == u.ID {
+			continue
+		}
+		if existing.Username == u.Username || existing.Email == u.Email {
+			return User{}, ErrUserDuplicated
+		}
+	}
 	r.data[u.ID] = u
 	return u, nil
 }

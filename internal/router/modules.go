@@ -11,6 +11,7 @@ import (
 	"go-server/internal/modules/dict"
 	"go-server/internal/modules/health"
 	"go-server/internal/modules/menu"
+	"go-server/internal/modules/profile"
 	"go-server/internal/modules/role"
 	"go-server/internal/modules/user"
 
@@ -56,8 +57,10 @@ func registerSystemModules(api *gin.RouterGroup, deps ModuleDeps, services appSe
 	dict.NewHandler(services.dict).Register(api.Group("/system/dicts"))
 }
 
-func registerBusinessModules(api *gin.RouterGroup, _ ModuleDeps, services appServices) {
+func registerBusinessModules(api *gin.RouterGroup, deps ModuleDeps, services appServices) {
 	dashboard.NewHandler(services.dashboard).Register(api.Group("/dashboard"))
+	profileSvc := profile.NewService(services.user, deps.AuditService, "uploads/avatars")
+	profile.NewHandler(profileSvc).Register(api.Group("/profile"))
 }
 
 func buildServices(deps ModuleDeps) appServices {

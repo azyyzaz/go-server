@@ -21,6 +21,9 @@ type Service interface {
 	ListUsers(ctx context.Context) ([]UserResponse, error)
 	ListUsersPage(ctx context.Context, q ListUsersQuery) (UserPageResult, error)
 	UpdateUser(ctx context.Context, id uint, req UpdateUserRequest) (UserResponse, error)
+	UpdateProfile(ctx context.Context, id uint, req UpdateProfileRequest) (UserResponse, error)
+	UpdateAvatar(ctx context.Context, id uint, avatar string) (UserResponse, error)
+	ChangePassword(ctx context.Context, id uint, oldPassword, newPassword string) error
 	DeleteUser(ctx context.Context, id uint) error
 	DeleteUserBatch(ctx context.Context, ids []uint) error
 	UpdateUserStatus(ctx context.Context, id uint, status int8) (UserResponse, error)
@@ -168,6 +171,67 @@ func (s *service) UpdateUser(ctx context.Context, id uint, req UpdateUserRequest
 	}
 
 	return resp, nil
+}
+
+func (s *service) UpdateProfile(ctx context.Context, id uint, req UpdateProfileRequest) (UserResponse, error) {
+	u, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		if err == ErrUserNotFound {
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
+		}
+		return UserResponse{}, err
+	}
+
+	u.Name = strings.TrimSpace(req.Name)
+	u.Email = strings.ToLower(strings.TrimSpace(req.Email))
+	u.Phone = strings.TrimSpace(req.Phone)
+
+	if _, err := s.repo.Update(ctx, u); err != nil {
+		if err == ErrUserDuplicated {
+			return UserResponse{}, errcode.ErrUserEmailExists.AsError()
+		}
+		return UserResponse{}, err
+	}
+
+	return s.GetUser(ctx, id)
+}
+
+func (s *service) UpdateAvatar(ctx context.Context, id uint, avatar string) (UserResponse, error) {
+	u, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		if err == ErrUserNotFound {
+			return UserResponse{}, errcode.ErrUserNotFound.AsError()
+		}
+		return UserResponse{}, err
+	}
+
+	u.Avatar = strings.TrimSpace(avatar)
+	if _, err := s.repo.Update(ctx, u); err != nil {
+		return UserResponse{}, err
+	}
+
+	return s.GetUser(ctx, id)
+}
+
+func (s *service) ChangePassword(ctx context.Context, id uint, oldPassword, newPassword string) error {
+	u, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		if err == ErrUserNotFound {
+			return errcode.ErrUserNotFound.AsError()
+		}
+		return err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(oldPassword)); err != nil {
+		return errcode.ErrInvalidCredentials.AsError()
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return errcode.ErrInternalError.AsError()
+	}
+
+	return s.repo.UpdatePassword(ctx, id, string(hashed))
 }
 
 func (s *service) DeleteUser(ctx context.Context, id uint) error {

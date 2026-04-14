@@ -98,6 +98,9 @@ func (r *gormRepository) SetUserRoles(ctx context.Context, userID uint, roleIDs 
 func (r *gormRepository) Update(ctx context.Context, u User) (User, error) {
 	result := r.db.WithContext(ctx).Save(&u)
 	if result.Error != nil {
+		if isDuplicateError(result.Error) {
+			return User{}, ErrUserDuplicated
+		}
 		return User{}, result.Error
 	}
 	return u, nil

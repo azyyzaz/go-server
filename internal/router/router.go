@@ -64,6 +64,7 @@ func setupEngine(deps ModuleDeps) *gin.Engine {
 }
 
 func registerDocsRoutes(r *gin.Engine) {
+	r.Static("/uploads", "./uploads")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 }
 
@@ -75,5 +76,6 @@ func applyAPIMiddleware(api *gin.RouterGroup, deps ModuleDeps) {
 	api.Use(middleware.CasbinAuth(deps.CasbinEnforcer,
 		"/api/v1/auth",
 		"/api/v1/health",
+		"/api/v1/profile",
 	))
 }
