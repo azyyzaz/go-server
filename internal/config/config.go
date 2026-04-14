@@ -17,6 +17,7 @@ type Config struct {
 	Log     LogConfig
 	Audit   AuditConfig
 	JWT     JWTConfig
+	File    FileConfig
 }
 
 type JWTConfig struct {
@@ -63,6 +64,32 @@ type AuditConfig struct {
 	RetentionDays   int
 	CleanupInterval time.Duration
 	RegionFallback  string
+}
+
+type FileConfig struct {
+	Storage       string
+	MaxSizeMB     int64
+	AllowedExts   []string
+	Local         LocalFileConfig
+	MinIO         MinIOConfig
+	AvatarMaxSize int64
+}
+
+type LocalFileConfig struct {
+	BaseDir    string
+	BaseURL    string
+	AvatarDir  string
+	DateLayout string
+}
+
+type MinIOConfig struct {
+	Enabled   bool
+	Endpoint  string
+	AccessKey string
+	SecretKey string
+	Bucket    string
+	UseSSL    bool
+	BaseURL   string
 }
 
 func (c HTTPConfig) Addr() string {
@@ -112,6 +139,27 @@ func Load() Config {
 			Secret:          viper.GetString("jwt.secret"),
 			AccessTokenTTL:  viper.GetDuration("jwt.accessTokenTTL"),
 			RefreshTokenTTL: viper.GetDuration("jwt.refreshTokenTTL"),
+		},
+		File: FileConfig{
+			Storage:       viper.GetString("file.storage"),
+			MaxSizeMB:     viper.GetInt64("file.maxSizeMB"),
+			AllowedExts:   viper.GetStringSlice("file.allowedExts"),
+			AvatarMaxSize: viper.GetInt64("file.avatarMaxSizeMB"),
+			Local: LocalFileConfig{
+				BaseDir:    viper.GetString("file.local.baseDir"),
+				BaseURL:    viper.GetString("file.local.baseURL"),
+				AvatarDir:  viper.GetString("file.local.avatarDir"),
+				DateLayout: viper.GetString("file.local.dateLayout"),
+			},
+			MinIO: MinIOConfig{
+				Enabled:   viper.GetBool("file.minio.enabled"),
+				Endpoint:  viper.GetString("file.minio.endpoint"),
+				AccessKey: viper.GetString("file.minio.accessKey"),
+				SecretKey: viper.GetString("file.minio.secretKey"),
+				Bucket:    viper.GetString("file.minio.bucket"),
+				UseSSL:    viper.GetBool("file.minio.useSSL"),
+				BaseURL:   viper.GetString("file.minio.baseURL"),
+			},
 		},
 	}
 }

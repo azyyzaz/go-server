@@ -41,3 +41,36 @@ jwt:
   secret: "change-me-in-production"
   accessTokenTTL: "24h"
   refreshTokenTTL: "168h"
+
+file:
+  storage: "local"
+  maxSizeMB: 10
+  avatarMaxSizeMB: 2
+  allowedExts:
+    - ".jpg"
+    - ".jpeg"
+    - ".png"
+    - ".gif"
+    - ".webp"
+    - ".pdf"
+    - ".doc"
+    - ".docx"
+    - ".xls"
+    - ".xlsx"
+    - ".ppt"
+    - ".pptx"
+    - ".txt"
+    - ".zip"
+  local:
+    baseDir: "uploads"
+    baseURL: "/uploads"
+    avatarDir: "avatars"
+    dateLayout: "2006/01/02"
+  minio:
+    enabled: false
+    endpoint: "127.0.0.1:9000"
+    accessKey: "minioadmin"
+    secretKey: "minioadmin"
+    bucket: "go-server"
+    useSSL: false
+    baseURL: ""

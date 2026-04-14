@@ -31,13 +31,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_captcha.GenerateResponse"
+                                            "$ref": "#/definitions/captcha.GenerateResponse"
                                         }
                                     }
                                 }
@@ -67,7 +67,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_auth.LoginRequest"
+                            "$ref": "#/definitions/auth.LoginRequest"
                         }
                     }
                 ],
@@ -77,13 +77,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_auth.TokenResponse"
+                                            "$ref": "#/definitions/auth.TokenResponse"
                                         }
                                     }
                                 }
@@ -93,13 +93,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -130,7 +130,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_auth.LogoutRequest"
+                            "$ref": "#/definitions/auth.LogoutRequest"
                         }
                     }
                 ],
@@ -138,13 +138,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -170,7 +170,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_auth.RefreshRequest"
+                            "$ref": "#/definitions/auth.RefreshRequest"
                         }
                     }
                 ],
@@ -180,13 +180,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_auth.TokenResponse"
+                                            "$ref": "#/definitions/auth.TokenResponse"
                                         }
                                     }
                                 }
@@ -196,7 +196,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -218,7 +218,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -300,13 +300,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_audit.LoginLogPageResult"
+                                            "$ref": "#/definitions/audit.LoginLogPageResult"
                                         }
                                     }
                                 }
@@ -316,13 +316,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -399,13 +399,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_audit.OperationLogPageResult"
+                                            "$ref": "#/definitions/audit.OperationLogPageResult"
                                         }
                                     }
                                 }
@@ -415,13 +415,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -448,7 +448,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -456,7 +456,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_dept.DeptTreeNode"
+                                                "$ref": "#/definitions/dept.DeptTreeNode"
                                             }
                                         }
                                     }
@@ -467,7 +467,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -496,7 +496,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dept.CreateDeptRequest"
+                            "$ref": "#/definitions/dept.CreateDeptRequest"
                         }
                     }
                 ],
@@ -506,13 +506,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                            "$ref": "#/definitions/dept.DeptResponse"
                                         }
                                     }
                                 }
@@ -522,13 +522,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -564,13 +564,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                            "$ref": "#/definitions/dept.DeptResponse"
                                         }
                                     }
                                 }
@@ -580,19 +580,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -628,7 +628,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dept.UpdateDeptRequest"
+                            "$ref": "#/definitions/dept.UpdateDeptRequest"
                         }
                     }
                 ],
@@ -638,13 +638,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dept.DeptResponse"
+                                            "$ref": "#/definitions/dept.DeptResponse"
                                         }
                                     }
                                 }
@@ -654,19 +654,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -700,7 +700,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -719,19 +719,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -779,13 +779,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dept.DeptUserPageResult"
+                                            "$ref": "#/definitions/dept.DeptUserPageResult"
                                         }
                                     }
                                 }
@@ -795,13 +795,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -854,7 +854,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -862,7 +862,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                                "$ref": "#/definitions/dict.DictDataResponse"
                                             }
                                         }
                                     }
@@ -873,13 +873,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -908,7 +908,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dict.CreateDictDataRequest"
+                            "$ref": "#/definitions/dict.CreateDictDataRequest"
                         }
                     }
                 ],
@@ -918,13 +918,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                            "$ref": "#/definitions/dict.DictDataResponse"
                                         }
                                     }
                                 }
@@ -934,13 +934,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -976,13 +976,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                            "$ref": "#/definitions/dict.DictDataResponse"
                                         }
                                     }
                                 }
@@ -992,19 +992,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1040,7 +1040,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dict.UpdateDictDataRequest"
+                            "$ref": "#/definitions/dict.UpdateDictDataRequest"
                         }
                     }
                 ],
@@ -1050,13 +1050,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                            "$ref": "#/definitions/dict.DictDataResponse"
                                         }
                                     }
                                 }
@@ -1066,19 +1066,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1112,7 +1112,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1131,19 +1131,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1179,7 +1179,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1187,7 +1187,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_dict.DictDataResponse"
+                                                "$ref": "#/definitions/dict.DictDataResponse"
                                             }
                                         }
                                     }
@@ -1198,7 +1198,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1239,7 +1239,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1247,7 +1247,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                                "$ref": "#/definitions/dict.DictTypeResponse"
                                             }
                                         }
                                     }
@@ -1258,13 +1258,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1293,7 +1293,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dict.CreateDictTypeRequest"
+                            "$ref": "#/definitions/dict.CreateDictTypeRequest"
                         }
                     }
                 ],
@@ -1303,13 +1303,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                            "$ref": "#/definitions/dict.DictTypeResponse"
                                         }
                                     }
                                 }
@@ -1319,13 +1319,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1361,13 +1361,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                            "$ref": "#/definitions/dict.DictTypeResponse"
                                         }
                                     }
                                 }
@@ -1377,19 +1377,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1425,7 +1425,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_dict.UpdateDictTypeRequest"
+                            "$ref": "#/definitions/dict.UpdateDictTypeRequest"
                         }
                     }
                 ],
@@ -1435,13 +1435,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_dict.DictTypeResponse"
+                                            "$ref": "#/definitions/dict.DictTypeResponse"
                                         }
                                     }
                                 }
@@ -1451,19 +1451,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1497,7 +1497,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1516,19 +1516,252 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/files": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "按关键字、分类、存储策略、上传人和时间范围分页查询文件。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件管理"
+                ],
+                "summary": "查询文件列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件名关键字",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件分类",
+                        "name": "category",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "存储策略",
+                        "name": "storage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "上传人 ID",
+                        "name": "uploader_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "开始时间",
+                        "name": "start_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "结束时间",
+                        "name": "end_time",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/file.FilePageResult"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/files/upload": {
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "支持图片和常见办公文档上传，按日期目录存储并返回访问地址。",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件管理"
+                ],
+                "summary": "上传文件",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "上传文件",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "文件分类",
+                        "name": "category",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/file.FileResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    }
+                }
+            }
+        },
+        "/system/files/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "删除文件记录并清理对应存储对象。",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文件管理"
+                ],
+                "summary": "删除文件",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "文件 ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Body"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1555,7 +1788,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1563,7 +1796,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                                                "$ref": "#/definitions/menu.MenuTreeNode"
                                             }
                                         }
                                     }
@@ -1574,7 +1807,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1603,7 +1836,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_menu.CreateMenuRequest"
+                            "$ref": "#/definitions/menu.CreateMenuRequest"
                         }
                     }
                 ],
@@ -1613,13 +1846,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                            "$ref": "#/definitions/menu.MenuResponse"
                                         }
                                     }
                                 }
@@ -1629,13 +1862,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1662,7 +1895,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1670,7 +1903,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                                                "$ref": "#/definitions/menu.MenuTreeNode"
                                             }
                                         }
                                     }
@@ -1681,7 +1914,7 @@ const docTemplate = `{
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1712,7 +1945,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_menu.UpdateMenuSortsRequest"
+                            "$ref": "#/definitions/menu.UpdateMenuSortsRequest"
                         }
                     }
                 ],
@@ -1722,7 +1955,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1741,13 +1974,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1783,13 +2016,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                            "$ref": "#/definitions/menu.MenuResponse"
                                         }
                                     }
                                 }
@@ -1799,19 +2032,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1847,7 +2080,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_menu.UpdateMenuRequest"
+                            "$ref": "#/definitions/menu.UpdateMenuRequest"
                         }
                     }
                 ],
@@ -1857,13 +2090,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_menu.MenuResponse"
+                                            "$ref": "#/definitions/menu.MenuResponse"
                                         }
                                     }
                                 }
@@ -1873,19 +2106,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -1919,7 +2152,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -1938,19 +2171,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2009,13 +2242,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RolePageResult"
+                                            "$ref": "#/definitions/role.RolePageResult"
                                         }
                                     }
                                 }
@@ -2025,13 +2258,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2060,7 +2293,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_role.CreateRoleRequest"
+                            "$ref": "#/definitions/role.CreateRoleRequest"
                         }
                     }
                 ],
@@ -2070,13 +2303,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                            "$ref": "#/definitions/role.RoleResponse"
                                         }
                                     }
                                 }
@@ -2086,13 +2319,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2128,13 +2361,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                            "$ref": "#/definitions/role.RoleResponse"
                                         }
                                     }
                                 }
@@ -2144,19 +2377,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2192,7 +2425,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_role.UpdateRoleRequest"
+                            "$ref": "#/definitions/role.UpdateRoleRequest"
                         }
                     }
                 ],
@@ -2202,13 +2435,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                                            "$ref": "#/definitions/role.RoleResponse"
                                         }
                                     }
                                 }
@@ -2218,19 +2451,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2264,7 +2497,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -2283,19 +2516,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2331,13 +2564,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleAPIsResponse"
+                                            "$ref": "#/definitions/role.RoleAPIsResponse"
                                         }
                                     }
                                 }
@@ -2347,13 +2580,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2389,7 +2622,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_role.AssignAPIsRequest"
+                            "$ref": "#/definitions/role.AssignAPIsRequest"
                         }
                     }
                 ],
@@ -2399,7 +2632,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -2418,13 +2651,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2460,13 +2693,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleMenusResponse"
+                                            "$ref": "#/definitions/role.RoleMenusResponse"
                                         }
                                     }
                                 }
@@ -2476,13 +2709,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2518,7 +2751,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_role.AssignMenusRequest"
+                            "$ref": "#/definitions/role.AssignMenusRequest"
                         }
                     }
                 ],
@@ -2528,7 +2761,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -2547,13 +2780,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2601,13 +2834,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_role.RoleUserPageResult"
+                                            "$ref": "#/definitions/role.RoleUserPageResult"
                                         }
                                     }
                                 }
@@ -2617,13 +2850,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2682,13 +2915,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_user.UserPageResult"
+                                            "$ref": "#/definitions/user.UserPageResult"
                                         }
                                     }
                                 }
@@ -2698,13 +2931,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2733,7 +2966,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_user.CreateUserRequest"
+                            "$ref": "#/definitions/user.CreateUserRequest"
                         }
                     }
                 ],
@@ -2743,13 +2976,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                            "$ref": "#/definitions/user.UserResponse"
                                         }
                                     }
                                 }
@@ -2759,13 +2992,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2796,7 +3029,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_user.BatchDeleteRequest"
+                            "$ref": "#/definitions/user.BatchDeleteRequest"
                         }
                     }
                 ],
@@ -2806,7 +3039,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -2825,13 +3058,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2894,13 +3127,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -2936,13 +3169,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                            "$ref": "#/definitions/user.UserResponse"
                                         }
                                     }
                                 }
@@ -2952,19 +3185,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -3000,7 +3233,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_user.UpdateUserRequest"
+                            "$ref": "#/definitions/user.UpdateUserRequest"
                         }
                     }
                 ],
@@ -3010,13 +3243,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                            "$ref": "#/definitions/user.UserResponse"
                                         }
                                     }
                                 }
@@ -3026,19 +3259,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -3072,7 +3305,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -3091,19 +3324,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -3141,7 +3374,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_user.ResetPasswordRequest"
+                            "$ref": "#/definitions/user.ResetPasswordRequest"
                         }
                     }
                 ],
@@ -3151,7 +3384,7 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
@@ -3170,19 +3403,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -3220,7 +3453,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/internal_modules_user.UpdateStatusRequest"
+                            "$ref": "#/definitions/user.UpdateStatusRequest"
                         }
                     }
                 ],
@@ -3230,13 +3463,13 @@ const docTemplate = `{
                         "schema": {
                             "allOf": [
                                 {
-                                    "$ref": "#/definitions/go-server_internal_response.Body"
+                                    "$ref": "#/definitions/response.Body"
                                 },
                                 {
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/internal_modules_user.UserResponse"
+                                            "$ref": "#/definitions/user.UserResponse"
                                         }
                                     }
                                 }
@@ -3246,19 +3479,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/go-server_internal_response.Body"
+                            "$ref": "#/definitions/response.Body"
                         }
                     }
                 }
@@ -3266,28 +3499,13 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "go-server_internal_response.Body": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "data": {},
-                "message": {
-                    "type": "string"
-                },
-                "request_id": {
-                    "type": "string"
-                }
-            }
-        },
-        "internal_modules_audit.LoginLogPageResult": {
+        "audit.LoginLogPageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_audit.LoginLogResponse"
+                        "$ref": "#/definitions/audit.LoginLogResponse"
                     }
                 },
                 "page": {
@@ -3304,7 +3522,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_audit.LoginLogResponse": {
+        "audit.LoginLogResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3349,13 +3567,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_audit.OperationLogPageResult": {
+        "audit.OperationLogPageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_audit.OperationLogResponse"
+                        "$ref": "#/definitions/audit.OperationLogResponse"
                     }
                 },
                 "page": {
@@ -3372,7 +3590,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_audit.OperationLogResponse": {
+        "audit.OperationLogResponse": {
             "type": "object",
             "properties": {
                 "action": {
@@ -3437,7 +3655,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_auth.LoginRequest": {
+        "auth.LoginRequest": {
             "type": "object",
             "required": [
                 "captcha_code",
@@ -3464,7 +3682,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_auth.LogoutRequest": {
+        "auth.LogoutRequest": {
             "type": "object",
             "required": [
                 "access_token"
@@ -3476,7 +3694,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_auth.RefreshRequest": {
+        "auth.RefreshRequest": {
             "type": "object",
             "required": [
                 "refresh_token"
@@ -3488,7 +3706,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_auth.TokenResponse": {
+        "auth.TokenResponse": {
             "type": "object",
             "properties": {
                 "access_token": {
@@ -3501,7 +3719,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_captcha.GenerateResponse": {
+        "captcha.GenerateResponse": {
             "type": "object",
             "properties": {
                 "captcha_id": {
@@ -3514,7 +3732,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.CreateDeptRequest": {
+        "dept.CreateDeptRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3556,7 +3774,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.DeptResponse": {
+        "dept.DeptResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3597,13 +3815,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.DeptTreeNode": {
+        "dept.DeptTreeNode": {
             "type": "object",
             "properties": {
                 "children": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_dept.DeptTreeNode"
+                        "$ref": "#/definitions/dept.DeptTreeNode"
                     }
                 },
                 "email": {
@@ -3640,13 +3858,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.DeptUserPageResult": {
+        "dept.DeptUserPageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_dept.DeptUserResponse"
+                        "$ref": "#/definitions/dept.DeptUserResponse"
                     }
                 },
                 "page": {
@@ -3663,7 +3881,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.DeptUserResponse": {
+        "dept.DeptUserResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -3692,7 +3910,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dept.UpdateDeptRequest": {
+        "dept.UpdateDeptRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -3734,7 +3952,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.CreateDictDataRequest": {
+        "dict.CreateDictDataRequest": {
             "type": "object",
             "required": [
                 "label",
@@ -3776,7 +3994,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.CreateDictTypeRequest": {
+        "dict.CreateDictTypeRequest": {
             "type": "object",
             "required": [
                 "code",
@@ -3809,7 +4027,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.DictDataResponse": {
+        "dict.DictDataResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
@@ -3850,7 +4068,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.DictTypeResponse": {
+        "dict.DictTypeResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -3879,7 +4097,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.UpdateDictDataRequest": {
+        "dict.UpdateDictDataRequest": {
             "type": "object",
             "required": [
                 "label",
@@ -3921,7 +4139,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_dict.UpdateDictTypeRequest": {
+        "dict.UpdateDictTypeRequest": {
             "type": "object",
             "required": [
                 "code",
@@ -3954,7 +4172,79 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.CreateMenuRequest": {
+        "file.FilePageResult": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/file.FileResponse"
+                    }
+                },
+                "page": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "page_size": {
+                    "type": "integer",
+                    "example": 10
+                },
+                "total": {
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "file.FileResponse": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "document"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2026-04-14T12:00:00Z"
+                },
+                "ext": {
+                    "type": "string",
+                    "example": ".pdf"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "mime_type": {
+                    "type": "string",
+                    "example": "application/pdf"
+                },
+                "object_name": {
+                    "type": "string",
+                    "example": "1b9bcb9f0f7c4e0e9b48bb86d3ce28cb.pdf"
+                },
+                "original_name": {
+                    "type": "string",
+                    "example": "report.pdf"
+                },
+                "size": {
+                    "type": "integer",
+                    "example": 102400
+                },
+                "storage": {
+                    "type": "string",
+                    "example": "local"
+                },
+                "uploader_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "url": {
+                    "type": "string",
+                    "example": "/uploads/2026/04/14/1b9bcb9f0f7c4e0e9b48bb86d3ce28cb.pdf"
+                }
+            }
+        },
+        "menu.CreateMenuRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -4014,7 +4304,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.MenuResponse": {
+        "menu.MenuResponse": {
             "type": "object",
             "properties": {
                 "component": {
@@ -4063,7 +4353,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.MenuSortItem": {
+        "menu.MenuSortItem": {
             "type": "object",
             "required": [
                 "id"
@@ -4079,13 +4369,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.MenuTreeNode": {
+        "menu.MenuTreeNode": {
             "type": "object",
             "properties": {
                 "children": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_menu.MenuTreeNode"
+                        "$ref": "#/definitions/menu.MenuTreeNode"
                     }
                 },
                 "component": {
@@ -4130,7 +4420,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.UpdateMenuRequest": {
+        "menu.UpdateMenuRequest": {
             "type": "object",
             "required": [
                 "name",
@@ -4190,7 +4480,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_menu.UpdateMenuSortsRequest": {
+        "menu.UpdateMenuSortsRequest": {
             "type": "object",
             "required": [
                 "items"
@@ -4200,12 +4490,27 @@ const docTemplate = `{
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "$ref": "#/definitions/internal_modules_menu.MenuSortItem"
+                        "$ref": "#/definitions/menu.MenuSortItem"
                     }
                 }
             }
         },
-        "internal_modules_role.APIPermission": {
+        "response.Body": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "request_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "role.APIPermission": {
             "type": "object",
             "required": [
                 "method",
@@ -4222,18 +4527,18 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.AssignAPIsRequest": {
+        "role.AssignAPIsRequest": {
             "type": "object",
             "properties": {
                 "permissions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.APIPermission"
+                        "$ref": "#/definitions/role.APIPermission"
                     }
                 }
             }
         },
-        "internal_modules_role.AssignMenusRequest": {
+        "role.AssignMenusRequest": {
             "type": "object",
             "properties": {
                 "menu_ids": {
@@ -4249,7 +4554,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.CreateRoleRequest": {
+        "role.CreateRoleRequest": {
             "type": "object",
             "required": [
                 "code",
@@ -4282,13 +4587,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.MenuTreeNode": {
+        "role.MenuTreeNode": {
             "type": "object",
             "properties": {
                 "children": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.MenuTreeNode"
+                        "$ref": "#/definitions/role.MenuTreeNode"
                     }
                 },
                 "component": {
@@ -4333,18 +4638,18 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.RoleAPIsResponse": {
+        "role.RoleAPIsResponse": {
             "type": "object",
             "properties": {
                 "permissions": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.APIPermission"
+                        "$ref": "#/definitions/role.APIPermission"
                     }
                 }
             }
         },
-        "internal_modules_role.RoleMenusResponse": {
+        "role.RoleMenusResponse": {
             "type": "object",
             "properties": {
                 "checked_ids": {
@@ -4361,18 +4666,18 @@ const docTemplate = `{
                 "menus": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.MenuTreeNode"
+                        "$ref": "#/definitions/role.MenuTreeNode"
                     }
                 }
             }
         },
-        "internal_modules_role.RolePageResult": {
+        "role.RolePageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.RoleResponse"
+                        "$ref": "#/definitions/role.RoleResponse"
                     }
                 },
                 "page": {
@@ -4389,7 +4694,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.RoleResponse": {
+        "role.RoleResponse": {
             "type": "object",
             "properties": {
                 "code": {
@@ -4418,13 +4723,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.RoleUserPageResult": {
+        "role.RoleUserPageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_role.RoleUserResponse"
+                        "$ref": "#/definitions/role.RoleUserResponse"
                     }
                 },
                 "page": {
@@ -4441,7 +4746,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.RoleUserResponse": {
+        "role.RoleUserResponse": {
             "type": "object",
             "properties": {
                 "email": {
@@ -4470,7 +4775,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_role.UpdateRoleRequest": {
+        "role.UpdateRoleRequest": {
             "type": "object",
             "required": [
                 "name"
@@ -4500,7 +4805,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.BatchDeleteRequest": {
+        "user.BatchDeleteRequest": {
             "type": "object",
             "required": [
                 "ids"
@@ -4520,7 +4825,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.CreateUserRequest": {
+        "user.CreateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -4541,7 +4846,7 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 2,
-                    "example": "张三"
+                    "example": "寮犱笁"
                 },
                 "password": {
                     "type": "string",
@@ -4570,7 +4875,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.ResetPasswordRequest": {
+        "user.ResetPasswordRequest": {
             "type": "object",
             "required": [
                 "password"
@@ -4583,7 +4888,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.RoleInfo": {
+        "user.RoleInfo": {
             "type": "object",
             "properties": {
                 "code": {
@@ -4595,12 +4900,11 @@ const docTemplate = `{
                     "example": 1
                 },
                 "name": {
-                    "type": "string",
-                    "example": "管理员"
+                    "type": "string"
                 }
             }
         },
-        "internal_modules_user.UpdateStatusRequest": {
+        "user.UpdateStatusRequest": {
             "type": "object",
             "properties": {
                 "status": {
@@ -4613,7 +4917,7 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.UpdateUserRequest": {
+        "user.UpdateUserRequest": {
             "type": "object",
             "required": [
                 "email",
@@ -4632,7 +4936,7 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 50,
                     "minLength": 2,
-                    "example": "张三"
+                    "example": "寮犱笁"
                 },
                 "phone": {
                     "type": "string",
@@ -4650,13 +4954,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.UserPageResult": {
+        "user.UserPageResult": {
             "type": "object",
             "properties": {
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_user.UserResponse"
+                        "$ref": "#/definitions/user.UserResponse"
                     }
                 },
                 "page": {
@@ -4673,9 +4977,13 @@ const docTemplate = `{
                 }
             }
         },
-        "internal_modules_user.UserResponse": {
+        "user.UserResponse": {
             "type": "object",
             "properties": {
+                "avatar": {
+                    "type": "string",
+                    "example": "/uploads/avatars/1_1713072000.png"
+                },
                 "created_at": {
                     "type": "string",
                     "example": "2026-04-11T12:00:00Z"
@@ -4694,7 +5002,7 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string",
-                    "example": "张三"
+                    "example": "寮犱笁"
                 },
                 "phone": {
                     "type": "string",
@@ -4703,7 +5011,7 @@ const docTemplate = `{
                 "roles": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/internal_modules_user.RoleInfo"
+                        "$ref": "#/definitions/user.RoleInfo"
                     }
                 },
                 "status": {

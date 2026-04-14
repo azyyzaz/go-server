@@ -1,0 +1,22 @@
+CREATE TABLE files (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    uploader_id BIGINT UNSIGNED DEFAULT NULL,
+    storage VARCHAR(20) NOT NULL DEFAULT 'local',
+    category VARCHAR(50) NOT NULL DEFAULT 'default',
+    original_name VARCHAR(255) NOT NULL DEFAULT '',
+    object_name VARCHAR(255) NOT NULL DEFAULT '',
+    ext VARCHAR(20) NOT NULL DEFAULT '',
+    mime_type VARCHAR(100) NOT NULL DEFAULT '',
+    size BIGINT NOT NULL DEFAULT 0,
+    bucket VARCHAR(100) NOT NULL DEFAULT '',
+    path VARCHAR(500) NOT NULL DEFAULT '',
+    url VARCHAR(500) NOT NULL DEFAULT '',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL DEFAULT NULL,
+    KEY idx_files_uploader_id (uploader_id),
+    KEY idx_files_storage (storage),
+    KEY idx_files_category (category),
+    KEY idx_files_created_at (created_at),
+    KEY idx_files_deleted_at (deleted_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

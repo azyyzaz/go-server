@@ -1,20 +1,10 @@
 basePath: /api/v1
 definitions:
-  go-server_internal_response.Body:
-    properties:
-      code:
-        type: string
-      data: {}
-      message:
-        type: string
-      request_id:
-        type: string
-    type: object
-  internal_modules_audit.LoginLogPageResult:
+  audit.LoginLogPageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_audit.LoginLogResponse'
+          $ref: '#/definitions/audit.LoginLogResponse'
         type: array
       page:
         example: 1
@@ -26,7 +16,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_audit.LoginLogResponse:
+  audit.LoginLogResponse:
     properties:
       created_at:
         example: "2026-04-11T12:00:00Z"
@@ -59,11 +49,11 @@ definitions:
         example: admin
         type: string
     type: object
-  internal_modules_audit.OperationLogPageResult:
+  audit.OperationLogPageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_audit.OperationLogResponse'
+          $ref: '#/definitions/audit.OperationLogResponse'
         type: array
       page:
         example: 1
@@ -75,7 +65,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_audit.OperationLogResponse:
+  audit.OperationLogResponse:
     properties:
       action:
         example: 用户登录
@@ -123,7 +113,7 @@ definitions:
         example: admin
         type: string
     type: object
-  internal_modules_auth.LoginRequest:
+  auth.LoginRequest:
     properties:
       captcha_code:
         example: "1234"
@@ -143,7 +133,7 @@ definitions:
     - password
     - username
     type: object
-  internal_modules_auth.LogoutRequest:
+  auth.LogoutRequest:
     properties:
       access_token:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token
@@ -151,7 +141,7 @@ definitions:
     required:
     - access_token
     type: object
-  internal_modules_auth.RefreshRequest:
+  auth.RefreshRequest:
     properties:
       refresh_token:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token
@@ -159,7 +149,7 @@ definitions:
     required:
     - refresh_token
     type: object
-  internal_modules_auth.TokenResponse:
+  auth.TokenResponse:
     properties:
       access_token:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access-token
@@ -168,7 +158,7 @@ definitions:
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.refresh-token
         type: string
     type: object
-  internal_modules_captcha.GenerateResponse:
+  captcha.GenerateResponse:
     properties:
       captcha_id:
         example: captcha-8f3a2c1d
@@ -177,7 +167,7 @@ definitions:
         example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA...
         type: string
     type: object
-  internal_modules_dept.CreateDeptRequest:
+  dept.CreateDeptRequest:
     properties:
       email:
         example: rd@example.com
@@ -208,7 +198,7 @@ definitions:
     required:
     - name
     type: object
-  internal_modules_dept.DeptResponse:
+  dept.DeptResponse:
     properties:
       created_at:
         example: "2026-04-11T12:00:00Z"
@@ -238,11 +228,11 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_dept.DeptTreeNode:
+  dept.DeptTreeNode:
     properties:
       children:
         items:
-          $ref: '#/definitions/internal_modules_dept.DeptTreeNode'
+          $ref: '#/definitions/dept.DeptTreeNode'
         type: array
       email:
         example: rd@example.com
@@ -269,11 +259,11 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_dept.DeptUserPageResult:
+  dept.DeptUserPageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_dept.DeptUserResponse'
+          $ref: '#/definitions/dept.DeptUserResponse'
         type: array
       page:
         example: 1
@@ -285,7 +275,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_dept.DeptUserResponse:
+  dept.DeptUserResponse:
     properties:
       email:
         example: zhangsan@example.com
@@ -306,7 +296,7 @@ definitions:
         example: zhangsan
         type: string
     type: object
-  internal_modules_dept.UpdateDeptRequest:
+  dept.UpdateDeptRequest:
     properties:
       email:
         example: rd@example.com
@@ -337,7 +327,7 @@ definitions:
     required:
     - name
     type: object
-  internal_modules_dict.CreateDictDataRequest:
+  dict.CreateDictDataRequest:
     properties:
       label:
         example: 启用
@@ -369,7 +359,7 @@ definitions:
     - type_id
     - value
     type: object
-  internal_modules_dict.CreateDictTypeRequest:
+  dict.CreateDictTypeRequest:
     properties:
       code:
         example: user_status
@@ -394,7 +384,7 @@ definitions:
     - code
     - name
     type: object
-  internal_modules_dict.DictDataResponse:
+  dict.DictDataResponse:
     properties:
       created_at:
         example: "2026-04-11T12:00:00Z"
@@ -424,7 +414,7 @@ definitions:
         example: "1"
         type: string
     type: object
-  internal_modules_dict.DictTypeResponse:
+  dict.DictTypeResponse:
     properties:
       code:
         example: user_status
@@ -445,7 +435,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_dict.UpdateDictDataRequest:
+  dict.UpdateDictDataRequest:
     properties:
       label:
         example: 启用
@@ -477,7 +467,7 @@ definitions:
     - type_id
     - value
     type: object
-  internal_modules_dict.UpdateDictTypeRequest:
+  dict.UpdateDictTypeRequest:
     properties:
       code:
         example: user_status
@@ -502,7 +492,59 @@ definitions:
     - code
     - name
     type: object
-  internal_modules_menu.CreateMenuRequest:
+  file.FilePageResult:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/file.FileResponse'
+        type: array
+      page:
+        example: 1
+        type: integer
+      page_size:
+        example: 10
+        type: integer
+      total:
+        example: 1
+        type: integer
+    type: object
+  file.FileResponse:
+    properties:
+      category:
+        example: document
+        type: string
+      created_at:
+        example: "2026-04-14T12:00:00Z"
+        type: string
+      ext:
+        example: .pdf
+        type: string
+      id:
+        example: 1
+        type: integer
+      mime_type:
+        example: application/pdf
+        type: string
+      object_name:
+        example: 1b9bcb9f0f7c4e0e9b48bb86d3ce28cb.pdf
+        type: string
+      original_name:
+        example: report.pdf
+        type: string
+      size:
+        example: 102400
+        type: integer
+      storage:
+        example: local
+        type: string
+      uploader_id:
+        example: 1
+        type: integer
+      url:
+        example: /uploads/2026/04/14/1b9bcb9f0f7c4e0e9b48bb86d3ce28cb.pdf
+        type: string
+    type: object
+  menu.CreateMenuRequest:
     properties:
       component:
         example: /system/user/index
@@ -547,7 +589,7 @@ definitions:
     - name
     - type
     type: object
-  internal_modules_menu.MenuResponse:
+  menu.MenuResponse:
     properties:
       component:
         example: /system/user/index
@@ -583,7 +625,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_menu.MenuSortItem:
+  menu.MenuSortItem:
     properties:
       id:
         example: 1
@@ -594,11 +636,11 @@ definitions:
     required:
     - id
     type: object
-  internal_modules_menu.MenuTreeNode:
+  menu.MenuTreeNode:
     properties:
       children:
         items:
-          $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+          $ref: '#/definitions/menu.MenuTreeNode'
         type: array
       component:
         example: /system/index
@@ -631,7 +673,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_menu.UpdateMenuRequest:
+  menu.UpdateMenuRequest:
     properties:
       component:
         example: /system/user/index
@@ -676,17 +718,27 @@ definitions:
     - name
     - type
     type: object
-  internal_modules_menu.UpdateMenuSortsRequest:
+  menu.UpdateMenuSortsRequest:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_menu.MenuSortItem'
+          $ref: '#/definitions/menu.MenuSortItem'
         minItems: 1
         type: array
     required:
     - items
     type: object
-  internal_modules_role.APIPermission:
+  response.Body:
+    properties:
+      code:
+        type: string
+      data: {}
+      message:
+        type: string
+      request_id:
+        type: string
+    type: object
+  role.APIPermission:
     properties:
       method:
         example: GET
@@ -698,14 +750,14 @@ definitions:
     - method
     - path
     type: object
-  internal_modules_role.AssignAPIsRequest:
+  role.AssignAPIsRequest:
     properties:
       permissions:
         items:
-          $ref: '#/definitions/internal_modules_role.APIPermission'
+          $ref: '#/definitions/role.APIPermission'
         type: array
     type: object
-  internal_modules_role.AssignMenusRequest:
+  role.AssignMenusRequest:
     properties:
       menu_ids:
         example:
@@ -716,7 +768,7 @@ definitions:
           type: integer
         type: array
     type: object
-  internal_modules_role.CreateRoleRequest:
+  role.CreateRoleRequest:
     properties:
       code:
         example: admin
@@ -741,11 +793,11 @@ definitions:
     - code
     - name
     type: object
-  internal_modules_role.MenuTreeNode:
+  role.MenuTreeNode:
     properties:
       children:
         items:
-          $ref: '#/definitions/internal_modules_role.MenuTreeNode'
+          $ref: '#/definitions/role.MenuTreeNode'
         type: array
       component:
         example: /system/index
@@ -778,14 +830,14 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_role.RoleAPIsResponse:
+  role.RoleAPIsResponse:
     properties:
       permissions:
         items:
-          $ref: '#/definitions/internal_modules_role.APIPermission'
+          $ref: '#/definitions/role.APIPermission'
         type: array
     type: object
-  internal_modules_role.RoleMenusResponse:
+  role.RoleMenusResponse:
     properties:
       checked_ids:
         example:
@@ -797,14 +849,14 @@ definitions:
         type: array
       menus:
         items:
-          $ref: '#/definitions/internal_modules_role.MenuTreeNode'
+          $ref: '#/definitions/role.MenuTreeNode'
         type: array
     type: object
-  internal_modules_role.RolePageResult:
+  role.RolePageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_role.RoleResponse'
+          $ref: '#/definitions/role.RoleResponse'
         type: array
       page:
         example: 1
@@ -816,7 +868,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_role.RoleResponse:
+  role.RoleResponse:
     properties:
       code:
         example: admin
@@ -837,11 +889,11 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_role.RoleUserPageResult:
+  role.RoleUserPageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_role.RoleUserResponse'
+          $ref: '#/definitions/role.RoleUserResponse'
         type: array
       page:
         example: 1
@@ -853,7 +905,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_role.RoleUserResponse:
+  role.RoleUserResponse:
     properties:
       email:
         example: zhangsan@example.com
@@ -874,7 +926,7 @@ definitions:
         example: zhangsan
         type: string
     type: object
-  internal_modules_role.UpdateRoleRequest:
+  role.UpdateRoleRequest:
     properties:
       code:
         example: admin
@@ -896,7 +948,7 @@ definitions:
     required:
     - name
     type: object
-  internal_modules_user.BatchDeleteRequest:
+  user.BatchDeleteRequest:
     properties:
       ids:
         example:
@@ -910,7 +962,7 @@ definitions:
     required:
     - ids
     type: object
-  internal_modules_user.CreateUserRequest:
+  user.CreateUserRequest:
     properties:
       dept_id:
         example: 1
@@ -919,7 +971,7 @@ definitions:
         example: zhangsan@example.com
         type: string
       name:
-        example: 张三
+        example: 寮犱笁
         maxLength: 50
         minLength: 2
         type: string
@@ -948,7 +1000,7 @@ definitions:
     - password
     - username
     type: object
-  internal_modules_user.ResetPasswordRequest:
+  user.ResetPasswordRequest:
     properties:
       password:
         example: NewPass123!
@@ -957,7 +1009,7 @@ definitions:
     required:
     - password
     type: object
-  internal_modules_user.RoleInfo:
+  user.RoleInfo:
     properties:
       code:
         example: admin
@@ -966,10 +1018,9 @@ definitions:
         example: 1
         type: integer
       name:
-        example: 管理员
         type: string
     type: object
-  internal_modules_user.UpdateStatusRequest:
+  user.UpdateStatusRequest:
     properties:
       status:
         enum:
@@ -978,7 +1029,7 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_user.UpdateUserRequest:
+  user.UpdateUserRequest:
     properties:
       dept_id:
         example: 1
@@ -987,7 +1038,7 @@ definitions:
         example: zhangsan@example.com
         type: string
       name:
-        example: 张三
+        example: 寮犱笁
         maxLength: 50
         minLength: 2
         type: string
@@ -1005,11 +1056,11 @@ definitions:
     - email
     - name
     type: object
-  internal_modules_user.UserPageResult:
+  user.UserPageResult:
     properties:
       items:
         items:
-          $ref: '#/definitions/internal_modules_user.UserResponse'
+          $ref: '#/definitions/user.UserResponse'
         type: array
       page:
         example: 1
@@ -1021,8 +1072,11 @@ definitions:
         example: 1
         type: integer
     type: object
-  internal_modules_user.UserResponse:
+  user.UserResponse:
     properties:
+      avatar:
+        example: /uploads/avatars/1_1713072000.png
+        type: string
       created_at:
         example: "2026-04-11T12:00:00Z"
         type: string
@@ -1036,14 +1090,14 @@ definitions:
         example: 1
         type: integer
       name:
-        example: 张三
+        example: 寮犱笁
         type: string
       phone:
         example: "13800138000"
         type: string
       roles:
         items:
-          $ref: '#/definitions/internal_modules_user.RoleInfo'
+          $ref: '#/definitions/user.RoleInfo'
         type: array
       status:
         example: 1
@@ -1069,10 +1123,10 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_captcha.GenerateResponse'
+                  $ref: '#/definitions/captcha.GenerateResponse'
               type: object
       summary: 获取图形验证码
       tags:
@@ -1088,7 +1142,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_auth.LoginRequest'
+          $ref: '#/definitions/auth.LoginRequest'
       produces:
       - application/json
       responses:
@@ -1096,19 +1150,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_auth.TokenResponse'
+                  $ref: '#/definitions/auth.TokenResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       summary: 用户登录
       tags:
       - 认证授权
@@ -1123,18 +1177,18 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_auth.LogoutRequest'
+          $ref: '#/definitions/auth.LogoutRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 用户登出
@@ -1151,7 +1205,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_auth.RefreshRequest'
+          $ref: '#/definitions/auth.RefreshRequest'
       produces:
       - application/json
       responses:
@@ -1159,15 +1213,15 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_auth.TokenResponse'
+                  $ref: '#/definitions/auth.TokenResponse'
               type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       summary: 刷新令牌
       tags:
       - 认证授权
@@ -1181,7 +1235,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties: true
@@ -1229,19 +1283,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_audit.LoginLogPageResult'
+                  $ref: '#/definitions/audit.LoginLogPageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询登录日志
@@ -1290,19 +1344,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_audit.OperationLogPageResult'
+                  $ref: '#/definitions/audit.OperationLogPageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询操作日志
@@ -1318,17 +1372,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_dept.DeptTreeNode'
+                    $ref: '#/definitions/dept.DeptTreeNode'
                   type: array
               type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询部门树
@@ -1344,7 +1398,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dept.CreateDeptRequest'
+          $ref: '#/definitions/dept.CreateDeptRequest'
       produces:
       - application/json
       responses:
@@ -1352,19 +1406,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+                  $ref: '#/definitions/dept.DeptResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建部门
@@ -1386,7 +1440,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -1396,15 +1450,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除部门
@@ -1425,23 +1479,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+                  $ref: '#/definitions/dept.DeptResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取部门详情
@@ -1462,7 +1516,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dept.UpdateDeptRequest'
+          $ref: '#/definitions/dept.UpdateDeptRequest'
       produces:
       - application/json
       responses:
@@ -1470,23 +1524,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dept.DeptResponse'
+                  $ref: '#/definitions/dept.DeptResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新部门
@@ -1516,19 +1570,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dept.DeptUserPageResult'
+                  $ref: '#/definitions/dept.DeptUserPageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询部门下的用户列表
@@ -1561,21 +1615,21 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                    $ref: '#/definitions/dict.DictDataResponse'
                   type: array
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询字典数据列表
@@ -1591,7 +1645,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dict.CreateDictDataRequest'
+          $ref: '#/definitions/dict.CreateDictDataRequest'
       produces:
       - application/json
       responses:
@@ -1599,19 +1653,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                  $ref: '#/definitions/dict.DictDataResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建字典数据
@@ -1633,7 +1687,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -1643,15 +1697,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除字典数据
@@ -1672,23 +1726,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                  $ref: '#/definitions/dict.DictDataResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取字典数据详情
@@ -1709,7 +1763,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dict.UpdateDictDataRequest'
+          $ref: '#/definitions/dict.UpdateDictDataRequest'
       produces:
       - application/json
       responses:
@@ -1717,23 +1771,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                  $ref: '#/definitions/dict.DictDataResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新字典数据
@@ -1755,17 +1809,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_dict.DictDataResponse'
+                    $ref: '#/definitions/dict.DictDataResponse'
                   type: array
               type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 按类型编码查询字典数据
@@ -1790,21 +1844,21 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+                    $ref: '#/definitions/dict.DictTypeResponse'
                   type: array
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询字典类型列表
@@ -1820,7 +1874,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dict.CreateDictTypeRequest'
+          $ref: '#/definitions/dict.CreateDictTypeRequest'
       produces:
       - application/json
       responses:
@@ -1828,19 +1882,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+                  $ref: '#/definitions/dict.DictTypeResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建字典类型
@@ -1862,7 +1916,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -1872,15 +1926,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除字典类型
@@ -1901,23 +1955,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+                  $ref: '#/definitions/dict.DictTypeResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取字典类型详情
@@ -1938,7 +1992,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_dict.UpdateDictTypeRequest'
+          $ref: '#/definitions/dict.UpdateDictTypeRequest'
       produces:
       - application/json
       responses:
@@ -1946,28 +2000,169 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_dict.DictTypeResponse'
+                  $ref: '#/definitions/dict.DictTypeResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新字典类型
       tags:
       - 字典管理
+  /system/files:
+    get:
+      description: 按关键字、分类、存储策略、上传人和时间范围分页查询文件。
+      parameters:
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数
+        in: query
+        name: page_size
+        type: integer
+      - description: 文件名关键字
+        in: query
+        name: keyword
+        type: string
+      - description: 文件分类
+        in: query
+        name: category
+        type: string
+      - description: 存储策略
+        in: query
+        name: storage
+        type: string
+      - description: 上传人 ID
+        in: query
+        name: uploader_id
+        type: integer
+      - description: 开始时间
+        in: query
+        name: start_time
+        type: string
+      - description: 结束时间
+        in: query
+        name: end_time
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/file.FilePageResult'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Body'
+      security:
+      - BearerAuth: []
+      summary: 查询文件列表
+      tags:
+      - 文件管理
+  /system/files/{id}:
+    delete:
+      description: 删除文件记录并清理对应存储对象。
+      parameters:
+      - description: 文件 ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Body'
+            - properties:
+                data:
+                  additionalProperties:
+                    type: boolean
+                  type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Body'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/response.Body'
+      security:
+      - BearerAuth: []
+      summary: 删除文件
+      tags:
+      - 文件管理
+  /system/files/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 支持图片和常见办公文档上传，按日期目录存储并返回访问地址。
+      parameters:
+      - description: 上传文件
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 文件分类
+        in: formData
+        name: category
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Body'
+            - properties:
+                data:
+                  $ref: '#/definitions/file.FileResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Body'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Body'
+      security:
+      - BearerAuth: []
+      summary: 上传文件
+      tags:
+      - 文件管理
   /system/menus:
     get:
       description: 返回完整菜单树，常用于菜单管理页面展示。
@@ -1978,17 +2173,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+                    $ref: '#/definitions/menu.MenuTreeNode'
                   type: array
               type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询菜单树
@@ -2004,7 +2199,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_menu.CreateMenuRequest'
+          $ref: '#/definitions/menu.CreateMenuRequest'
       produces:
       - application/json
       responses:
@@ -2012,19 +2207,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+                  $ref: '#/definitions/menu.MenuResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建菜单
@@ -2046,7 +2241,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2056,15 +2251,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除菜单
@@ -2085,23 +2280,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+                  $ref: '#/definitions/menu.MenuResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取菜单详情
@@ -2122,7 +2317,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_menu.UpdateMenuRequest'
+          $ref: '#/definitions/menu.UpdateMenuRequest'
       produces:
       - application/json
       responses:
@@ -2130,23 +2325,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_menu.MenuResponse'
+                  $ref: '#/definitions/menu.MenuResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新菜单
@@ -2162,17 +2357,17 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/internal_modules_menu.MenuTreeNode'
+                    $ref: '#/definitions/menu.MenuTreeNode'
                   type: array
               type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询当前用户菜单
@@ -2189,7 +2384,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_menu.UpdateMenuSortsRequest'
+          $ref: '#/definitions/menu.UpdateMenuSortsRequest'
       produces:
       - application/json
       responses:
@@ -2197,7 +2392,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2207,11 +2402,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新菜单排序
@@ -2248,19 +2443,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RolePageResult'
+                  $ref: '#/definitions/role.RolePageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 分页查询角色列表
@@ -2276,7 +2471,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_role.CreateRoleRequest'
+          $ref: '#/definitions/role.CreateRoleRequest'
       produces:
       - application/json
       responses:
@@ -2284,19 +2479,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+                  $ref: '#/definitions/role.RoleResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建角色
@@ -2318,7 +2513,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2328,15 +2523,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除角色
@@ -2357,23 +2552,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+                  $ref: '#/definitions/role.RoleResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取角色详情
@@ -2394,7 +2589,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_role.UpdateRoleRequest'
+          $ref: '#/definitions/role.UpdateRoleRequest'
       produces:
       - application/json
       responses:
@@ -2402,23 +2597,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleResponse'
+                  $ref: '#/definitions/role.RoleResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新角色信息
@@ -2440,19 +2635,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleAPIsResponse'
+                  $ref: '#/definitions/role.RoleAPIsResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取角色接口权限
@@ -2473,7 +2668,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_role.AssignAPIsRequest'
+          $ref: '#/definitions/role.AssignAPIsRequest'
       produces:
       - application/json
       responses:
@@ -2481,7 +2676,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2491,11 +2686,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新角色接口权限
@@ -2517,19 +2712,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleMenusResponse'
+                  $ref: '#/definitions/role.RoleMenusResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取角色菜单权限
@@ -2550,7 +2745,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_role.AssignMenusRequest'
+          $ref: '#/definitions/role.AssignMenusRequest'
       produces:
       - application/json
       responses:
@@ -2558,7 +2753,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2568,11 +2763,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新角色菜单权限
@@ -2602,19 +2797,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_role.RoleUserPageResult'
+                  $ref: '#/definitions/role.RoleUserPageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 查询角色下的用户列表
@@ -2651,19 +2846,19 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_user.UserPageResult'
+                  $ref: '#/definitions/user.UserPageResult'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 分页查询用户列表
@@ -2679,7 +2874,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_user.CreateUserRequest'
+          $ref: '#/definitions/user.CreateUserRequest'
       produces:
       - application/json
       responses:
@@ -2687,19 +2882,19 @@ paths:
           description: Created
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_user.UserResponse'
+                  $ref: '#/definitions/user.UserResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 创建用户
@@ -2721,7 +2916,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2731,15 +2926,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 删除用户
@@ -2760,23 +2955,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_user.UserResponse'
+                  $ref: '#/definitions/user.UserResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 获取用户详情
@@ -2797,7 +2992,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_user.UpdateUserRequest'
+          $ref: '#/definitions/user.UpdateUserRequest'
       produces:
       - application/json
       responses:
@@ -2805,23 +3000,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_user.UserResponse'
+                  $ref: '#/definitions/user.UserResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 更新用户信息
@@ -2843,7 +3038,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_user.ResetPasswordRequest'
+          $ref: '#/definitions/user.ResetPasswordRequest'
       produces:
       - application/json
       responses:
@@ -2851,7 +3046,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2861,15 +3056,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 重置用户密码
@@ -2891,7 +3086,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_user.UpdateStatusRequest'
+          $ref: '#/definitions/user.UpdateStatusRequest'
       produces:
       - application/json
       responses:
@@ -2899,23 +3094,23 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
-                  $ref: '#/definitions/internal_modules_user.UserResponse'
+                  $ref: '#/definitions/user.UserResponse'
               type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 修改用户状态
@@ -2932,7 +3127,7 @@ paths:
         name: body
         required: true
         schema:
-          $ref: '#/definitions/internal_modules_user.BatchDeleteRequest'
+          $ref: '#/definitions/user.BatchDeleteRequest'
       produces:
       - application/json
       responses:
@@ -2940,7 +3135,7 @@ paths:
           description: OK
           schema:
             allOf:
-            - $ref: '#/definitions/go-server_internal_response.Body'
+            - $ref: '#/definitions/response.Body'
             - properties:
                 data:
                   additionalProperties:
@@ -2950,11 +3145,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 批量删除用户
@@ -2994,11 +3189,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/go-server_internal_response.Body'
+            $ref: '#/definitions/response.Body'
       security:
       - BearerAuth: []
       summary: 导出用户列表

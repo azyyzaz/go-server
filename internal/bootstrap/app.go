@@ -12,6 +12,7 @@ import (
 	appjwt "go-server/internal/jwt"
 	"go-server/internal/logger"
 	"go-server/internal/modules/audit"
+	filemodule "go-server/internal/modules/file"
 	appredis "go-server/internal/redis"
 	"go-server/internal/router"
 
@@ -90,11 +91,16 @@ func Run() error {
 		auditSvc = audit.NewService(auditRepo, cfg.Audit.RegionFallback)
 	}
 
+	fileStorage, err := filemodule.NewStorage(cfg.File)
+	if err != nil {
+		logger.L().Fatal("file storage init failed", zap.Error(err))
+	}
+
 	if auditSvc != nil && cfg.Audit.RetentionDays > 0 && cfg.Audit.CleanupInterval > 0 {
 		go startAuditCleanup(context.Background(), auditSvc, cfg.Audit)
 	}
 
-	engine := router.New(cfg, gormDB, redisClient, jwtManager, jwtBlacklist, casbinEnforcer, auditSvc)
+	engine := router.New(cfg, gormDB, redisClient, jwtManager, jwtBlacklist, casbinEnforcer, auditSvc, fileStorage)
 
 	srv := &http.Server{
 		Addr:         cfg.HTTP.Addr(),

@@ -57,6 +57,11 @@ const (
 	ErrDictTypeHasItems    ErrCode = 60003
 	ErrDictDataNotFound    ErrCode = 60004
 	ErrDictDataLabelExists ErrCode = 60005
+
+	ErrFileNotFound           ErrCode = 70001
+	ErrFileTypeNotAllowed     ErrCode = 70002
+	ErrFileTooLarge           ErrCode = 70003
+	ErrFileStorageUnsupported ErrCode = 70004
 )
 
 var table = map[ErrCode]meta{
@@ -93,4 +98,9 @@ var table = map[ErrCode]meta{
 	ErrDictTypeHasItems:    {http.StatusConflict, "DICT_TYPE_HAS_ITEMS", "dict type still has items", "字典类型下仍有数据，不能删除"},
 	ErrDictDataNotFound:    {http.StatusNotFound, "DICT_DATA_NOT_FOUND", "dict data not found", "字典数据不存在"},
 	ErrDictDataLabelExists: {http.StatusConflict, "DICT_DATA_LABEL_EXISTS", "dict data label already exists", "同一字典类型下的标签已存在"},
+
+	ErrFileNotFound:           {http.StatusNotFound, "FILE_NOT_FOUND", "file not found", "文件不存在"},
+	ErrFileTypeNotAllowed:     {http.StatusBadRequest, "FILE_TYPE_NOT_ALLOWED", "file type not allowed", "上传文件类型不允许"},
+	ErrFileTooLarge:           {http.StatusBadRequest, "FILE_TOO_LARGE", "file too large", "上传文件超出限制"},
+	ErrFileStorageUnsupported: {http.StatusBadRequest, "FILE_STORAGE_UNSUPPORTED", "file storage unsupported", "文件存储策略未配置或不支持"},
 }

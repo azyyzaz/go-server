@@ -9,6 +9,7 @@ import (
 	"go-server/internal/modules/dashboard"
 	"go-server/internal/modules/dept"
 	"go-server/internal/modules/dict"
+	filemodule "go-server/internal/modules/file"
 	"go-server/internal/modules/health"
 	"go-server/internal/modules/menu"
 	"go-server/internal/modules/profile"
@@ -25,6 +26,7 @@ type appServices struct {
 	dept      dept.Service
 	dict      dict.Service
 	dashboard dashboard.Service
+	file      filemodule.Service
 }
 
 func registerBaseRoutes(_ *gin.Engine, api *gin.RouterGroup, deps ModuleDeps, services appServices) {
@@ -55,11 +57,12 @@ func registerSystemModules(api *gin.RouterGroup, deps ModuleDeps, services appSe
 	menu.NewHandler(services.menu).Register(api.Group("/system/menus"))
 	dept.NewHandler(services.dept).Register(api.Group("/system/depts"))
 	dict.NewHandler(services.dict).Register(api.Group("/system/dicts"))
+	filemodule.NewHandler(services.file).Register(api.Group("/system/files"))
 }
 
 func registerBusinessModules(api *gin.RouterGroup, deps ModuleDeps, services appServices) {
 	dashboard.NewHandler(services.dashboard).Register(api.Group("/dashboard"))
-	profileSvc := profile.NewService(services.user, deps.AuditService, "uploads/avatars")
+	profileSvc := profile.NewService(services.user, deps.AuditService, services.file)
 	profile.NewHandler(profileSvc).Register(api.Group("/profile"))
 }
 
@@ -71,6 +74,7 @@ func buildServices(deps ModuleDeps) appServices {
 		dept:      buildDeptService(deps),
 		dict:      buildDictService(deps),
 		dashboard: buildDashboardService(deps),
+		file:      buildFileService(deps),
 	}
 }
 
@@ -142,4 +146,20 @@ func buildDashboardService(deps ModuleDeps) dashboard.Service {
 		repo = dashboard.NewInMemoryRepository()
 	}
 	return dashboard.NewService(repo)
+}
+
+func buildFileService(deps ModuleDeps) filemodule.Service {
+	var repo filemodule.Repository
+	if deps.DB != nil {
+		repo = filemodule.NewGORMRepository(deps.DB)
+	} else {
+		repo = filemodule.NewInMemoryRepository()
+	}
+
+	return filemodule.NewService(
+		repo,
+		deps.FileStorage,
+		filemodule.NewValidator(deps.Config.File.MaxSizeMB, deps.Config.File.AllowedExts),
+		filemodule.NewValidator(deps.Config.File.AvatarMaxSize, []string{".jpg", ".jpeg", ".png", ".gif", ".webp"}),
+	)
 }

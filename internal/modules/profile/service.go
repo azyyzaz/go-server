@@ -2,16 +2,11 @@ package profile
 
 import (
 	"context"
-	"fmt"
-	"io"
 	"mime/multipart"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 
 	"go-server/internal/errcode"
 	"go-server/internal/modules/audit"
+	filemodule "go-server/internal/modules/file"
 	"go-server/internal/modules/user"
 )
 
@@ -24,16 +19,13 @@ type Service interface {
 }
 
 type service struct {
-	userSvc   user.Service
-	auditSvc  audit.Service
-	uploadDir string
+	userSvc  user.Service
+	auditSvc audit.Service
+	fileSvc  filemodule.Service
 }
 
-func NewService(userSvc user.Service, auditSvc audit.Service, uploadDir string) Service {
-	if strings.TrimSpace(uploadDir) == "" {
-		uploadDir = filepath.Join("uploads", "avatars")
-	}
-	return &service{userSvc: userSvc, auditSvc: auditSvc, uploadDir: uploadDir}
+func NewService(userSvc user.Service, auditSvc audit.Service, fileSvc filemodule.Service) Service {
+	return &service{userSvc: userSvc, auditSvc: auditSvc, fileSvc: fileSvc}
 }
 
 func (s *service) GetProfile(ctx context.Context, userID uint) (ProfileResponse, error) {
@@ -53,47 +45,19 @@ func (s *service) ChangePassword(ctx context.Context, userID uint, req ChangePas
 }
 
 func (s *service) UploadAvatar(ctx context.Context, userID uint, file *multipart.FileHeader) (AvatarUploadResponse, error) {
-	if file == nil || file.Size <= 0 || file.Size > 2*1024*1024 {
+	if file == nil {
 		return AvatarUploadResponse{}, errcode.ErrInvalidParam.AsError()
 	}
 
-	ext := strings.ToLower(filepath.Ext(file.Filename))
-	switch ext {
-	case ".jpg", ".jpeg", ".png", ".gif", ".webp":
-	default:
-		return AvatarUploadResponse{}, errcode.ErrInvalidParam.AsError()
-	}
-
-	if err := os.MkdirAll(s.uploadDir, 0o755); err != nil {
-		return AvatarUploadResponse{}, errcode.ErrInternalError.AsError()
-	}
-
-	filename := fmt.Sprintf("%d_%d%s", userID, time.Now().UnixNano(), ext)
-	dstPath := filepath.Join(s.uploadDir, filename)
-
-	src, err := file.Open()
+	uploaded, err := s.fileSvc.UploadAvatar(ctx, userID, file)
 	if err != nil {
-		return AvatarUploadResponse{}, errcode.ErrInternalError.AsError()
+		return AvatarUploadResponse{}, err
 	}
-	defer func() { _ = src.Close() }()
-
-	dst, err := os.Create(dstPath)
-	if err != nil {
-		return AvatarUploadResponse{}, errcode.ErrInternalError.AsError()
-	}
-	defer func() { _ = dst.Close() }()
-
-	if _, err := io.Copy(dst, src); err != nil {
-		return AvatarUploadResponse{}, errcode.ErrInternalError.AsError()
-	}
-
-	avatar := "/" + filepath.ToSlash(filepath.Join("uploads", "avatars", filename))
-	if _, err := s.userSvc.UpdateAvatar(ctx, userID, avatar); err != nil {
-		_ = os.Remove(dstPath)
+	if _, err := s.userSvc.UpdateAvatar(ctx, userID, uploaded.URL); err != nil {
 		return AvatarUploadResponse{}, err
 	}
 
-	return AvatarUploadResponse{Avatar: avatar}, nil
+	return AvatarUploadResponse{Avatar: uploaded.URL}, nil
 }
 
 func (s *service) ListMyLoginLogs(ctx context.Context, userID uint, q audit.ListLoginLogsQuery) (LoginLogPageResult, error) {

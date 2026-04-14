@@ -5,6 +5,7 @@ import (
 	appjwt "go-server/internal/jwt"
 	"go-server/internal/middleware"
 	"go-server/internal/modules/audit"
+	filemodule "go-server/internal/modules/file"
 
 	"github.com/casbin/casbin/v2"
 	"github.com/gin-gonic/gin"
@@ -22,9 +23,10 @@ type ModuleDeps struct {
 	JWTBlacklist   *appjwt.Blacklist
 	CasbinEnforcer *casbin.Enforcer
 	AuditService   audit.Service
+	FileStorage    filemodule.Storage
 }
 
-func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer, auditSvc audit.Service) *gin.Engine {
+func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *appjwt.Manager, jwtBlacklist *appjwt.Blacklist, casbinEnforcer *casbin.Enforcer, auditSvc audit.Service, fileStorage filemodule.Storage) *gin.Engine {
 	deps := ModuleDeps{
 		Config:         cfg,
 		DB:             db,
@@ -33,6 +35,7 @@ func New(cfg config.Config, db *gorm.DB, redisClient *rdb.Client, jwtManager *ap
 		JWTBlacklist:   jwtBlacklist,
 		CasbinEnforcer: casbinEnforcer,
 		AuditService:   auditSvc,
+		FileStorage:    fileStorage,
 	}
 	services := buildServices(deps)
 
