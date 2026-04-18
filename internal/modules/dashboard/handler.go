@@ -1,8 +1,8 @@
 package dashboard
 
 import (
-	"go-server/internal/errcode"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +35,7 @@ func (h *Handler) GetOverview(c *gin.Context) {
 func (h *Handler) GetSalesTrend(c *gin.Context) {
 	var q SalesTrendQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	result, err := h.svc.GetSalesTrend(c.Request.Context(), q)

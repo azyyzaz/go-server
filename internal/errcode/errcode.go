@@ -24,11 +24,12 @@ func (e ErrCode) AsError() *response.AppError {
 func (e ErrCode) Status() int { return table[e].status }
 
 const (
-	ErrInvalidParam  ErrCode = 10001
-	ErrUnauthorized  ErrCode = 10002
-	ErrForbidden     ErrCode = 10003
-	ErrNotFound      ErrCode = 10004
-	ErrInternalError ErrCode = 10005
+	ErrInvalidParam    ErrCode = 10001
+	ErrUnauthorized    ErrCode = 10002
+	ErrForbidden       ErrCode = 10003
+	ErrNotFound        ErrCode = 10004
+	ErrInternalError   ErrCode = 10005
+	ErrTooManyRequests ErrCode = 10006
 
 	ErrUserNotFound       ErrCode = 20001
 	ErrUserEmailExists    ErrCode = 20002
@@ -65,11 +66,12 @@ const (
 )
 
 var table = map[ErrCode]meta{
-	ErrInvalidParam:  {http.StatusBadRequest, "INVALID_ARGUMENT", "invalid param", "参数错误"},
-	ErrUnauthorized:  {http.StatusUnauthorized, "UNAUTHORIZED", "unauthorized", "未登录或 Token 已过期"},
-	ErrForbidden:     {http.StatusForbidden, "FORBIDDEN", "forbidden", "没有操作权限"},
-	ErrNotFound:      {http.StatusNotFound, "NOT_FOUND", "not found", "资源不存在"},
-	ErrInternalError: {http.StatusInternalServerError, "INTERNAL_ERROR", "internal error", "服务器内部错误"},
+	ErrInvalidParam:    {http.StatusBadRequest, "INVALID_ARGUMENT", "invalid param", "参数错误"},
+	ErrUnauthorized:    {http.StatusUnauthorized, "UNAUTHORIZED", "unauthorized", "未登录或 Token 已过期"},
+	ErrForbidden:       {http.StatusForbidden, "FORBIDDEN", "forbidden", "没有操作权限"},
+	ErrNotFound:        {http.StatusNotFound, "NOT_FOUND", "not found", "资源不存在"},
+	ErrInternalError:   {http.StatusInternalServerError, "INTERNAL_ERROR", "internal error", "服务器内部错误"},
+	ErrTooManyRequests: {http.StatusTooManyRequests, "TOO_MANY_REQUESTS", "too many requests", "请求过于频繁，请稍后再试"},
 
 	ErrUserNotFound:       {http.StatusNotFound, "USER_NOT_FOUND", "user not found", "用户不存在"},
 	ErrUserEmailExists:    {http.StatusConflict, "USER_EMAIL_EXISTS", "email already exists", "邮箱已被注册"},

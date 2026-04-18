@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"go-server/internal/errcode"
 	"go-server/internal/modules/audit"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,7 +37,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) Login(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 
@@ -70,7 +70,7 @@ func (h *Handler) Login(c *gin.Context) {
 func (h *Handler) Logout(c *gin.Context) {
 	var req LogoutRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 
@@ -95,7 +95,7 @@ func (h *Handler) Logout(c *gin.Context) {
 func (h *Handler) Refresh(c *gin.Context) {
 	var req RefreshRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 

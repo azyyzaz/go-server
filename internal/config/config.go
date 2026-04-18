@@ -18,6 +18,8 @@ type Config struct {
 	Audit   AuditConfig
 	JWT     JWTConfig
 	File    FileConfig
+	CORS    CORSConfig
+	Rate    RateLimitConfig
 }
 
 type JWTConfig struct {
@@ -31,6 +33,23 @@ type HTTPConfig struct {
 	Port         string
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
+}
+
+type CORSConfig struct {
+	Enabled          bool
+	AllowOrigins     []string
+	AllowMethods     []string
+	AllowHeaders     []string
+	ExposeHeaders    []string
+	AllowCredentials bool
+	MaxAge           time.Duration
+}
+
+type RateLimitConfig struct {
+	Enabled           bool
+	RequestsPerSecond int
+	MaxDelay          time.Duration
+	ProtectedPrefixes []string
 }
 
 type DBConfig struct {
@@ -160,6 +179,21 @@ func Load() Config {
 				UseSSL:    viper.GetBool("file.minio.useSSL"),
 				BaseURL:   viper.GetString("file.minio.baseURL"),
 			},
+		},
+		CORS: CORSConfig{
+			Enabled:          viper.GetBool("cors.enabled"),
+			AllowOrigins:     viper.GetStringSlice("cors.allowOrigins"),
+			AllowMethods:     viper.GetStringSlice("cors.allowMethods"),
+			AllowHeaders:     viper.GetStringSlice("cors.allowHeaders"),
+			ExposeHeaders:    viper.GetStringSlice("cors.exposeHeaders"),
+			AllowCredentials: viper.GetBool("cors.allowCredentials"),
+			MaxAge:           viper.GetDuration("cors.maxAge"),
+		},
+		Rate: RateLimitConfig{
+			Enabled:           viper.GetBool("rateLimit.enabled"),
+			RequestsPerSecond: viper.GetInt("rateLimit.requestsPerSecond"),
+			MaxDelay:          viper.GetDuration("rateLimit.maxDelay"),
+			ProtectedPrefixes: viper.GetStringSlice("rateLimit.protectedPrefixes"),
 		},
 	}
 }

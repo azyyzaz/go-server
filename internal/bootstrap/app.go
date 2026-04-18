@@ -15,6 +15,7 @@ import (
 	filemodule "go-server/internal/modules/file"
 	appredis "go-server/internal/redis"
 	"go-server/internal/router"
+	"go-server/internal/validation"
 
 	"github.com/fsnotify/fsnotify"
 	rdb "github.com/redis/go-redis/v9"
@@ -50,6 +51,10 @@ func Run() error {
 	}
 
 	defer logger.Sync()
+
+	if err := validation.Init(); err != nil {
+		return err
+	}
 
 	var gormDB *gorm.DB
 	if cfg.DB.Enabled {

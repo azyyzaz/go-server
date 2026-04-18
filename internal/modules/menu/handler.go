@@ -6,6 +6,7 @@ import (
 	"go-server/internal/errcode"
 	"go-server/internal/middleware"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -93,7 +94,7 @@ func (h *Handler) ListCurrentUserMenus(c *gin.Context) {
 func (h *Handler) CreateMenu(c *gin.Context) {
 	var req CreateMenuRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	created, err := h.svc.CreateMenu(c.Request.Context(), req)
@@ -152,7 +153,7 @@ func (h *Handler) UpdateMenu(c *gin.Context) {
 	}
 	var req UpdateMenuRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.UpdateMenu(c.Request.Context(), id, req)
@@ -204,7 +205,7 @@ func (h *Handler) DeleteMenu(c *gin.Context) {
 func (h *Handler) UpdateMenuSorts(c *gin.Context) {
 	var req UpdateMenuSortsRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	if err := h.svc.UpdateMenuSorts(c.Request.Context(), req); err != nil {

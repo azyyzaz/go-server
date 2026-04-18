@@ -5,6 +5,7 @@ import (
 
 	"go-server/internal/errcode"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,7 +50,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) ListRoles(c *gin.Context) {
 	var q ListRolesQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	result, err := h.svc.ListRolesPage(c.Request.Context(), q)
@@ -76,7 +77,7 @@ func (h *Handler) ListRoles(c *gin.Context) {
 func (h *Handler) CreateRole(c *gin.Context) {
 	var req CreateRoleRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	created, err := h.svc.CreateRole(c.Request.Context(), req)
@@ -135,7 +136,7 @@ func (h *Handler) UpdateRole(c *gin.Context) {
 	}
 	var req UpdateRoleRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	role, err := h.svc.UpdateRole(c.Request.Context(), id, req)
@@ -217,7 +218,7 @@ func (h *Handler) UpdateRoleMenus(c *gin.Context) {
 	}
 	var req AssignMenusRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	if err := h.svc.UpdateRoleMenus(c.Request.Context(), id, req); err != nil {
@@ -273,7 +274,7 @@ func (h *Handler) UpdateRoleAPIs(c *gin.Context) {
 	}
 	var req AssignAPIsRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	if err := h.svc.UpdateRoleAPIs(c.Request.Context(), id, req); err != nil {
@@ -304,7 +305,7 @@ func (h *Handler) ListRoleUsers(c *gin.Context) {
 	}
 	var q ListRoleUsersQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	result, err := h.svc.ListRoleUsers(c.Request.Context(), id, q)

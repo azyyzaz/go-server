@@ -7,6 +7,7 @@ import (
 	"go-server/internal/errcode"
 	"go-server/internal/middleware"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -42,7 +43,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) Upload(c *gin.Context) {
 	fileHeader, err := c.FormFile("file")
 	if err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 

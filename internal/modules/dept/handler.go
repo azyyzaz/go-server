@@ -5,6 +5,7 @@ import (
 
 	"go-server/internal/errcode"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,7 +62,7 @@ func (h *Handler) ListDepts(c *gin.Context) {
 func (h *Handler) CreateDept(c *gin.Context) {
 	var req CreateDeptRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	created, err := h.svc.CreateDept(c.Request.Context(), req)
@@ -120,7 +121,7 @@ func (h *Handler) UpdateDept(c *gin.Context) {
 	}
 	var req UpdateDeptRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.UpdateDept(c.Request.Context(), id, req)
@@ -177,7 +178,7 @@ func (h *Handler) ListDeptUsers(c *gin.Context) {
 	}
 	var q ListDeptUsersQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	result, err := h.svc.ListDeptUsers(c.Request.Context(), id, q)

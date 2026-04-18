@@ -5,6 +5,7 @@ import (
 	"go-server/internal/middleware"
 	"go-server/internal/modules/audit"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,7 +47,7 @@ func (h *Handler) UpdateProfile(c *gin.Context) {
 
 	var req UpdateProfileRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 
@@ -66,7 +67,7 @@ func (h *Handler) ChangePassword(c *gin.Context) {
 
 	var req ChangePasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 
@@ -85,7 +86,7 @@ func (h *Handler) UploadAvatar(c *gin.Context) {
 
 	file, err := c.FormFile("file")
 	if err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 

@@ -5,6 +5,7 @@ import (
 
 	"go-server/internal/errcode"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,7 +50,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) ListTypes(c *gin.Context) {
 	var q ListDictTypesQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	items, err := h.svc.ListTypes(c.Request.Context(), q)
@@ -76,7 +77,7 @@ func (h *Handler) ListTypes(c *gin.Context) {
 func (h *Handler) CreateType(c *gin.Context) {
 	var req CreateDictTypeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.CreateType(c.Request.Context(), req)
@@ -135,7 +136,7 @@ func (h *Handler) UpdateType(c *gin.Context) {
 	}
 	var req UpdateDictTypeRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.UpdateType(c.Request.Context(), id, req)
@@ -189,7 +190,7 @@ func (h *Handler) DeleteType(c *gin.Context) {
 func (h *Handler) ListData(c *gin.Context) {
 	var q ListDictDataQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	items, err := h.svc.ListData(c.Request.Context(), q)
@@ -216,7 +217,7 @@ func (h *Handler) ListData(c *gin.Context) {
 func (h *Handler) CreateData(c *gin.Context) {
 	var req CreateDictDataRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.CreateData(c.Request.Context(), req)
@@ -275,7 +276,7 @@ func (h *Handler) UpdateData(c *gin.Context) {
 	}
 	var req UpdateDictDataRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	item, err := h.svc.UpdateData(c.Request.Context(), id, req)

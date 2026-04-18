@@ -13,20 +13,14 @@ func Logger() gin.HandlerFunc {
 		start := time.Now()
 		c.Next()
 
-		rid := c.GetString("request_id")
+		rid := c.GetString(ContextKeyRequestID)
+		traceID := c.GetString(ContextKeyTraceID)
 		latency := time.Since(start)
 		status := c.Writer.Status()
-		// log.Printf("rid=%v status=%d method=%s path=%s latency=%s ip=%s",
-		// 	rid,
-		// 	c.Writer.Status(),
-		// 	c.Request.Method,
-		// 	c.Request.URL.Path,
-		// 	latency,
-		// 	c.ClientIP(),
-		// )
 
 		fields := []zap.Field{
 			zap.String("request_id", rid),
+			zap.String("trace_id", traceID),
 			zap.Int("status", status),
 			zap.String("method", c.Request.Method),
 			zap.String("path", c.Request.URL.Path),

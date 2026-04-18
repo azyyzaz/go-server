@@ -3,19 +3,30 @@ package middleware
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	ContextKeyRequestID = "request_id"
+	ContextKeyTraceID   = "trace_id"
+)
+
 func RequestID() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		rid := c.GetHeader("X-Request-ID")
+		rid := strings.TrimSpace(c.GetHeader("X-Trace-ID"))
+		if rid == "" {
+			rid = strings.TrimSpace(c.GetHeader("X-Request-ID"))
+		}
 		if rid == "" {
 			rid = generateRequestID()
 		}
-		c.Set("request_id", rid)
+		c.Set(ContextKeyRequestID, rid)
+		c.Set(ContextKeyTraceID, rid)
 		c.Writer.Header().Set("X-Request-ID", rid)
+		c.Writer.Header().Set("X-Trace-ID", rid)
 		c.Next()
 	}
 }

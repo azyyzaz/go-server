@@ -59,6 +59,7 @@ func setupEngine(deps ModuleDeps) *gin.Engine {
 
 	r := gin.New()
 	r.Use(middleware.RequestID())
+	r.Use(middleware.CORS(deps.Config.CORS))
 	r.Use(middleware.Logger())
 	r.Use(middleware.Recovery())
 	r.Use(middleware.ErrorHandler())
@@ -72,6 +73,7 @@ func registerDocsRoutes(r *gin.Engine) {
 }
 
 func applyAPIMiddleware(api *gin.RouterGroup, deps ModuleDeps) {
+	api.Use(middleware.NewRateLimit(deps.Config.Rate))
 	api.Use(middleware.JWTAuth(deps.JWTManager, deps.JWTBlacklist,
 		"/api/v1/auth",
 		"/api/v1/health",

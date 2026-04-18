@@ -5,6 +5,7 @@ import (
 
 	"go-server/internal/errcode"
 	"go-server/internal/response"
+	"go-server/internal/validation"
 
 	"github.com/gin-gonic/gin"
 )
@@ -48,7 +49,7 @@ func (h *Handler) Register(rg *gin.RouterGroup) {
 func (h *Handler) ListUsers(c *gin.Context) {
 	var q ListUsersQuery
 	if err := c.ShouldBindQuery(&q); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	result, err := h.svc.ListUsersPage(c.Request.Context(), q)
@@ -75,7 +76,7 @@ func (h *Handler) ListUsers(c *gin.Context) {
 func (h *Handler) CreateUser(c *gin.Context) {
 	var req CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	created, err := h.svc.CreateUser(c.Request.Context(), req)
@@ -102,7 +103,7 @@ func (h *Handler) CreateUser(c *gin.Context) {
 func (h *Handler) GetUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	u, err := h.svc.GetUser(c.Request.Context(), uint(id))
@@ -131,12 +132,12 @@ func (h *Handler) GetUser(c *gin.Context) {
 func (h *Handler) UpdateUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	var req UpdateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	updated, err := h.svc.UpdateUser(c.Request.Context(), uint(id), req)
@@ -163,7 +164,7 @@ func (h *Handler) UpdateUser(c *gin.Context) {
 func (h *Handler) BatchDeleteUsers(c *gin.Context) {
 	var req BatchDeleteRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	if err := h.svc.DeleteUserBatch(c.Request.Context(), req.IDs); err != nil {
@@ -189,7 +190,7 @@ func (h *Handler) BatchDeleteUsers(c *gin.Context) {
 func (h *Handler) DeleteUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		_ = c.Error(errcode.ErrInvalidParam.AsError())
+		_ = c.Error(validation.BindError(err))
 		return
 	}
 	if err := h.svc.DeleteUser(c.Request.Context(), uint(id)); err != nil {

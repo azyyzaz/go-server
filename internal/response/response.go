@@ -11,6 +11,7 @@ type Body struct {
 	Message   string `json:"message"`
 	Data      any    `json:"data,omitempty"`
 	RequestID string `json:"request_id,omitempty"`
+	TraceID   string `json:"trace_id,omitempty"`
 }
 
 type AppError struct {
@@ -33,6 +34,7 @@ func Success(c *gin.Context, data any) {
 		Message:   "success",
 		Data:      data,
 		RequestID: RequestIDFromContext(c),
+		TraceID:   TraceIDFromContext(c),
 	})
 }
 
@@ -42,6 +44,7 @@ func Created(c *gin.Context, data any) {
 		Message:   "created",
 		Data:      data,
 		RequestID: RequestIDFromContext(c),
+		TraceID:   TraceIDFromContext(c),
 	})
 }
 
@@ -50,12 +53,22 @@ func Fail(c *gin.Context, status int, code, message string) {
 		Code:      code,
 		Message:   message,
 		RequestID: RequestIDFromContext(c),
+		TraceID:   TraceIDFromContext(c),
 	})
 }
 
 func RequestIDFromContext(c *gin.Context) string {
 	if rid, ok := c.Get("request_id"); ok {
 		if v, ok := rid.(string); ok {
+			return v
+		}
+	}
+	return ""
+}
+
+func TraceIDFromContext(c *gin.Context) string {
+	if tid, ok := c.Get("trace_id"); ok {
+		if v, ok := tid.(string); ok {
 			return v
 		}
 	}
