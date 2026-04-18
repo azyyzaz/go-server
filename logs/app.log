@@ -121,3 +121,55 @@
 {"level":"info","ts":"2026-04-11T21:04:40.341+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-11T21:07:42.582+0800","caller":"api/main.go:26","msg":"http server running","app":"go-server","Addr":"0.0.0.0:8080","env":"local"}
 {"level":"info","ts":"2026-04-11T21:08:16.717+0800","caller":"gin@v1.12.0/context.go:192","msg":"http request","request_id":"20260411130816-3be01db1f779","status":200,"method":"GET","path":"/swagger/doc.json","query":"","ip":"::1","error":"","latency":0.0007987}
+{"level":"fatal","ts":"2026-04-18T08:55:27.261Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:55:35.721Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:55:44.167Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:55:52.798Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:56:01.822Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:56:11.674Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:56:23.090Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:56:37.700Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:56:58.703Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:57:32.525Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:58:31.944Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T08:59:40.159Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:00:48.398Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:01:56.665Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:03:04.884Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:04:13.171Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:05:21.403Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:06:29.620Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:07:37.827Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:08:46.010Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:09:54.215Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:11:02.440Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:12:10.680Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:17:18.085Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:17:26.519Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:17:34.966Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:17:43.567Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:17:52.603Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:18:02.464Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:18:13.877Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:18:28.474Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:18:49.454Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:19:23.241Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:20:22.649Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:26:44.019Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:26:52.530Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:27:00.978Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:27:09.602Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:27:18.637Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:27:28.431Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:27:39.866Z","caller":"api/main.go:26","msg":"database init failed","error":"dial tcp: lookup mysql on 127.0.0.11:53: server misbehaving"}
+{"level":"fatal","ts":"2026-04-18T09:28:39.985Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:40.341Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:40.756Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:41.337Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:42.334Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:44.150Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:47.538Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:28:54.141Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:29:07.175Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:29:33.074Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}
+{"level":"fatal","ts":"2026-04-18T09:30:24.445Z","caller":"api/main.go:26","msg":"casbin init failed","error":"Error 1146 (42S02): Table 'go_server.casbin_rule' doesn't exist"}

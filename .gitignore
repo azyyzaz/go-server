@@ -1,29 +1,39 @@
-﻿# Go build artifacts
-# *.exe
-# *.exe~
-# *.dll
-# *.so
-# *.dylib
-# *.test
-# *.out
+# --- Go 编译产物 ---
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
 
-# Binaries
-# bin/
+# --- 构建输出目录 ---
+bin/
+dist/
+tmp/
 
-
-# Coverage
+# --- 覆盖率报告 ---
 coverage.out
 *.coverprofile
 
-# Env files
-# .env
-# .env.*
+# --- 运行时文件 ---
+logs/
+uploads/
 
-# IDE / OS
-# .vscode/
-# .idea/
-# .DS_Store
-# Thumbs.db
+# --- 环境变量文件 ---
+.env
+.env.*
+!.env.example
 
-# Local diagnostic artifacts
-# .gcm-diagnose/
+# --- IDE / 编辑器文件 ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- 操作系统杂项文件 ---
+.DS_Store
+Thumbs.db
+
+# --- 本地工具诊断产物 ---
+.gcm-diagnose/

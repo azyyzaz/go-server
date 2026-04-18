@@ -5,15 +5,15 @@ import "time"
 type CreateUserRequest struct {
 	Username string `json:"username" binding:"required,min=3,max=50" example:"zhangsan"`
 	Password string `json:"password" binding:"required,min=6" example:"Admin123!"`
-	Name     string `json:"name"     binding:"required,min=2,max=50" example:"寮犱笁"`
-	Email    string `json:"email"    binding:"required,email" example:"zhangsan@example.com"`
+	Name     string `json:"name" binding:"required,min=2,max=50" example:"Zhang San"`
+	Email    string `json:"email" binding:"required,email" example:"zhangsan@example.com"`
 	Phone    string `json:"phone" example:"13800138000"`
 	DeptID   *uint  `json:"dept_id" swaggertype:"integer" example:"1"`
 	RoleIDs  []uint `json:"role_ids" swaggertype:"array,integer" example:"1,2"`
 }
 
 type UpdateUserRequest struct {
-	Name    string `json:"name"  binding:"required,min=2,max=50" example:"寮犱笁"`
+	Name    string `json:"name" binding:"required,min=2,max=50" example:"Zhang San"`
 	Email   string `json:"email" binding:"required,email" example:"zhangsan@example.com"`
 	Phone   string `json:"phone" example:"13800138000"`
 	DeptID  *uint  `json:"dept_id" swaggertype:"integer" example:"1"`
@@ -21,29 +21,29 @@ type UpdateUserRequest struct {
 }
 
 type UpdateProfileRequest struct {
-	Name  string `json:"name" binding:"required,min=2,max=50" example:"寮犱笁"`
+	Name  string `json:"name" binding:"required,min=2,max=50" example:"Zhang San"`
 	Email string `json:"email" binding:"required,email" example:"zhangsan@example.com"`
 	Phone string `json:"phone" example:"13800138000"`
 }
 
 type ListUsersQuery struct {
-	Page     int    `form:"page"      binding:"omitempty,min=1" default:"1" example:"1"`
+	Page     int    `form:"page" binding:"omitempty,min=1" default:"1" example:"1"`
 	PageSize int    `form:"page_size" binding:"omitempty,min=1,max=100" default:"10" example:"10"`
 	Username string `form:"username" example:"zhangsan"`
-	Name     string `form:"name" example:"寮犱笁"`
-	Status   *int8  `form:"status"    binding:"omitempty,oneof=0 1" swaggertype:"integer" example:"1"`
+	Name     string `form:"name" example:"Zhang San"`
+	Status   *int8  `form:"status" binding:"omitempty,oneof=0 1" swaggertype:"integer" example:"1"`
 }
 
 type RoleInfo struct {
 	ID   uint   `json:"id" example:"1"`
-	Name string `json:"name" example:"绠＄悊鍛?`
+	Name string `json:"name" example:"Administrator"`
 	Code string `json:"code" example:"admin"`
 }
 
 type UserResponse struct {
 	ID        uint       `json:"id" example:"1"`
 	Username  string     `json:"username" example:"zhangsan"`
-	Name      string     `json:"name" example:"寮犱笁"`
+	Name      string     `json:"name" example:"Zhang San"`
 	Email     string     `json:"email" example:"zhangsan@example.com"`
 	Phone     string     `json:"phone" example:"13800138000"`
 	Avatar    string     `json:"avatar" example:"/uploads/avatars/1_1713072000.png"`

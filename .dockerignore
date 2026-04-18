@@ -1,0 +1,12 @@
+.git
+.github
+.claude
+.gcm-diagnose
+tmp
+logs
+uploads
+bin
+dist
+node_modules
+*.exe
+*.test

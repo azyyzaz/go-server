@@ -1,4 +1,31 @@
 services:
+  go-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: go-server-app
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: docker
+      DB_DSN: root:root@tcp(mysql:3306)/go_server?charset=utf8mb4&parseTime=True&loc=Local
+      REDIS_ADDR: redis:6379
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/api/v1/health/ready >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
   mysql:
     image: mysql:8.0
     container_name: go-server-mysql
@@ -11,6 +38,12 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -proot --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
   redis:
     image: redis:7-alpine
@@ -20,6 +53,11 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
 volumes:
   mysql_data:

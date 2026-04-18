@@ -146,11 +146,11 @@
 
 | # | 任务 | 状态 | 说明 |
 |---|------|------|------|
-| 9.1 | Dockerfile | ⬜ | 多阶段构建，最小化镜像 |
-| 9.2 | docker-compose.yml | ⬜ | go-server + MySQL + Redis 一键启动 |
-| 9.3 | Makefile | ⬜ | `make run` / `make build` / `make test` / `make migrate` |
-| 9.4 | 健康检查优化 | ⬜ | 含 DB/Redis 探活状态 |
-| 9.5 | GitHub Actions CI | ⬜ | 自动 lint + test + build |
+| 9.1 | Dockerfile | ✅ | 多阶段构建，最小化镜像 |
+| 9.2 | docker-compose.yml | ✅ | go-server + MySQL + Redis 一键启动 |
+| 9.3 | Makefile | ✅ | `make run` / `make build` / `make test` / `make migrate` |
+| 9.4 | 健康检查优化 | ✅ | 含 DB/Redis 探活状态 |
+| 9.5 | GitHub Actions CI | ✅ | 自动 lint + test + build |
 
 ---
 

@@ -30,7 +30,7 @@ type appServices struct {
 }
 
 func registerBaseRoutes(_ *gin.Engine, api *gin.RouterGroup, deps ModuleDeps, services appServices) {
-	health.NewHandler().Register(api.Group("/health"))
+	health.NewHandler(deps.DB, deps.Redis).Register(api.Group("/health"))
 
 	captchaSvc := captcha.NewService()
 	captcha.NewHandler(captchaSvc).Register(api.Group("/auth"))
